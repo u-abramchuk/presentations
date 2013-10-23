@@ -1,0 +1,329 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+	<title>Shower Presentation Engine</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=792, user-scalable=no">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+	<link rel="stylesheet" href="shower/themes/lambda/styles/screen.css">
+</head>
+<body class="list">
+	<header class="caption">
+		<h1>Introduction to λ-calculus</h1>
+		<p>Uladzimir Abramchuk</p>
+	</header>
+	<section class="slide cover" id="Cover"><div>
+		<h2>Introduction<br>to λ-calculus</h2>
+		<p>Uladzimir Abramchuk</p>
+		<img src="pictures/cover.jpg" alt="">
+		<!--
+			To apply styles to the certain slides
+			set slide ID to get needed elements
+			-->
+		<style>
+			#Cover img {
+				width: 100%;
+			}
+			#Cover h2 {
+				margin:100px 0 0;
+				color:#000;
+				text-align:left;
+				font-size:70px;
+			}
+			#Cover p {
+				margin:10px 0 0 150px;
+				text-align:left;
+				color:#000;
+				font-style:italic;
+				font-size:26px;
+			}
+			#Cover p a {
+				color:#000;
+			}
+		</style>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Contents</h2>
+		<ol>
+			<li>λ-calculus</li>
+			<li>Growing functional language
+				<ul>
+					<li>Booleans and conditions</li>
+					<li>Natural numbers and arithmetics</li>
+					<li>Types</li>
+					<li>Lists</li>
+				</ul>
+			</li>
+		</ol>
+	</div></section>
+	<section class="slide cover" id="Lambda_calculus"><div>
+		<h2>λ-calculus</h2>
+		<img src="pictures/lambda_green.jpg" alt="">
+		<!--
+			To apply styles to the certain slides
+			set slide ID to get needed elements
+			-->
+		<style>
+			#Lambda_calculus img {
+				width: 100%;
+			}
+			#Lambda_calculus h2 {
+				margin:400px 0 0;
+				color:#fff;
+				text-align:center;
+				font-size:70px;
+			}
+		</style>
+	</div></section>
+	<section class="slide"><div>
+		<h2>λ-expressions</h2>
+		<ul class="definition">t ::= <span class="label">terms:</span>
+			<li>x <span class="label">variable</span></li>
+			<li>λx.t <span class="label">abstraction</span></li>
+			<li>t t <span class="label">application</span></li>
+		</ul>
+		<ul class="definition">v ::= <span class="label">values:</span>
+			<li>λx.t <span class="label">abstraction value</span></li>
+		</ul>
+		<style>
+			#Terms>li:before { 
+				content: ''; 
+			}
+			#Terms>li {
+				text-indent: 0;
+			}
+		</style>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Simple λ functions</h2>
+		<ul class="definition">
+			<li>λx.x <span class="label">identity<span></li>
+			<li>λs.s s <span class="label">self-application</span></li>
+			<li>λf.λx.f x <span class="label">function application</span></li>
+		</ul>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Free variables</h2>
+		<ol class="definition">
+			<li>x in x</li>
+			<li>x in λx1.t if
+				<ul>
+					<li>x is not x1 and</li>
+					<li>x is free in t</li>
+				</ul>
+			</li>
+			<li>x in (t1 t2) if
+				<ul>
+					<li>x is free in t1 or</li>
+					<li>x is free in t2</li>
+				</ul>
+			</li>
+		</ol>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Bound variables</h2>
+		<ol class="definition">
+			<li>x in λx1.t if
+				<ul>
+					<li>x is x1 or</li>
+					<li>x is bound in t</li>
+				</ul>
+			</li>
+			<li>x in (t1 t2) if
+				<ul>
+					<li>x is bound in t1 or</li>
+					<li>x is bound in t2</li>
+				</ul>
+			</li>
+		</ol>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Free and bound variables</h2>
+		<p>λfunc. λarg.(func arg)</p>
+		<p>λx.λy.(x (y λx.x))</p>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Normal order β reduction</h2>
+		<p>(&lt;function&gt; &lt;argument&gt;)</p>
+		<ol>
+			<li>normal order β reduce &lt;function&gt; to &lt;function value&gt;</li>
+			<li>if &lt;function value&gt; is λ&lt;name&gt;.&lt;body&gt; then replace all free occurrences of &lt;name&gt; in &lt;body&gt; with &lt;argument&gt; and normal order β reduce the new &lt;body&gt;</li>
+			<li>if &lt;function value&gt; is not a function then normal order β reduce &lt;argument&gt; to &lt;argument value&gt; and return (&lt;function value&gt; &lt;argument value&gt;)</li>
+		</ol>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Normal order β reduction</h2>
+		<ul>
+			<li>((λfunc.λarg.(func arg) λx.x) λs.(s s)) =></li>
+			<li class="next">(λarg.(λx.x arg) λs.(s s)) =></li>
+			<li class="next">(λx.x λs.(s s)) =></li>
+			<li class="next">λs.(s s)</li>
+		</ul>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Applicative order β reduction</h2>
+		<p>(&lt;function&gt; &lt;argument&gt;)</p>
+		<ol>
+			<li>applicative order β reduce &lt;argument&gt; to &lt;argument value&gt;</li>
+			<li>applicative order β reduce &lt;function&gt; to &lt;function value&gt;</li>
+			<li>if &lt;function value&gt; is λ&lt;name&gt;.&lt;body&gt; then replace all free occurrences of &lt;name&gt; in &lt;body&gt; with &lt;argument value&gt; and applicative order β reduce the new &lt;body&gt;</li>
+			<li>if &lt;function value&gt; is not a function then return (&lt;function value&gt; &lt;argument value&gt;)</li>
+		</ol>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Evaluation termination</h2>
+		<p>Not all expression evaluations terminate:<br>
+			(λs.(s s) λs.(s s))</p>
+		<p>There is no way of telling whether or not the evaluation of an expression will ever terminate!</p>
+	</div></section>
+	<section class="slide"><div>
+		<h2>1st Church-Rosser theorem</h2>
+		<p>If there are two distinct reductions or sequences of reductions that can be applied to the same term, then there exists a term that is reachable from both results, by applying (possibly empty) sequences of additional reductions (see picture)</p>
+		<img src="pictures/church_rosser.png" id="Church_Rosser">
+		<style>
+			#Church_Rosser {
+				position: absolute;
+				right: 230px;
+				margin: -60px auto 0;
+				width: 230px;
+				height: 230px;
+			}
+		</style>
+	</div></section>
+	<section class="slide"><div>
+		<h2>2nd Church-Rosser theorem</h2>
+		<p>If an expression has a normal form, then it may be reached by normal order evaluation</p>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Plain Text on Your Slides</h2>
+		<p>Lorem ipsum dolor sit amet, consectetur <a href="#4">adipisicing</a> elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, <em>quis nostrud</em> exercitation ullamco laboris <strong>nisi ut aliquip</strong> ex ea commodo consequat. Duis aute irure <i>dolor</i> in reprehenderit in voluptate velit esse cillum <b>dolore</b> eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in <code>&lt;culpa&gt;</code> qui officia deserunt mollit anim id est laborum.</p>
+	</div></section>
+	<section class="slide"><div>
+		<h2>All Kind of Lists</h2>
+		<ol>
+			<li>Simple lists are marked with bullets</li>
+			<li>Ordered lists begin with a number</li>
+			<li>You can even nest lists one inside another
+				<ul>
+					<li>Or mix their types</li>
+					<li>But do not go too far</li>
+					<li>Otherwise audience will be bored</li>
+				</ul>
+			</li>
+			<li>Look, seven rows exactly!</li>
+		</ol>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Serious Citations</h2>
+		<figure>
+			<blockquote>
+				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia.</p>
+			</blockquote>
+			<figcaption>Marcus Tullius Cicero</figcaption>
+		</figure>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Serious Citations</h2>
+		<figure>
+			<blockquote>
+				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia.</p>
+			</blockquote>
+			<figcaption>Marcus Tullius Cicero</figcaption>
+		</figure>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Code Samples</h2>
+		<pre>
+			<code>&lt;!DOCTYPE html&gt;</code>
+			<code>&lt;html lang="en"&gt;</code>
+			<code><mark>&lt;head&gt;</mark> <mark class="comment">&lt;!--Comment--&gt;</mark></code>
+			<code>    &lt;title&gt;Shower&lt;/title&gt;</code>
+			<code>    &lt;meta charset="<mark class="important">UTF-8</mark>"&gt;</code>
+			<code>    &lt;link rel="stylesheet" href="screen.css"&gt;</code>
+			<code><mark>&lt;/head&gt;</mark></code>
+		</pre>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Even Tables</h2>
+		<table>
+		<tr>
+			<th scope="col">Locavore</th>
+			<th>Umami</th>
+			<th>Helvetica</th>
+			<th>Vegan</th>
+		</tr>
+		<tr>
+			<th scope="row">Fingerstache</th>
+			<td>Kale</td>
+			<td>Chips</td>
+			<td>Keytar</td>
+		</tr>
+		<tr>
+			<th scope="row">Sriracha</th>
+			<td>Gluten-free</td>
+			<td>Ennui</td>
+			<td>Keffiyeh</td>
+		</tr>
+		<tr>
+			<th scope="row">Thundercats</th>
+			<td>Jean</td>
+			<td>Shorts</td>
+			<td>Biodiesel</td>
+		</tr>
+		<tr>
+			<th scope="row">Terry</th>
+			<td>Richardson</td>
+			<td>Swag</td>
+			<td>Blog</td>
+		</tr>
+		</table>
+		<p>It’s good to have information organized.</p>
+	</div></section>
+	<section class="slide cover" id="Picture"><div>
+		<h2>Pictures</h2>
+		<img src="pictures/picture.jpg" alt="">
+		<style>
+			#Picture h2 {
+				color:#FFF;
+				}
+		</style>
+	</div></section>
+	<section class="slide shout"><div>
+		<h2>You can even shout this way</h2>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Inner Navigation</h2>
+		<ol>
+			<li>Lets you reveal list items one by one</li>
+			<li class="next">To keep some key points</li>
+			<li class="next">In secret from audience</li>
+			<li class="next">But it will work only once</li>
+			<li class="next">Nobody wants to see the same joke twice</li>
+		</ol>
+	</div></section>
+	<section class="slide shout" id="SeeMore"><div>
+		<h2><img src="pictures/logo.svg" alt=""> <a href="https://github.com/shower/shower/">See more on GitHub</a></h2>
+		<style>
+			#Picture h2 {
+				color:#FFF;
+				}
+			#SeeMore h2 {
+				font-size:100px
+				}
+			#SeeMore img {
+				width:0.72em;
+				height:0.72em;
+				}
+		</style>
+	</div></section>
+	<p class="badge"><a href="https://github.com/shower/shower">Fork me on Github</a></p>
+	<!--
+		To hide progress bar from entire presentation
+		just remove “progress” element.
+		-->
+	<div class="progress"><div></div></div>
+	<script src="shower/shower.min.js"></script>
+	<!-- Copyright © 2013 Yours Truly, Famous Inc. -->
+	<!-- Photos by John Carey, fiftyfootshadows.net -->
+</body>
+</html>
