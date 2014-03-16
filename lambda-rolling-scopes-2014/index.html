@@ -115,8 +115,10 @@
 	</div></section>
 	<section class="slide"><div>
 		<h2>Free and bound variables</h2>
-		<p>λfunc. λarg.(func arg)</p>
-		<p>λx.λy.(x (y λx.x))</p>
+		<pre>
+			<code>λfunc.λarg.(func arg)</code>
+			<code>λx.λy.(x (y λx.x))</code>
+		</pre>
 	</div></section>
 	<section class="slide"><div>
 		<h2>Normal order β reduction</h2>
@@ -129,12 +131,12 @@
 	</div></section>
 	<section class="slide"><div>
 		<h2>Normal order β reduction</h2>
-		<ul>
-			<li>((λfunc.λarg.(func arg) λx.x) λs.(s s)) =></li>
-			<li class="next">(λarg.(λx.x arg) λs.(s s)) =></li>
-			<li class="next">(λx.x λs.(s s)) =></li>
-			<li class="next">λs.(s s)</li>
-		</ul>
+		<pre>
+			<code>((λfunc.λarg.(func arg) λx.x) λs.(s s)) =></code>
+			<code class="next">(λarg.(λx.x arg) λs.(s s)) =></code>
+			<code class="next">(λx.x λs.(s s)) =></code>
+			<code class="next">λs.(s s)</code>
+		</pre>
 	</div></section>
 	<section class="slide"><div>
 		<h2>Applicative order β reduction</h2>
@@ -148,8 +150,8 @@
 	</div></section>
 	<section class="slide"><div>
 		<h2>Evaluation termination</h2>
-		<p>Not all expression evaluations terminate:<br>
-			(λs.(s s) λs.(s s))</p>
+		<p>Not all expression evaluations terminate:</p>
+		<pre><code>(λs.(s s) λs.(s s))</code></pre>
 		<p>There is no way of telling whether or not the evaluation of an expression will ever terminate!</p>
 	</div></section>
 	<section class="slide"><div>
@@ -179,17 +181,17 @@ and replace name1 in λname1</p>
 	</div></section>
 	<section class="slide"><div>
 		<h2>α conversion</h2>
-		<p>(λx.λy.(x y) y) => λy.(y y) - wrong!</p>
-		<ul>
-			<li>(λx.λy.(x y) y) ==</li>
-			<li class="next">(λx.λz.(x z) y) =></li>
-			<li class="next">λz.(y z)</li>
-		</ul>
+		<pre><code>(λx.λy.(x y) y) => λy.(y y) - wrong!</code></pre>
+		<pre>
+			<code>(λx.λy.(x y) y) ==</code>
+			<code class="next">(λx.λz.(x z) y) =></code>
+			<code class="next">λz.(y z)</code>
+		</pre>
 	</div></section>
 	<section class="slide"><div>
 		<h2>η reduction</h2>
-		<p>(λx.(expr x) arg) => expr arg<br>
-i.e. λx.(expr x) is equivalent to expr</p>
+		<pre><code>(λx.(expr x) arg) => expr arg</code></pre>
+		<p>i.e. λx.(expr x) is equivalent to expr</p>
 	</div></section>
 	<section class="slide"><div>
 		<h2>Notation</h2>
