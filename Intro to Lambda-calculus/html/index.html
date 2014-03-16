@@ -42,7 +42,7 @@
 			}
 		</style>
 	</div></section>
-	<section class="slide"><div>
+	<!-- <section class="slide"><div>
 		<h2>Contents</h2>
 		<ol>
 			<li>λ-calculus</li>
@@ -55,25 +55,9 @@
 				</ul>
 			</li>
 		</ol>
-	</div></section>
-	<section class="slide cover" id="Lambda_calculus"><div>
-		<h2>λ-calculus</h2>
-		<img src="pictures/lambda_green.jpg" alt="">
-		<!--
-			To apply styles to the certain slides
-			set slide ID to get needed elements
-			-->
-		<style>
-			#Lambda_calculus img {
-				width: 100%;
-			}
-			#Lambda_calculus h2 {
-				margin:400px 0 0;
-				color:#fff;
-				text-align:center;
-				font-size:70px;
-			}
-		</style>
+	</div></section> -->
+	<section class="slide cover"><div>
+		<h2 class="title">λ-calculus</h2>
 	</div></section>
 	<section class="slide"><div>
 		<h2>λ-expressions</h2>
@@ -85,14 +69,6 @@
 		<ul class="definition">v ::= <span class="label">values:</span>
 			<li>λx.t <span class="label">abstraction value</span></li>
 		</ul>
-		<style>
-			#Terms>li:before { 
-				content: ''; 
-			}
-			#Terms>li {
-				text-indent: 0;
-			}
-		</style>
 	</div></section>
 	<section class="slide"><div>
 		<h2>Simple λ functions</h2>
@@ -144,11 +120,11 @@
 	</div></section>
 	<section class="slide"><div>
 		<h2>Normal order β reduction</h2>
-		<p>(&lt;function&gt; &lt;argument&gt;)</p>
+		<p>(function argument)</p>
 		<ol>
-			<li>normal order β reduce &lt;function&gt; to &lt;function value&gt;</li>
-			<li>if &lt;function value&gt; is λ&lt;name&gt;.&lt;body&gt; then replace all free occurrences of &lt;name&gt; in &lt;body&gt; with &lt;argument&gt; and normal order β reduce the new &lt;body&gt;</li>
-			<li>if &lt;function value&gt; is not a function then normal order β reduce &lt;argument&gt; to &lt;argument value&gt; and return (&lt;function value&gt; &lt;argument value&gt;)</li>
+			<li>normal order β reduce function to function_value</li>
+			<li>if function_value is λname.body then replace all free occurrences of name in body with argument and normal order β reduce the new body</li>
+			<li>if function_value is not a function then normal order β reduce argument to argument_value and return (function_value argument_value)</li>
 		</ol>
 	</div></section>
 	<section class="slide"><div>
@@ -162,12 +138,12 @@
 	</div></section>
 	<section class="slide"><div>
 		<h2>Applicative order β reduction</h2>
-		<p>(&lt;function&gt; &lt;argument&gt;)</p>
+		<p>(function argument)</p>
 		<ol>
-			<li>applicative order β reduce &lt;argument&gt; to &lt;argument value&gt;</li>
-			<li>applicative order β reduce &lt;function&gt; to &lt;function value&gt;</li>
-			<li>if &lt;function value&gt; is λ&lt;name&gt;.&lt;body&gt; then replace all free occurrences of &lt;name&gt; in &lt;body&gt; with &lt;argument value&gt; and applicative order β reduce the new &lt;body&gt;</li>
-			<li>if &lt;function value&gt; is not a function then return (&lt;function value&gt; &lt;argument value&gt;)</li>
+			<li>applicative order β reduce argument to argument value</li>
+			<li>applicative order β reduce function to function_value</li>
+			<li>if function_value is λname.body then replace all free occurrences of name in body with argument_value and applicative order β reduce the new body</li>
+			<li>if function_value is not a function then return (function_value argument_value)</li>
 		</ol>
 	</div></section>
 	<section class="slide"><div>
@@ -195,9 +171,115 @@
 		<p>If an expression has a normal form, then it may be reached by normal order evaluation</p>
 	</div></section>
 	<section class="slide"><div>
+		<h2>α conversion</h2>
+		<p>To rename name1 as name2 in λname1.body<br>
+if name2 is not free in λname1.body<br>
+then replace all free occurrences of name1 in body with name2<br>
+and replace name1 in λname1</p>
+	</div></section>
+	<section class="slide"><div>
+		<h2>α conversion</h2>
+		<p>(λx.λy.(x y) y) => λy.(y y) - wrong!</p>
+		<ul>
+			<li>(λx.λy.(x y) y) ==</li>
+			<li class="next">(λx.λz.(x z) y) =></li>
+			<li class="next">λz.(y z)</li>
+		</ul>
+	</div></section>
+	<section class="slide"><div>
+		<h2>η reduction</h2>
+		<p>(λx.(expr x) arg) => expr arg<br>
+i.e. λx.(expr x) is equivalent to expr</p>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Notation</h2>
+		<p>def name = function</p>
+		<p>def identity = λx.x<br>
+def self_apply = λs.(s s)<br>
+def apply = λfunc.λarg.(func arg)</p>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Notation</h2>
+		<p>== defined replacement notation<br>
+=> normal order β reduction<br>
+=> ... => multiple normal order β reduction<br>
+-> applicative order β reduction<br>
+-> ... -> multiple normal order β reduction</p>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Selecting one of two arguments</h2>
+		<p>def fst = λf.λs.f</p>
+		<p>def snd = λf.λs.s</p>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Selecting one of two arguments</h2>
+		<ul>
+			<li>((fst arg1) arg2) == </li>
+			<li class="next">((λf.λs.f arg1) arg2) => </li>
+			<li class="next">(λs.arg1 arg2) => </li>
+			<li class="next">arg1</li>
+		</ul>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Making pairs from two arguments</h2>
+		<p>def pair = λf.λs.λfunc.((func f) s)</p>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Making pairs from two arguments</h2>
+		<ul>
+			<li>((pair arg1) arg2) == </li>
+			<li class="next">((λf.λs.λfunc.((func f) s) arg1) arg2) => </li>
+			<li class="next">(λs.λfunc.((func arg1) s) arg2) => </li>
+			<li class="next">λfunc.((func arg1) arg2)</li>
+		</ul>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Making pairs from two arguments</h2>
+		<ul>
+			<li>(λfunc.((func arg1) arg2) snd) =></li>
+			<li class="next">((snd arg1) arg2) => ... =></li>
+			<li class="next">arg2</li>
+		</ul>
+	</div></section>
+
+	<section class="slide cover"><div>
+		<h2 class="title">Booleans and conditions</h2>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Booleans</h2>
+		<p>condition ? expression : expression</p>
+		<p>def cond = λe1.λe2.λc.((c e1) e2)<br>
+def true = fst<br>
+def false = snd</p>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Booleans</h2>
+		<p>def not = λx.(((cond false) true) x)<br>
+def and = λx.λy.((x y) false)<br>
+def or = λx.λy.((x true) y)</p>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Booleans</h2>
+		<ul>
+			<li>(((cond y) false) x) == </li>
+			<li class="next">(((λe1.λe2.λc.((c e1) e2) y) false) x) => </li>
+			<li class="next">((λe2.λc.((c y) e2) false) x) => </li>
+			<li class="next">(λc.((c y) false) x) => </li>
+			<li class="next">((x y) false)</li>
+		</ul>
+	</div></section>
+
+	<section class="slide cover"><div>
+		<h2 class="title">Natural numbers and arithmetics</h2>
+	</div></section>
+
+
+
+	<section class="slide"><div>
 		<h2>Plain Text on Your Slides</h2>
 		<p>Lorem ipsum dolor sit amet, consectetur <a href="#4">adipisicing</a> elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, <em>quis nostrud</em> exercitation ullamco laboris <strong>nisi ut aliquip</strong> ex ea commodo consequat. Duis aute irure <i>dolor</i> in reprehenderit in voluptate velit esse cillum <b>dolore</b> eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in <code>&lt;culpa&gt;</code> qui officia deserunt mollit anim id est laborum.</p>
 	</div></section>
+	
 	<section class="slide"><div>
 		<h2>All Kind of Lists</h2>
 		<ol>
