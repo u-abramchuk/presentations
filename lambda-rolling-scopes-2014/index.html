@@ -56,8 +56,8 @@
 			</li>
 		</ol>
 	</div></section> -->
-	<section class="slide cover"><div>
-		<h2 class="title">λ-calculus</h2>
+	<section class="slide shout"><div>
+		<h2>λ-calculus</h2>
 	</div></section>
 	<section class="slide"><div>
 		<h2>λ-expressions</h2>
@@ -194,7 +194,7 @@ i.e. λx.(expr x) is equivalent to expr</p>
 	<section class="slide"><div>
 		<h2>Notation</h2>
 		<p>def name = function</p>
-		<p>def identity = λx.x<br>
+		<p>def id = λx.x<br>
 def self_apply = λs.(s s)<br>
 def apply = λfunc.λarg.(func arg)</p>
 	</div></section>
@@ -242,8 +242,8 @@ def apply = λfunc.λarg.(func arg)</p>
 		</ul>
 	</div></section>
 
-	<section class="slide cover"><div>
-		<h2 class="title">Booleans and conditions</h2>
+	<section class="slide shout"><div>
+		<h2>Booleans and conditions</h2>
 	</div></section>
 	<section class="slide"><div>
 		<h2>Booleans</h2>
@@ -269,9 +269,296 @@ def or = λx.λy.((x true) y)</p>
 		</ul>
 	</div></section>
 
-	<section class="slide cover"><div>
-		<h2 class="title">Natural numbers and arithmetics</h2>
+	<section class="slide shout"><div>
+		<h2>Natural numbers and arithmetics</h2>
 	</div></section>
+	<section class="slide"><div>
+		<h2>Natural numbers</h2>
+		<p>def zero = id<br>
+def succ = λn.λs.((s false) n)<br>
+def one = (succ zero)<br>
+def two = (succ one) == (succ (succ zero))<br>
+...</p>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Natural numbers</h2>
+		<p>def iszero = λn.(n fst)<br>
+def pred = λn.(((iszero n) zero) (n snd))</p>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Natural numbers</h2>
+		<ul>
+			<li>(iszero zero) == </li>
+			<li class="next">(zero fst) == </li>
+			<li class="next">(λx.x fst) => </li>
+			<li class="next">fst == </li>
+			<li class="next">true</li>
+		</ul>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Natural numbers</h2>
+		<ul>
+			<li>(iszero λs.((s false) num)) == </li>
+			<li class="next">(λn.(n fst) λs.((s false) num)) => </li>
+			<li class="next">(λs.((s false) num) fst) => </li>
+			<li class="next">((fst false) num) == </li>
+			<li class="next">((λf.λs.f false) num) => </li>
+			<li class="next">(λs.false num) =></li>
+			<li class="next">false </li>
+		</ul>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Notation</h2>
+		<p>function arg1 arg2 ... argN <br>
+instead of <br>
+(...((function arg1) arg2) ... argN)<br>
+<br>
+def pred = λn.((iszero n) n (n snd))</p>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Notation</h2>
+		<p>def names name = expression <br>
+instead of <br>
+def names = λname.expression<br>
+<br>
+def id x = x<br>
+def self_apply s = s s<br>
+def fst f = λs.f</p>
+	</div></section>	
+	<section class="slide"><div>
+		<h2>Notation</h2>
+		<p>if ... then ... else ... <br>
+instead of <br>
+cond true_choice false_choice condition<br>
+<br>
+def pred n = if iszero n <br>
+then zero <br>
+else n snd</p>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Recursion</h2>
+		<p>def add x y = <br>
+if zero y<br>
+then x<br>
+else add (succ x) (pred y)<br>
+<br>
+Replacement will never terminate!</p>
+	</div></section>
+		<section class="slide"><div>
+		<h2>Recursion</h2>
+		<p>def rec f = λs.(f (s s)) λs.(f (s s)) - Y combinator<br>
+			<br>
+def add1 f x y = <br>
+if iszero y<br>
+then x<br>
+else f (succ x) (pred y)<br>
+<br>
+def add = rec add1</p>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Notation</h2>
+		<p>rec name = expression<br>
+<br>
+rec add x y = <br>
+if iszero y<br>
+then x<br>
+else add (succ x) (pred y)</p>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Arithmetic operations</h2>
+		<p>rec mult x y = <br>
+if iszero y<br>
+then zero<br>
+else add x (mult x (pred y))</p>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Arithmetic operations</h2>
+		<p>rec sub x y = <br>
+if iszero y<br>
+then zero<br>
+else sub (pred x) (pred y)<br>
+<br>
+def abs_diff = add (sub x y) (sub y x)<br>
+def equal x y = iszero (abs_diff x y)<br></p>
+	</div></section>
+
+	<section class="slide shout"><div>
+		<h2>Types</h2>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Representing typed objects</h2>
+		<p>def make_obj type value = λs.(s type value)<br>
+def type obj = obj fst<br>
+def value obj = obj snd<br>
+def istype t obj = equal (type obj) t</p>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Errors</h2>
+		<p>def error_type = zero<br>
+def MAKE_ERROR = make_obj error_type<br>
+def ERROR = MAKE_ERROR error_type<br>
+def iserror = istype error_type</p>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Booleans</h2>
+		<p>def bool_type = one<br>
+def MAKE_BOOL = make_obj bool_type<br>
+def TRUE = MAKE_BOOL true<br>
+def FALSE = MAKE_BOOL false<br>
+def isbool = istype bool_type<br>
+def BOOL_ERROR = MAKE_ERROR bool_type</p>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Booleans</h2>
+		<p>def NOT X = <br>
+if isbool X<br>
+then MAKE_BOOL (not (value X))<br>
+else BOOL_ERROR</p>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Booleans</h2>
+		<p>def COND E1 E2 C = <br>
+if isbool C<br>
+then<br>
+if value C<br>
+then E1<br>
+else E2<br>
+else BOOL_ERROR</p>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Notation</h2>
+		<p>IF condition THEN expr1 else expr2<br>
+instead of<br>
+COND expr1 expr2 condition</p>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Booleans</h2>
+		<p>def NOT X = <br>
+IF X<br>
+THEN FALSE<br>
+ELSE TRUE</p>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Notation</h2>
+		<p>def name TRUE = expr1<br>
+or name FALSE = expr2<br>
+instead of<br>
+def name bound_variable = <br>
+IF bound_variable<br>
+THEN expr1<br>
+ELSE expr2</p>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Notation</h2>
+		<p>def NOT TRUE = FALSE<br>
+or NOT FALSE = TRUE</p>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Natural numbers</h2>
+		<p>def numb_type = two<br>
+def MAKE_NUMB = make_obj numb_type<br>
+def NUMB_ERROR = MAKE_ERROR numb_type<br>
+def ISNUMB N = MAKE_BOOL (isnumb N)</p>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Natural numbers</h2>
+		<p>def SUCC N = <br>
+if isnumb N<br>
+then MAKE_NUMB (succ (value N))<br>
+else NUMB_ERROR</p>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Natural numbers</h2>
+		<p>def PRED N = <br>
+if isnumb N<br>
+then<br>
+if iszero (value N)<br>
+then NUMB_ERROR<br>
+else MAKE_NUMB ((value N) select_second)<br>
+else NUMB_ERROR</p>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Natural numbers</h2>
+		<p>def ISZERO N = <br>
+if isnumb N<br>
+then MAKE_BOOL (iszero (value N))<br>
+else NUMB_ERROR</p>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Arithmetic operations</h2>
+		<p>def + X Y = <br>
+IF AND (ISNUMB X) (ISNUMB Y)<br>
+THEN ADD X Y<br>
+ELSE NUMB_ERROR<br>
+rec ADD X Y = <br>
+IF ISZERO Y<br>
+THEN X<br>
+ELSE ADD1 (SUCC X) (PRED Y)</p>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Notation</h2>
+		<p>rec name 0 = expr1<br>
+or name (SUCC bound_variable) = <br>
+expr2 using bound_variable<br>
+instead of<br>
+rec name bound_variable = <br>
+IF ISZERO bound_variable<br>
+THEN expr1<br>
+ELSE expr2 using (PRED bound_variable)</p>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Notation</h2>
+		<p>rec POWER X 0 = 1<br>
+or POWER X (SUCC Y) = * X (POWER X Y)</p>
+	</div></section>
+
+	<section class="slide shout"><div>
+		<h2>Lists</h2>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Lists</h2>
+		<p>def list_type = three<br>
+def islist = istype list_type<br>
+def ISLIST L = MAKE_BOOL (islist L)<br>
+def MAKE_LIST = make_obj list_type</p>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Lists</h2>
+		<p>def CONS H T = <br>
+if islist T<br>
+then MAKE_LIST λs.(s H T)<br>
+else LIST_ERROR<br>
+def NIL = MAKE_LIST λs.(s LIST_ERROR LIST_ERROR)</p>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Lists</h2>
+		<p>def HEAD L =<br> 
+is islist L<br>
+then (value L) fst<br>
+else LIST_ERROR<br>
+def TAIL L = <br>
+if islist L<br>
+then (value L) snd<br>
+else LIST_ERROR</p>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Lists</h2>
+		<p>def ISNIL = <br>
+if islist L<br>
+then MAKE_BOOL (iserror (HEAD L))<br>
+else LIST_ERROR</p>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Notation</h2>
+		<p>rec name [] = expr1<br>
+or name (head::tail) = expr2 using head and tail<br>
+instead of<br>
+rec name bound_variable = <br>
+IF ISNIL bound_variable<br>
+THEN expr1<br>
+ELSE expr2 using (HEAD bound_variable) and (TAIL bound_variable)</p>
+	</div></section>
+
 
 
 
