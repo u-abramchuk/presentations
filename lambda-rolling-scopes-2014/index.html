@@ -341,77 +341,66 @@ def pred = λn.((iszero n) zero) (n snd)</code>
 	</div></section>
 	<section class="slide"><div>
 		<h2>Notation</h2>
-		<p>function arg1 arg2 ... argN <br>
-instead of <br>
-(...((function arg1) arg2) ... argN)<br>
-<br>
-def pred = λn.((iszero n) n (n snd))</p>
+		<pre class="inline"><code>function arg1 arg2 ... argN</code></pre><br>
+		instead of
+		<pre><code>(...((function arg1) arg2) ... argN)</code></pre>
+		<pre class="inline"><code>def pred = λn.(iszero n) zero (n snd)</code></pre><br>
+		instead of
+		<pre><code>def pred = λn.((iszero n) zero) (n snd)</code></pre>
 	</div></section>
 	<section class="slide"><div>
 		<h2>Notation</h2>
-		<p>def names name = expression <br>
-instead of <br>
-def names = λname.expression<br>
-<br>
-def id x = x<br>
-def self_apply s = s s<br>
-def fst f = λs.f</p>
+		<pre class="inline"><code>def names name = expression</code></pre><br>
+		instead of
+		<pre><code>def names = λname.expression</code></pre>
+		<pre><code>def id x = x
+def self_apply s = s s
+def fst f = λs.f</code></pre>
 	</div></section>	
 	<section class="slide"><div>
 		<h2>Notation</h2>
-		<p>if ... then ... else ... <br>
-instead of <br>
-cond true_choice false_choice condition<br>
-<br>
-def pred n = if iszero n <br>
-then zero <br>
-else n snd</p>
+		<pre class="inline"><code>if ... then ... else ...</code></pre><br>
+		instead of
+		<pre><code>cond true_choice false_choice condition</code></pre>
+		<pre><code>def pred n = if iszero n
+				then zero
+				else n snd</code></pre>
 	</div></section>
 	<section class="slide"><div>
-		<h2>Recursion</h2>
-		<p>def add x y = <br>
-if zero y<br>
-then x<br>
-else add (succ x) (pred y)<br>
-<br>
-Replacement will never terminate!</p>
+		<h2>Addition</h2>
+		<pre><code>def add x y = if iszero y
+				 then x
+				 else add (succ x) (pred y)
+<mark class="important">//Doesn't work this way! 
+//All names in expressions must be replaced by their 
+//definitions before the expression is evaluated!
+//Inner add will be substituted infinitely...</mark></code></pre>
 	</div></section>
 		<section class="slide"><div>
 		<h2>Recursion</h2>
-		<p>def rec f = λs.(f (s s)) λs.(f (s s)) - Y combinator<br>
-			<br>
-def add1 f x y = <br>
-if iszero y<br>
-then x<br>
-else f (succ x) (pred y)<br>
-<br>
-def add = rec add1</p>
+		<pre class="inline"><code>def rec f = (λs.f (s s)) (λs.f (s s))<mark class="important">//Y combinator</mark></code></pre><br>
+		<pre><code>def add1 f x y = if iszero y
+					then x
+					else f (succ x) (pred y)
+def add = rec add1</code></pre>
 	</div></section>
 	<section class="slide"><div>
 		<h2>Notation</h2>
-		<p>rec name = expression<br>
-<br>
-rec add x y = <br>
-if iszero y<br>
-then x<br>
-else add (succ x) (pred y)</p>
+		<pre><code>rec name = expression</code></pre>
+		<pre><code>rec add x y = if iszero y
+				 then x
+				 else add (succ x) (pred y)
+rec mult x y = if iszero y
+				  then zero
+				  else add x (mult x (pred y))</code></pre>
 	</div></section>
 	<section class="slide"><div>
 		<h2>Arithmetic operations</h2>
-		<p>rec mult x y = <br>
-if iszero y<br>
-then zero<br>
-else add x (mult x (pred y))</p>
-	</div></section>
-	<section class="slide"><div>
-		<h2>Arithmetic operations</h2>
-		<p>rec sub x y = <br>
-if iszero y<br>
-then zero<br>
-else sub (pred x) (pred y)<br>
-<br>
-def abs_diff = add (sub x y) (sub y x)<br>
-def equal x y = iszero (abs_diff x y)<br></p>
+		<pre><code>rec sub x y = if iszero y
+				 then zero
+				 else sub (pred x) (pred y)
+def abs_diff = add (sub x y) (sub y x)
+def equal x y = iszero (abs_diff x y)</code></pre>
 	</div></section>
 
 	<section class="slide shout"><div>
