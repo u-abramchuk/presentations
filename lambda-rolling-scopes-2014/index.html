@@ -15,7 +15,7 @@
 	<section class="slide cover" id="Cover"><div>
 		<h2>Introduction<br>to λ-calculus</h2>
 		<p>Uladzimir Abramchuk</p>
-		<img src="pictures/cover.jpg" alt="">
+		<img src="pictures/cover.jpg" alt="Introduction to lambda-calculus">
 		<!--
 			To apply styles to the certain slides
 			set slide ID to get needed elements
@@ -42,22 +42,18 @@
 			}
 		</style>
 	</div></section>
-	<!-- <section class="slide"><div>
-		<h2>Contents</h2>
-		<ol>
-			<li>λ-calculus</li>
-			<li>Growing functional language
-				<ul>
-					<li>Booleans and conditions</li>
-					<li>Natural numbers and arithmetics</li>
-					<li>Types</li>
-					<li>Lists</li>
-				</ul>
-			</li>
-		</ol>
-	</div></section> -->
 	<section class="slide shout"><div>
 		<h2>λ-calculus</h2>
+	</div></section>
+	<section class="slide cover"><div>
+		<img src="pictures/alonzo_church.jpg" alt="Alonzo Church" id="church">
+		<style type="text/css">
+			#church {
+				position: relative;
+			 	margin-top: -100px;
+			 	width: 800px;
+			}
+		</style>
 	</div></section>
 	<section class="slide"><div>
 		<h2>λ-expressions</h2>
@@ -135,47 +131,25 @@
 			</tr>
 		</table>
 	</div></section>
-	<section class="slide"><div>
-		<h2>Free variables</h2>
-		<ol class="definition">
-			<li>x in x</li>
-			<li>x in λx1.t if
-				<ul>
-					<li>x is not x1 and</li>
-					<li>x is free in t</li>
-				</ul>
-			</li>
-			<li>x in (t1 t2) if
-				<ul>
-					<li>x is free in t1 or</li>
-					<li>x is free in t2</li>
-				</ul>
-			</li>
-		</ol>
-	</div></section>
-	<section class="slide"><div>
-		<h2>Bound variables</h2>
-		<ol class="definition">
-			<li>x in λx1.t if
-				<ul>
-					<li>x is x1 or</li>
-					<li>x is bound in t</li>
-				</ul>
-			</li>
-			<li>x in (t1 t2) if
-				<ul>
-					<li>x is bound in t1 or</li>
-					<li>x is bound in t2</li>
-				</ul>
-			</li>
-		</ol>
-	</div></section>
-	<section class="slide"><div>
-		<h2>Free and bound variables</h2>
-		<pre>
-			<code>λfunc.λarg.(func arg)</code>
-			<code>λx.λy.(x (y λx.x))</code>
-		</pre>
+	<section class="slide" id="scope"><div>
+		<h2>Scope</h2>
+		<ul>
+			<li><span class="val">x</span> is <span class="emph">bound</span> when it occurs in the body <span class="val">t</span> of an abstraction <span class="val">λx.t</span></li>
+			<li><span class="val">x</span> is <span class="emph">free</span> if it is not bound by any enclosing abstraction on <span class="val">x</span></li>
+		</ul>
+		<ul>
+			<li><span class="val">x</span> is free in <span class="val">x y</span> and <span class="val">λy.x y</span></li>
+			<li><span class="val">x</span> is bound in <span class="val">λx.x</span> and <span class="val">λz.λx.λy.x (y z)</span></li>
+			<li>in <span class="val">(λx.x) x</span>, the first occurence of <span class="val">x</span> is bound and the second is free</li>
+		</ul>
+		<style>
+			#scope li .emph {
+				font-style: italic; 
+			}
+			#scope li .val {
+				font-weight: bold;
+			}
+		</style>
 	</div></section>
 	<section class="slide"><div>
 		<h2>Normal order β reduction</h2>
