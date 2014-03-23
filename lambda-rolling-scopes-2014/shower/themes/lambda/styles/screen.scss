@@ -162,12 +162,6 @@ a {
 				color:#AAA;
 				text-align:right;
 				}
-			pre {
-				display: inline;
-				code {
-					display: inline;
-				}
-			}
 		}
 		ol,
 		ul {
@@ -205,6 +199,12 @@ a {
 		padding:3px 0 0;
 		counter-reset:code;
 		white-space:normal;
+		&.inline {
+			display: inline;
+			code {
+				display: inline;
+			}
+		}
 		code {
 			display:block;
 			padding:0;
@@ -220,6 +220,9 @@ a {
 				}
 			&:only-child:before {
 				content:'';
+				}
+			.redex {
+				text-decoration: underline;
 				}
 			}
 		// Mark

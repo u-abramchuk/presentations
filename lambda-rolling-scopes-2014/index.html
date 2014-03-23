@@ -76,7 +76,7 @@
 			</tr>
 			<tr>
 				<td>id</td>
-				<td>λx.x</td>
+				<td><pre class="inline"><code>λx.x</code></pre></td>
 				<td>
 					<pre>
 						<code>function(x) { 
@@ -97,7 +97,7 @@
 			</tr>
 			<tr>
 				<td>apply</td>
-				<td>λf.λx.f x</td>
+				<td><pre class="inline"><code>λf.λx.f x</code></pre></td>
 				<td>
 					<pre>
 						<code>function(f) { 
@@ -120,7 +120,7 @@
 			</tr>
 			<tr>
 				<td>self_apply</td>
-				<td>λs.s s</td>
+				<td><pre class="inline"><code>λs.s s</code></pre></td>
 				<td>
 					<pre>
 						<code>function(s) { 
@@ -134,14 +134,14 @@
 	<section class="slide"><div>
 		<h2>Scope</h2>
 		<ul>
-			<li><strong>x</strong> is <em>bound</em> when it occurs in the body <strong>t</strong> of an abstraction <pre><code>λx.t</code></pre></li>
+			<li><strong>x</strong> is <em>bound</em> when it occurs in the body <strong>t</strong> of an abstraction <pre class="inline"><code>λx.t</code></pre></li>
 			<li><strong>x</strong> is <em>free</em> if it is not bound by any enclosing abstraction on <strong>x</strong></li>
 			<li>a term with no free variables is said to be <em>closed</em>; closed terms are also called <em>combinators</em></li>
 		</ul>
 		<ul>
-			<li><strong>x</strong> is free in <pre><code>x y</code></pre> and <pre><code>λy.x y</code></pre></li>
-			<li><strong>x</strong> is bound in <pre><code>λx.x</code></pre> and <pre><code>λz.λx.λy.x (y z)</code></pre></li>
-			<li>in <pre><code>(λx.x) x</code></pre>, the first occurence of <strong>x</strong> is bound and the second is free</li>
+			<li><strong>x</strong> is free in <pre class="inline"><code>x y</code></pre> and <pre class="inline"><code>λy.x y</code></pre></li>
+			<li><strong>x</strong> is bound in <pre class="inline"><code>λx.x</code></pre> and <pre class="inline"><code>λz.λx.λy.x (y z)</code></pre></li>
+			<li>in <pre class="inline"><code>(λx.x) x</code></pre>, the first occurence of <strong>x</strong> is bound and the second is free</li>
 		</ul>
 	</div></section>
 	<section class="slide"><div>
@@ -152,18 +152,18 @@
 			</pre>
 		</p>
 		<ul>
-			<li><pre><code>[x := t2]t</code></pre> means "the term obtained by replacing all free occurences of x in t by t2"</li>
-			<li>a term of form <pre><code>(λx.t) t2</code></pre> is called a redex ("reducible expression")</li>
-			<li><pre><code>(λx.x) y</code></pre> evaluates to <pre><code>y</code></pre></li>
+			<li><pre class="inline"><code>[x := t2]t</code></pre> means "the term obtained by replacing all free occurences of x in t by t2"</li>
+			<li>a term of form <pre class="inline"><code>(λx.t) t2</code></pre> is called a redex ("reducible expression")</li>
+			<li><pre class="inline"><code>(λx.x) y</code></pre> evaluates to <pre class="inline"><code>y</code></pre></li>
 		</ul>
 	</div></section>
 	<section class="slide"><div>
 		<h2>Normal order β reduction</h2>
 		<p>the leftmost, outermost redex is always reduced first</p>
 		<pre>
-			<code>id (id (λz.id z)) =></code>
-			<code class="next">id (λz.id z) =></code>
-			<code class="next">λz.id z =></code>
+			<code><span class="redex">id (id (λz.id z))</span> =></code>
+			<code class="next"><span class="redex">id (λz.id z)</span> =></code>
+			<code class="next">λz.<span class="redex">id z</span> =></code>
 			<code class="next">λz.z</code>
 		</pre>
 	</div></section>
@@ -171,8 +171,8 @@
 		<h2>Applicative order β reduction</h2>
 		<p>only outermost redexes are reduced <em>and</em> a redex is reduced only  when its right-hand side has already been reduced to a <em>value</em></p>
 		<pre>
-			<code>id (id (λz.id z)) =></code>
-			<code class="next">id (λz.id z) =></code>
+			<code>id <span class="redex">(id (λz.id z))</span> =></code>
+			<code class="next"><span class="redex">id (λz.id z)</span> =></code>
 			<code class="next">λz.id z</code>
 		</pre>
 	</div></section>
@@ -189,7 +189,7 @@
 	<section class="slide"><div>
 		<h2>Evaluation termination</h2>
 		<p>Not all expression evaluations terminate:</p>
-		<pre><code>(λs.(s s) λs.(s s))</code></pre>
+		<pre><code>(λs.s s) (λs.s s)</code></pre>
 		<p>There is no way of telling whether or not the evaluation of an expression will ever terminate!</p>
 	</div></section>
 	<section class="slide"><div>
@@ -212,24 +212,24 @@
 	</div></section>
 	<section class="slide"><div>
 		<h2>α conversion</h2>
-		<p><pre style="display: inline;"><code style="display: inline;">(λx.λy.(x y) y) => λy.(y y)</code></pre> - wrong!</p>
+		<p><pre class="inline"><code>(λx.λy.(x y) y) => λy.(y y)</code></pre> - wrong!</p>
 		<pre>
-			<code>(λx.λy.(x y) y) ==</code>
-			<code class="next">(λx.λz.(x z) y) =></code>
-			<code class="next">λz.(y z)</code>
+			<code>λx.λy.(x y) y ==</code>
+			<code class="next">λx.λz.(x z) y =></code>
+			<code class="next">λz.y z</code>
 		</pre>
 	</div></section>
 	<section class="slide"><div>
 		<h2>η reduction</h2>
-		<pre><code>(λx.(expr x) arg) => expr arg</code></pre>
-		<p>i.e. <pre style="display: inline;"><code style="display: inline">λx.(expr x)</code></pre> is equivalent to expr</p>
+		<pre><code>λx.(expr x) arg => expr arg</code></pre>
+		<p>i.e. <pre class="inline"><code>λx.expr x</code></pre> is equivalent to <pre class="inline"><code>expr</code></pre></p>
 	</div></section>
 	<section class="slide"><div>
 		<h2>Notation</h2>
 		<pre><code>def name = function</code></pre>
 		<pre><code>def id = λx.x
-def self_apply = λs.(s s)
-def apply = λfunc.λarg.(func arg)</code></pre>
+def self_apply = λs.s s
+def apply = λfunc.λarg.func arg</code></pre>
 	</div></section>
 	<section class="slide"><div>
 		<h2>Notation</h2>
@@ -244,27 +244,27 @@ def apply = λfunc.λarg.(func arg)</code></pre>
 		<pre><code>def fst = λf.λs.f
 def snd = λf.λs.s</code></pre>
 		<pre>
-			<code>((fst arg1) arg2) == </code>
-			<code class="next">((λf.λs.f arg1) arg2) => </code>
-			<code class="next">(λs.arg1 arg2) => </code>
+			<code>(fst arg1) arg2 == </code>
+			<code class="next">(λf.λs.f arg1) arg2 => </code>
+			<code class="next">λs.arg1 arg2 => </code>
 			<code class="next">arg1</code>
 		</pre>
 	</div></section>
 	<section class="slide"><div>
 		<h2>Making pairs from two arguments</h2>
-		<pre><code>def pair = λf.λs.λfunc.((func f) s)</code></pre>
+		<pre><code>def pair = λf.λs.λfunc.(func f) s</code></pre>
 		<pre>
-			<code>((pair arg1) arg2) == </code>
-			<code class="next">((λf.λs.λfunc.((func f) s) arg1) arg2) => </code>
-			<code class="next">(λs.λfunc.((func arg1) s) arg2) => </code>
-			<code class="next">λfunc.((func arg1) arg2)</code>
+			<code>(pair arg1) arg2 == </code>
+			<code class="next">((λf.λs.λfunc.(func f) s) arg1) arg2 => </code>
+			<code class="next">(λs.λfunc.(func arg1) s) arg2 => </code>
+			<code class="next">λfunc.(func arg1) arg2</code>
 		</pre>
 	</div></section>
 	<section class="slide"><div>
 		<h2>Selecting second argument from pair</h2>
 		<pre>
-			<code>(λfunc.((func arg1) arg2) snd) =></code>
-			<code class="next">((snd arg1) arg2) => ... =></code>
+			<code>(λfunc.(func arg1) arg2) snd =></code>
+			<code class="next">(snd arg1) arg2 => ... =></code>
 			<code class="next">arg2</code></pre>
 	</div></section>
 
@@ -275,7 +275,7 @@ def snd = λf.λs.s</code></pre>
 		<h2>Booleans</h2>
 		<p>condition ? expression : expression</p>
 		<pre>
-			<code>def cond = λe1.λe2.λc.((c e1) e2)
+			<code>def cond = λe1.λe2.λc.(c e1) e2
 def true = fst
 def false = snd</code>
 		</pre>
@@ -283,19 +283,19 @@ def false = snd</code>
 	<section class="slide"><div>
 		<h2>Booleans</h2>
 		<pre>
-			<code>def not = λx.(((cond false) true) x)
-def and = λx.λy.((x y) false)
-def or = λx.λy.((x true) y)</code>
+			<code>def not = λx.((cond false) true) x
+def and = λx.λy.(x y) false
+def or = λx.λy.(x true) y</code>
 		</pre>
 	</div></section>
 	<section class="slide"><div>
 		<h2>Booleans</h2>
 		<pre>
-			<code>(((cond y) false) x) == </code>
-			<code class="next">(((λe1.λe2.λc.((c e1) e2) y) false) x) => </code>
-			<code class="next">((λe2.λc.((c y) e2) false) x) => </code>
-			<code class="next">(λc.((c y) false) x) => </code>
-			<code class="next">((x y) false)</code>
+			<code>((cond y) false) x == </code>
+			<code class="next">((λe1.λe2.λc.((c e1) e2) y) false) x => </code>
+			<code class="next">(λe2.λc.((c y) e2) false) x => </code>
+			<code class="next">λc.((c y) false) x => </code>
+			<code class="next">(x y) false</code>
 		</pre>
 	</div></section>
 
@@ -304,38 +304,40 @@ def or = λx.λy.((x true) y)</code>
 	</div></section>
 	<section class="slide"><div>
 		<h2>Natural numbers</h2>
-		<p>def zero = id<br>
-def succ = λn.λs.((s false) n)<br>
-def one = (succ zero)<br>
-def two = (succ one) == (succ (succ zero))<br>
-...</p>
+		<pre>
+			<code>def zero = id
+def succ = λn.λs.(s false) n
+def one = succ zero
+def two = succ one == succ (succ zero)
+...</code>
+		</pre>
 	</div></section>
 	<section class="slide"><div>
 		<h2>Natural numbers</h2>
-		<p>def iszero = λn.(n fst)<br>
-def pred = λn.(((iszero n) zero) (n snd))</p>
+		<pre>
+			<code>def iszero = λn.n fst
+def pred = λn.((iszero n) zero) (n snd)</code>
+		</pre>
 	</div></section>
 	<section class="slide"><div>
 		<h2>Natural numbers</h2>
-		<ul>
-			<li>(iszero zero) == </li>
-			<li class="next">(zero fst) == </li>
-			<li class="next">(λx.x fst) => </li>
-			<li class="next">fst == </li>
-			<li class="next">true</li>
-		</ul>
+		<pre>
+			<code>iszero zero => </code>
+			<code class="next">zero fst == </code>
+			<code class="next">id fst => </code>
+			<code class="next">fst == </code>
+			<code class="next">true</code>
+		</pre>
 	</div></section>
 	<section class="slide"><div>
 		<h2>Natural numbers</h2>
-		<ul>
-			<li>(iszero λs.((s false) num)) == </li>
-			<li class="next">(λn.(n fst) λs.((s false) num)) => </li>
-			<li class="next">(λs.((s false) num) fst) => </li>
-			<li class="next">((fst false) num) == </li>
-			<li class="next">((λf.λs.f false) num) => </li>
-			<li class="next">(λs.false num) =></li>
-			<li class="next">false </li>
-		</ul>
+		<pre>
+			<code>iszero (λs.(s false) num) == </code>
+			<code class="next">(λn.n fst) (λs.(s false) num) => </code>
+			<code class="next">(λs.(s false) num) fst => </code>
+			<code class="next">(fst false) num => ... => </code>
+			<code class="next">false </code>
+		</pre>
 	</div></section>
 	<section class="slide"><div>
 		<h2>Notation</h2>
