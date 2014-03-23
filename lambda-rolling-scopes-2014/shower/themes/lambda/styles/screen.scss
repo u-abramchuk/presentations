@@ -162,7 +162,13 @@ a {
 				color:#AAA;
 				text-align:right;
 				}
+			pre {
+				display: inline;
+				code {
+					display: inline;
+				}
 			}
+		}
 		ol,
 		ul {
 			margin:0 0 0 2em;

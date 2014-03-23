@@ -131,53 +131,60 @@
 			</tr>
 		</table>
 	</div></section>
-	<section class="slide" id="scope"><div>
+	<section class="slide"><div>
 		<h2>Scope</h2>
 		<ul>
-			<li><span class="val">x</span> is <span class="emph">bound</span> when it occurs in the body <span class="val">t</span> of an abstraction <span class="val">λx.t</span></li>
-			<li><span class="val">x</span> is <span class="emph">free</span> if it is not bound by any enclosing abstraction on <span class="val">x</span></li>
+			<li><strong>x</strong> is <em>bound</em> when it occurs in the body <strong>t</strong> of an abstraction <pre><code>λx.t</code></pre></li>
+			<li><strong>x</strong> is <em>free</em> if it is not bound by any enclosing abstraction on <strong>x</strong></li>
+			<li>a term with no free variables is said to be <em>closed</em>; closed terms are also called <em>combinators</em></li>
 		</ul>
 		<ul>
-			<li><span class="val">x</span> is free in <span class="val">x y</span> and <span class="val">λy.x y</span></li>
-			<li><span class="val">x</span> is bound in <span class="val">λx.x</span> and <span class="val">λz.λx.λy.x (y z)</span></li>
-			<li>in <span class="val">(λx.x) x</span>, the first occurence of <span class="val">x</span> is bound and the second is free</li>
+			<li><strong>x</strong> is free in <pre><code>x y</code></pre> and <pre><code>λy.x y</code></pre></li>
+			<li><strong>x</strong> is bound in <pre><code>λx.x</code></pre> and <pre><code>λz.λx.λy.x (y z)</code></pre></li>
+			<li>in <pre><code>(λx.x) x</code></pre>, the first occurence of <strong>x</strong> is bound and the second is free</li>
 		</ul>
-		<style>
-			#scope li .emph {
-				font-style: italic; 
-			}
-			#scope li .val {
-				font-weight: bold;
-			}
-		</style>
+	</div></section>
+	<section class="slide"><div>
+		<h2>β reduction</h2>
+		<p>
+			<pre>
+				<code>(λx.t) t2 -> [x := t2]t</code>
+			</pre>
+		</p>
+		<ul>
+			<li><pre><code>[x := t2]t</code></pre> means "the term obtained by replacing all free occurences of x in t by t2"</li>
+			<li>a term of form <pre><code>(λx.t) t2</code></pre> is called a redex ("reducible expression")</li>
+			<li><pre><code>(λx.x) y</code></pre> evaluates to <pre><code>y</code></pre></li>
+		</ul>
 	</div></section>
 	<section class="slide"><div>
 		<h2>Normal order β reduction</h2>
-		<p>(function argument)</p>
-		<ol>
-			<li>normal order β reduce function to function_value</li>
-			<li>if function_value is λname.body then replace all free occurrences of name in body with argument and normal order β reduce the new body</li>
-			<li>if function_value is not a function then normal order β reduce argument to argument_value and return (function_value argument_value)</li>
-		</ol>
-	</div></section>
-	<section class="slide"><div>
-		<h2>Normal order β reduction</h2>
+		<p>the leftmost, outermost redex is always reduced first</p>
 		<pre>
-			<code>((λfunc.λarg.(func arg) λx.x) λs.(s s)) =></code>
-			<code class="next">(λarg.(λx.x arg) λs.(s s)) =></code>
-			<code class="next">(λx.x λs.(s s)) =></code>
-			<code class="next">λs.(s s)</code>
+			<code>id (id (λz.id z)) =></code>
+			<code class="next">id (λz.id z) =></code>
+			<code class="next">λz.id z =></code>
+			<code class="next">λz.z</code>
 		</pre>
 	</div></section>
 	<section class="slide"><div>
 		<h2>Applicative order β reduction</h2>
-		<p>(function argument)</p>
-		<ol>
-			<li>applicative order β reduce argument to argument value</li>
-			<li>applicative order β reduce function to function_value</li>
-			<li>if function_value is λname.body then replace all free occurrences of name in body with argument_value and applicative order β reduce the new body</li>
-			<li>if function_value is not a function then return (function_value argument_value)</li>
-		</ol>
+		<p>only outermost redexes are reduced <em>and</em> a redex is reduced only  when its right-hand side has already been reduced to a <em>value</em></p>
+		<pre>
+			<code>id (id (λz.id z)) =></code>
+			<code class="next">id (λz.id z) =></code>
+			<code class="next">λz.id z</code>
+		</pre>
+	</div></section>
+	<section class="slide cover" id="yodawg"><div>
+		<img src="pictures/yodawg_lambda.png" alt="Evaluation termination">
+		<style type="text/css">
+			#yodawg img {
+				position: relative;
+				width: 800px;
+				margin-top: -50px;
+			}
+		</style>
 	</div></section>
 	<section class="slide"><div>
 		<h2>Evaluation termination</h2>
@@ -205,14 +212,7 @@
 	</div></section>
 	<section class="slide"><div>
 		<h2>α conversion</h2>
-		<p>To rename name1 as name2 in λname1.body<br>
-if name2 is not free in λname1.body<br>
-then replace all free occurrences of name1 in body with name2<br>
-and replace name1 in λname1</p>
-	</div></section>
-	<section class="slide"><div>
-		<h2>α conversion</h2>
-		<pre><code>(λx.λy.(x y) y) => λy.(y y) - wrong!</code></pre>
+		<p><pre style="display: inline;"><code style="display: inline;">(λx.λy.(x y) y) => λy.(y y)</code></pre> - wrong!</p>
 		<pre>
 			<code>(λx.λy.(x y) y) ==</code>
 			<code class="next">(λx.λz.(x z) y) =></code>
@@ -222,14 +222,14 @@ and replace name1 in λname1</p>
 	<section class="slide"><div>
 		<h2>η reduction</h2>
 		<pre><code>(λx.(expr x) arg) => expr arg</code></pre>
-		<p>i.e. λx.(expr x) is equivalent to expr</p>
+		<p>i.e. <pre style="display: inline;"><code style="display: inline">λx.(expr x)</code></pre> is equivalent to expr</p>
 	</div></section>
 	<section class="slide"><div>
 		<h2>Notation</h2>
-		<p>def name = function</p>
-		<p>def id = λx.x<br>
-def self_apply = λs.(s s)<br>
-def apply = λfunc.λarg.(func arg)</p>
+		<pre><code>def name = function</code></pre>
+		<pre><code>def id = λx.x
+def self_apply = λs.(s s)
+def apply = λfunc.λarg.(func arg)</code></pre>
 	</div></section>
 	<section class="slide"><div>
 		<h2>Notation</h2>
@@ -237,42 +237,35 @@ def apply = λfunc.λarg.(func arg)</p>
 => normal order β reduction<br>
 => ... => multiple normal order β reduction<br>
 -> applicative order β reduction<br>
--> ... -> multiple normal order β reduction</p>
+-> ... -> multiple applicative order β reduction</p>
 	</div></section>
 	<section class="slide"><div>
 		<h2>Selecting one of two arguments</h2>
-		<p>def fst = λf.λs.f</p>
-		<p>def snd = λf.λs.s</p>
-	</div></section>
-	<section class="slide"><div>
-		<h2>Selecting one of two arguments</h2>
-		<ul>
-			<li>((fst arg1) arg2) == </li>
-			<li class="next">((λf.λs.f arg1) arg2) => </li>
-			<li class="next">(λs.arg1 arg2) => </li>
-			<li class="next">arg1</li>
-		</ul>
+		<pre><code>def fst = λf.λs.f
+def snd = λf.λs.s</code></pre>
+		<pre>
+			<code>((fst arg1) arg2) == </code>
+			<code class="next">((λf.λs.f arg1) arg2) => </code>
+			<code class="next">(λs.arg1 arg2) => </code>
+			<code class="next">arg1</code>
+		</pre>
 	</div></section>
 	<section class="slide"><div>
 		<h2>Making pairs from two arguments</h2>
-		<p>def pair = λf.λs.λfunc.((func f) s)</p>
+		<pre><code>def pair = λf.λs.λfunc.((func f) s)</code></pre>
+		<pre>
+			<code>((pair arg1) arg2) == </code>
+			<code class="next">((λf.λs.λfunc.((func f) s) arg1) arg2) => </code>
+			<code class="next">(λs.λfunc.((func arg1) s) arg2) => </code>
+			<code class="next">λfunc.((func arg1) arg2)</code>
+		</pre>
 	</div></section>
 	<section class="slide"><div>
-		<h2>Making pairs from two arguments</h2>
-		<ul>
-			<li>((pair arg1) arg2) == </li>
-			<li class="next">((λf.λs.λfunc.((func f) s) arg1) arg2) => </li>
-			<li class="next">(λs.λfunc.((func arg1) s) arg2) => </li>
-			<li class="next">λfunc.((func arg1) arg2)</li>
-		</ul>
-	</div></section>
-	<section class="slide"><div>
-		<h2>Making pairs from two arguments</h2>
-		<ul>
-			<li>(λfunc.((func arg1) arg2) snd) =></li>
-			<li class="next">((snd arg1) arg2) => ... =></li>
-			<li class="next">arg2</li>
-		</ul>
+		<h2>Selecting second argument from pair</h2>
+		<pre>
+			<code>(λfunc.((func arg1) arg2) snd) =></code>
+			<code class="next">((snd arg1) arg2) => ... =></code>
+			<code class="next">arg2</code></pre>
 	</div></section>
 
 	<section class="slide shout"><div>

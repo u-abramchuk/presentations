@@ -203,6 +203,10 @@ a {
       width: 2em;
       color: #AAA;
       text-align: right; }
+    .slide ol li pre, .slide ul li pre {
+      display: inline; }
+      .slide ol li pre code, .slide ul li pre code {
+        display: inline; }
   .slide ol ol,
   .slide ol ul, .slide ul ol,
   .slide ul ul {
