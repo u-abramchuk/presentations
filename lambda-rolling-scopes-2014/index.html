@@ -274,25 +274,29 @@ def snd = λf.λs.s</code></pre>
 	<section class="slide"><div>
 		<h2>Booleans</h2>
 		<p>condition ? expression : expression</p>
-		<p>def cond = λe1.λe2.λc.((c e1) e2)<br>
-def true = fst<br>
-def false = snd</p>
+		<pre>
+			<code>def cond = λe1.λe2.λc.((c e1) e2)
+def true = fst
+def false = snd</code>
+		</pre>
 	</div></section>
 	<section class="slide"><div>
 		<h2>Booleans</h2>
-		<p>def not = λx.(((cond false) true) x)<br>
-def and = λx.λy.((x y) false)<br>
-def or = λx.λy.((x true) y)</p>
+		<pre>
+			<code>def not = λx.(((cond false) true) x)
+def and = λx.λy.((x y) false)
+def or = λx.λy.((x true) y)</code>
+		</pre>
 	</div></section>
 	<section class="slide"><div>
 		<h2>Booleans</h2>
-		<ul>
-			<li>(((cond y) false) x) == </li>
-			<li class="next">(((λe1.λe2.λc.((c e1) e2) y) false) x) => </li>
-			<li class="next">((λe2.λc.((c y) e2) false) x) => </li>
-			<li class="next">(λc.((c y) false) x) => </li>
-			<li class="next">((x y) false)</li>
-		</ul>
+		<pre>
+			<code>(((cond y) false) x) == </code>
+			<code class="next">(((λe1.λe2.λc.((c e1) e2) y) false) x) => </code>
+			<code class="next">((λe2.λc.((c y) e2) false) x) => </code>
+			<code class="next">(λc.((c y) false) x) => </code>
+			<code class="next">((x y) false)</code>
+		</pre>
 	</div></section>
 
 	<section class="slide shout"><div>
