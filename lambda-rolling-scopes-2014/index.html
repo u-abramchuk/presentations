@@ -71,12 +71,69 @@
 		</ul>
 	</div></section>
 	<section class="slide"><div>
-		<h2>Simple λ functions</h2>
-		<ul class="definition">
-			<li>λx.x <span class="label">identity<span></li>
-			<li>λs.s s <span class="label">self-application</span></li>
-			<li>λf.λx.f x <span class="label">function application</span></li>
-		</ul>
+		<h2>Simple λ functions - Identity</h2>
+		<table>
+			<tr>
+				<th>Name</th>
+				<th>Definition</th>
+				<th>JS equivalent</th>
+			</tr>
+			<tr>
+				<td>id</td>
+				<td>λx.x</td>
+				<td>
+					<pre>
+						<code>function(x) { 
+	return x;
+}</code>
+					</pre>
+				</td>
+			</tr>
+		</table>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Simple λ functions - Application</h2>
+		<table>
+			<tr>
+				<th>Name</th>
+				<th>Definition</th>
+				<th>JS equivalent</th>
+			</tr>
+			<tr>
+				<td>apply</td>
+				<td>λf.λx.f x</td>
+				<td>
+					<pre>
+						<code>function(f) { 
+	return function(x) { 
+		return f(x); 
+	}; 
+}</code>
+					</pre>
+				</td>
+			</tr>
+		</table>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Simple λ functions - Self application</h2>
+		<table>
+			<tr>
+				<th>Name</th>
+				<th>Definition</th>
+				<th>JS equivalent</th>
+			</tr>
+			<tr>
+				<td>self_apply</td>
+				<td>λs.s s</td>
+				<td>
+					<pre>
+						<code>function(s) { 
+	return s(s); 
+}</code>
+					</pre>
+				</td>
+			</tr>
+		</table>
 	</div></section>
 	<section class="slide"><div>
 		<h2>Free variables</h2>
