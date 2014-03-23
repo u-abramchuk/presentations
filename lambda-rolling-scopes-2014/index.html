@@ -408,58 +408,48 @@ def equal x y = iszero (abs_diff x y)</code></pre>
 	</div></section>
 	<section class="slide"><div>
 		<h2>Representing typed objects</h2>
-		<p>def make_obj type value = λs.(s type value)<br>
-def type obj = obj fst<br>
-def value obj = obj snd<br>
-def istype t obj = equal (type obj) t</p>
+		<pre><code>def make_obj type value = λs.s type value
+def type obj = obj fst
+def value obj = obj snd
+def istype t obj = equal (type obj) t</code></pre>
 	</div></section>
 	<section class="slide"><div>
 		<h2>Errors</h2>
-		<p>def error_type = zero<br>
-def MAKE_ERROR = make_obj error_type<br>
-def ERROR = MAKE_ERROR error_type<br>
-def iserror = istype error_type</p>
+		<pre><code>def error_type = zero
+def MAKE_ERROR = make_obj error_type
+def ERROR = MAKE_ERROR error_type
+def iserror = istype error_type</code></pre>
 	</div></section>
 	<section class="slide"><div>
 		<h2>Booleans</h2>
-		<p>def bool_type = one<br>
-def MAKE_BOOL = make_obj bool_type<br>
-def TRUE = MAKE_BOOL true<br>
-def FALSE = MAKE_BOOL false<br>
-def isbool = istype bool_type<br>
-def BOOL_ERROR = MAKE_ERROR bool_type</p>
+		<pre><code>def bool_type = one
+def MAKE_BOOL = make_obj bool_type
+def TRUE = MAKE_BOOL true
+def FALSE = MAKE_BOOL false
+def isbool = istype bool_type
+def BOOL_ERROR = MAKE_ERROR bool_type</code></pre>
 	</div></section>
 	<section class="slide"><div>
 		<h2>Booleans</h2>
-		<p>def NOT X = <br>
-if isbool X<br>
-then MAKE_BOOL (not (value X))<br>
-else BOOL_ERROR</p>
-	</div></section>
-	<section class="slide"><div>
-		<h2>Booleans</h2>
-		<p>def COND E1 E2 C = <br>
-if isbool C<br>
-then<br>
-if value C<br>
-then E1<br>
-else E2<br>
-else BOOL_ERROR</p>
+		<pre><code>def COND E1 E2 C = if isbool C 
+					  then if value C 
+					  		  then E1
+							  else E2
+					  else BOOL_ERROR</code></pre>	
 	</div></section>
 	<section class="slide"><div>
 		<h2>Notation</h2>
-		<p>IF condition THEN expr1 else expr2<br>
-instead of<br>
-COND expr1 expr2 condition</p>
-	</div></section>
+		<pre class="inline"><code>IF condition THEN expr1 else expr2</code></pre><br>
+		instead of
+		<pre><code>COND expr1 expr2 condition</code></pre>
+<!-- 	</div></section>
 	<section class="slide"><div>
-		<h2>Booleans</h2>
-		<p>def NOT X = <br>
-IF X<br>
-THEN FALSE<br>
-ELSE TRUE</p>
+		<h2>Booleans</h2> -->
+		<pre><code>def NOT X = IF X
+			THEN FALSE
+			ELSE TRUE</code></pre>
 	</div></section>
-	<section class="slide"><div>
+<!-- 	<section class="slide"><div>
 		<h2>Notation</h2>
 		<p>def name TRUE = expr1<br>
 or name FALSE = expr2<br>
@@ -473,32 +463,26 @@ ELSE expr2</p>
 		<h2>Notation</h2>
 		<p>def NOT TRUE = FALSE<br>
 or NOT FALSE = TRUE</p>
+	</div></section> -->
+	<section class="slide"><div>
+		<h2>Natural numbers</h2>
+		<pre><code>def numb_type = two
+def MAKE_NUMB = make_obj numb_type
+def NUMB_ERROR = MAKE_ERROR numb_type
+def ISNUMB N = MAKE_BOOL (isnumb N)</code></pre>
 	</div></section>
 	<section class="slide"><div>
 		<h2>Natural numbers</h2>
-		<p>def numb_type = two<br>
-def MAKE_NUMB = make_obj numb_type<br>
-def NUMB_ERROR = MAKE_ERROR numb_type<br>
-def ISNUMB N = MAKE_BOOL (isnumb N)</p>
+		<pre><code>def SUCC N = if isnumb N
+				then MAKE_NUMB (succ (value N))
+			 	else NUMB_ERROR
+def PRED N = if isnumb N
+			 	then if iszero (value N)
+				  		then NUMB_ERROR
+				  		else MAKE_NUMB ((value N) select_second)
+			 	else NUMB_ERROR</code></pre>
 	</div></section>
-	<section class="slide"><div>
-		<h2>Natural numbers</h2>
-		<p>def SUCC N = <br>
-if isnumb N<br>
-then MAKE_NUMB (succ (value N))<br>
-else NUMB_ERROR</p>
-	</div></section>
-	<section class="slide"><div>
-		<h2>Natural numbers</h2>
-		<p>def PRED N = <br>
-if isnumb N<br>
-then<br>
-if iszero (value N)<br>
-then NUMB_ERROR<br>
-else MAKE_NUMB ((value N) select_second)<br>
-else NUMB_ERROR</p>
-	</div></section>
-	<section class="slide"><div>
+	<!-- <section class="slide"><div>
 		<h2>Natural numbers</h2>
 		<p>def ISZERO N = <br>
 if isnumb N<br>
@@ -514,7 +498,7 @@ ELSE NUMB_ERROR<br>
 rec ADD X Y = <br>
 IF ISZERO Y<br>
 THEN X<br>
-ELSE ADD1 (SUCC X) (PRED Y)</p>
+ELSE ADD (SUCC X) (PRED Y)</p>
 	</div></section>
 	<section class="slide"><div>
 		<h2>Notation</h2>
@@ -526,50 +510,46 @@ rec name bound_variable = <br>
 IF ISZERO bound_variable<br>
 THEN expr1<br>
 ELSE expr2 using (PRED bound_variable)</p>
-	</div></section>
-	<section class="slide"><div>
+	</div></section> -->
+<!-- 	<section class="slide"><div>
 		<h2>Notation</h2>
 		<p>rec POWER X 0 = 1<br>
 or POWER X (SUCC Y) = * X (POWER X Y)</p>
-	</div></section>
+	</div></section> -->
 
 	<section class="slide shout"><div>
 		<h2>Lists</h2>
 	</div></section>
 	<section class="slide"><div>
 		<h2>Lists</h2>
-		<p>def list_type = three<br>
-def islist = istype list_type<br>
-def ISLIST L = MAKE_BOOL (islist L)<br>
-def MAKE_LIST = make_obj list_type</p>
+		<pre><code>def list_type = three
+def islist = istype list_type
+def ISLIST L = MAKE_BOOL (islist L)
+def MAKE_LIST = make_obj list_type</code></pre>
 	</div></section>
 	<section class="slide"><div>
 		<h2>Lists</h2>
-		<p>def CONS H T = <br>
-if islist T<br>
-then MAKE_LIST λs.(s H T)<br>
-else LIST_ERROR<br>
-def NIL = MAKE_LIST λs.(s LIST_ERROR LIST_ERROR)</p>
+		<pre><code>def CONS H T = if islist T
+				  then MAKE_LIST λs.(s H T)
+				  else LIST_ERROR
+def NIL = MAKE_LIST λs.(s LIST_ERROR LIST_ERROR)</code></pre>
 	</div></section>
 	<section class="slide"><div>
 		<h2>Lists</h2>
-		<p>def HEAD L =<br> 
-is islist L<br>
-then (value L) fst<br>
-else LIST_ERROR<br>
-def TAIL L = <br>
-if islist L<br>
-then (value L) snd<br>
-else LIST_ERROR</p>
+		<pre><code>def HEAD L = if islist L
+				then (value L) fst
+				else LIST_ERROR
+def TAIL L = if islist L
+				then (value L) snd
+				else LIST_ERROR</code></pre>
 	</div></section>
 	<section class="slide"><div>
 		<h2>Lists</h2>
-		<p>def ISNIL = <br>
-if islist L<br>
-then MAKE_BOOL (iserror (HEAD L))<br>
-else LIST_ERROR</p>
+		<pre><code>def ISNIL = if islist L
+			   then MAKE_BOOL (iserror (HEAD L))
+			   else LIST_ERROR</code></pre>
 	</div></section>
-	<section class="slide"><div>
+	<!-- <section class="slide"><div>
 		<h2>Notation</h2>
 		<p>rec name [] = expr1<br>
 or name (head::tail) = expr2 using head and tail<br>
@@ -583,15 +563,15 @@ ELSE expr2 using (HEAD bound_variable) and (TAIL bound_variable)</p>
 		<h2>Notation</h2>
 		<p>rec LENGTH [] = 0<br>
 or LENGTH (H::T) = SUCC (LENGTH T)</p>
-	</div></section>
-	<section class="slide"><div>
+	</div></section> -->
+<!-- 	<section class="slide"><div>
 		<h2>Infinite lists</h2>
-		<p>def cons h t s = s h t<br>
-def head l = l λx.λy.x<br>
-def tail l = l λx.λy.y<br>
-rec numblist n = cons n (numblist (succ n))<br>
-def numbers = numblist zero</p>
-	</div></section>
+		<pre><code>def cons h t s = s h t
+def head l = l λx.λy.x
+def tail l = l λx.λy.y
+rec numblist n = cons n (numblist (succ n))
+def numbers = numblist zero</code></pre>
+	</div></section> -->
 
 	<section class="slide shout"><div>
 		<h2>Q&amp;A</h2>
