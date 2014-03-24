@@ -202,10 +202,8 @@
 				<code>(λx.t) t2 -> [x := t2]t</code>
 			</pre>
 		</div>
-		<!-- <ul> -->
-			<div><pre class="inline"><code>[x := t2]t</code></pre> "the term obtained by replacing all free occurences of x in t by t2"</div>
-			<div>A term of form <pre class="inline"><code>(λx.t) t2</code></pre> is called a redex ("reducible expression")</div>
-		<!-- </ul> -->
+		<div><pre class="inline"><code>[x := t2]t</code></pre> means "the term obtained by replacing all free occurences of x in t by t2"</div>
+		<div>A term of form <pre class="inline"><code>(λx.t) t2</code></pre> is called a redex ("reducible expression")</div>
 	</div></section>
 	<section class="slide"><div>
 		<h2>β reduction</h2>
@@ -279,7 +277,7 @@
 	</div></section>
 	<section class="slide"><div>
 		<h2>α conversion</h2>
-		<p><pre class="inline"><code>(λx.λy.(x y) y) => λy.(y y)</code></pre> - wrong!</p>
+		<p><pre class="inline"><code>λx.λy.(x y) y => λy.y y</code></pre> - wrong!</p>
 		<pre>
 			<code>λx.λy.(x y) y ==</code>
 			<code class="next">λx.λz.(x z) y =></code>
@@ -288,16 +286,18 @@
 	</div></section>
 	<section class="slide"><div>
 		<h2>η reduction</h2>
-		<pre><code>λx.(expr x) arg => expr arg</code></pre>
-		<p>i.e. <pre class="inline"><code>λx.expr x</code></pre> is equivalent to <pre class="inline"><code>expr</code></pre></p>
-		<div>or <pre class="inline"><code>function(x) { return expr(x); }</code></pre> is equivalent to <pre class="inline"><code>expr</code></pre></div>
+		<div><pre class="inline"><code>λx.expr x</code></pre> is equivalent to <pre class="inline"><code>expr</code></pre></div>
+		<div>or<br> <pre class="inline"><code>function(x) { 
+	return expr(x); 
+}</code></pre><br> is equivalent to <pre class="inline"><code>expr</code></pre></div>
 	</div></section>
 	<section class="slide"><div>
 		<h2>Notation</h2>
 		<pre><code>def name = function</code></pre>
 		<pre><code>def id = λx.x
 def self_apply = λs.s s
-def apply = λfunc.λarg.func arg</code></pre>
+def apply = λfunc.λarg.func arg
+<mark class="important">//This works only as textual replacement!</mark></code></pre>
 	</div></section>
 	<section class="slide"><div>
 		<h2>Notation</h2>
@@ -313,8 +313,8 @@ def apply = λfunc.λarg.func arg</code></pre>
 def snd = λf.λs.s</code></pre>
 		<pre>
 			<code>(fst arg1) arg2 == </code>
-			<code class="next">(λf.λs.f arg1) arg2 => </code>
-			<code class="next">λs.arg1 arg2 => </code>
+			<code class="next"><span class="redex">((λf.λs.f) arg1)</span> arg2 => </code>
+			<code class="next"><span class="redex">(λs.arg1) arg2</span> => </code>
 			<code class="next">arg1</code>
 		</pre>
 	</div></section>
@@ -323,15 +323,15 @@ def snd = λf.λs.s</code></pre>
 		<pre><code>def pair = λf.λs.λfunc.(func f) s</code></pre>
 		<pre>
 			<code>(pair arg1) arg2 == </code>
-			<code class="next">((λf.λs.λfunc.(func f) s) arg1) arg2 => </code>
-			<code class="next">(λs.λfunc.(func arg1) s) arg2 => </code>
+			<code class="next"><span class="redex">((λf.λs.λfunc.(func f) s) arg1)</span> arg2 => </code>
+			<code class="next"><span class="redex">(λs.λfunc.(func arg1) s) arg2</span> => </code>
 			<code class="next">λfunc.(func arg1) arg2</code>
 		</pre>
 	</div></section>
 	<section class="slide"><div>
 		<h2>Selecting second argument from pair</h2>
 		<pre>
-			<code>(λfunc.(func arg1) arg2) snd =></code>
+			<code><span class="redex">(λfunc.(func arg1) arg2) snd</span> =></code>
 			<code class="next">(snd arg1) arg2 => ... =></code>
 			<code class="next">arg2</code></pre>
 	</div></section>
@@ -360,9 +360,9 @@ def or = λx.λy.(x true) y</code>
 		<h2>Booleans</h2>
 		<pre>
 			<code>((cond y) false) x == </code>
-			<code class="next">((λe1.λe2.λc.((c e1) e2) y) false) x => </code>
-			<code class="next">(λe2.λc.((c y) e2) false) x => </code>
-			<code class="next">λc.((c y) false) x => </code>
+			<code class="next">(<span class="redex">((λe1.λe2.λc.(c e1) e2) y)</span> false) x => </code>
+			<code class="next"><span class="redex">((λe2.λc.(c y) e2) false)</span> x => </code>
+			<code class="next"><span class="redex">(λc.(c y) false) x</span> => </code>
 			<code class="next">(x y) false</code>
 		</pre>
 	</div></section>
@@ -391,8 +391,9 @@ def pred = λn.((iszero n) zero) (n snd)</code>
 		<h2>Natural numbers</h2>
 		<pre>
 			<code>iszero zero => </code>
+			<code class="next"><span class="redex">(λn.n fst) zero</span> => </code>
 			<code class="next">zero fst == </code>
-			<code class="next">id fst => </code>
+			<code class="next"><span class="redex">id fst</span> => </code>
 			<code class="next">fst == </code>
 			<code class="next">true</code>
 		</pre>
@@ -401,8 +402,8 @@ def pred = λn.((iszero n) zero) (n snd)</code>
 		<h2>Natural numbers</h2>
 		<pre>
 			<code>iszero (λs.(s false) num) == </code>
-			<code class="next">(λn.n fst) (λs.(s false) num) => </code>
-			<code class="next">(λs.(s false) num) fst => </code>
+			<code class="next"><span class="redex">(λn.n fst) (λs.(s false) num)</span> => </code>
+			<code class="next"><span class="redex">(λs.(s false) num) fst</span> => </code>
 			<code class="next">(fst false) num => ... => </code>
 			<code class="next">false </code>
 		</pre>
@@ -644,6 +645,14 @@ def numbers = numblist zero</code></pre>
 	<section class="slide shout"><div>
 		<h2>Q&amp;A</h2>
 	</div></section>
+	<section class="slide"><div>
+		<h2>Further reading</h2>
+		<ol>
+			<li><a href="https://mitpress.mit.edu/sicp/">Structure and Interpretation of Computer Programs</a></li>
+			<li><a href="http://www.amazon.com/Introduction-Functional-Programming-Calculus-Mathematics/dp/0486478831">An Introduction to Functional Programming Through Lambda Calculus </a></li>
+			<li><a href="http://www.cis.upenn.edu/~bcpierce/tapl/">Types and Programming Languages</a></li>
+		</ol>
+	</div></section>
 
 	<section class="slide"><div>
 		<h2>Introduction to λ-calculus</h2>
@@ -657,7 +666,7 @@ def numbers = numblist zero</code></pre>
 		<h2>Thank you!</h2>
 	</div></section>
 
-	<p class="badge"><a href="https://github.com/shower/shower">Fork me on Github</a></p>
+	<!-- <p class="badge"><a href="https://github.com/shower/shower">Fork me on Github</a></p> -->
 	<!--
 		To hide progress bar from entire presentation
 		just remove “progress” element.
