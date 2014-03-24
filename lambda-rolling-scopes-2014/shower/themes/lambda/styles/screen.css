@@ -214,11 +214,11 @@ a {
 .slide ol > li:before {
   counter-increment: list;
   content: counter(list) ".\00A0\2009"; }
-.slide ul.definition, .slide ol.definition {
+.slide .definition, .slide .definition {
   width: 400px; }
-  .slide ul.definition li, .slide ol.definition li {
+  .slide .definition li, .slide .definition li {
     text-indent: 0; }
-  .slide ul.definition span.label, .slide ol.definition span.label {
+  .slide .definition span.label, .slide .definition span.label {
     float: right;
     font-style: italic; }
 .slide ul.definition li:before, .slide .definition ul li:before {

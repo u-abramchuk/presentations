@@ -57,12 +57,14 @@
 	</div></section>
 	<section class="slide"><div>
 		<h2>λ-expressions</h2>
-		<ul class="definition">t ::= <span class="label">terms:</span>
+		<div class="definition">t ::= <span class="label">terms:</span></div>
+		<ul class="definition">
 			<li>x <span class="label">variable</span></li>
 			<li>λx.t <span class="label">abstraction</span></li>
 			<li>t t <span class="label">application</span></li>
 		</ul>
-		<ul class="definition">v ::= <span class="label">values:</span>
+		<div class="definition">v ::= <span class="label">values:</span></div>
+		<ul class="definition">
 			<li>λx.t <span class="label">abstraction value</span></li>
 		</ul>
 	</div></section>
@@ -224,7 +226,8 @@
 	</div></section>
 	<section class="slide"><div>
 		<h2>Normal order β reduction</h2>
-		<p>the leftmost, outermost redex is always reduced first</p>
+		<p>The leftmost, outermost redex is always reduced first<br>
+		Works similar to <em>if</em>-clause in JS</p>
 		<pre>
 			<code><span class="redex">id (id (λz.id z))</span> =></code>
 			<code class="next"><span class="redex">id (λz.id z)</span> =></code>
@@ -234,7 +237,8 @@
 	</div></section>
 	<section class="slide"><div>
 		<h2>Applicative order β reduction</h2>
-		<p>only outermost redexes are reduced <em>and</em> a redex is reduced only  when its right-hand side has already been reduced to a <em>value</em></p>
+		<p>Only outermost redexes are reduced <em>and</em> a redex is reduced only  when its right-hand side has already been reduced to a <em>value</em><br>
+		Works similar to function call in JS</p>
 		<pre>
 			<code>id <span class="redex">(id (λz.id z))</span> -></code>
 			<code class="next"><span class="redex">id (λz.id z)</span> -></code>
@@ -277,7 +281,7 @@
 	</div></section>
 	<section class="slide"><div>
 		<h2>α conversion</h2>
-		<p><pre class="inline"><code>λx.λy.(x y) y => λy.y y</code></pre> - wrong!</p>
+		<div><pre class="inline"><code>λx.λy.(x y) y => λy.y y</code></pre> - wrong!</div>
 		<pre>
 			<code>λx.λy.(x y) y ==</code>
 			<code class="next">λx.λz.(x z) y =></code>

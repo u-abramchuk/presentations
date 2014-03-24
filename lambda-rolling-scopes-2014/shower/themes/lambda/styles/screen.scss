@@ -178,7 +178,7 @@ a {
 		counter-increment:list;
 		content:counter(list)'.\00A0\2009';
 		}
-	ul.definition, ol.definition {
+	.definition, .definition {
 		width: 400px;
 		li {
 			text-indent: 0;
