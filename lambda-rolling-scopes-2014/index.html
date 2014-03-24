@@ -197,16 +197,32 @@
 	</div></section>
 	<section class="slide"><div>
 		<h2>β reduction</h2>
-		<p>
+		<div>
 			<pre>
 				<code>(λx.t) t2 -> [x := t2]t</code>
 			</pre>
-		</p>
-		<ul>
-			<li><pre class="inline"><code>[x := t2]t</code></pre> means "the term obtained by replacing all free occurences of x in t by t2"</li>
-			<li>a term of form <pre class="inline"><code>(λx.t) t2</code></pre> is called a redex ("reducible expression")</li>
-			<li><pre class="inline"><code>(λx.x) y</code></pre> evaluates to <pre class="inline"><code>y</code></pre></li>
-		</ul>
+		</div>
+		<!-- <ul> -->
+			<div><pre class="inline"><code>[x := t2]t</code></pre> "the term obtained by replacing all free occurences of x in t by t2"</div>
+			<div>A term of form <pre class="inline"><code>(λx.t) t2</code></pre> is called a redex ("reducible expression")</div>
+		<!-- </ul> -->
+	</div></section>
+	<section class="slide"><div>
+		<h2>β reduction</h2>
+		<table>
+			<tr>
+				<th>λ-expression</th>
+				<th>JS equivalent</th>
+			</tr>
+			<tr>
+				<td><pre class="inline"><code>(λx.x) y => <mark class="important">y</mark></code></pre></td>
+				<td>
+					<pre class="inline"><code>(function(x) { 
+	return x; 
+})(y) => <mark class="important">y</mark></code></pre>
+				</td>
+			</tr>
+		</table>
 	</div></section>
 	<section class="slide"><div>
 		<h2>Normal order β reduction</h2>
