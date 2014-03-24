@@ -132,17 +132,68 @@
 		</table>
 	</div></section>
 	<section class="slide"><div>
+		<h2>Scope - Bound variables</h2>
+		<div><strong>x</strong> is <em>bound</em> when it occurs in the body <strong>t</strong> of an abstraction <pre class="inline"><code>λx.t</code></pre></div>
+		<table>
+			<tr>
+				<th>λ-expression</th>
+				<th>JS equivalent</th>
+			</tr>
+			<tr>
+				<td><pre class="inline"><code>λx.x</code></pre></td>
+				<td>
+					<pre class="inline"><code>function(x) { return x; }</code></pre>
+				</td>
+			</tr>
+			<tr>
+				<td><pre class="inline"><code>λz.λx.x z</code></pre></td>
+				<td><pre class="inline"><code>function(z) {
+	return function(x) {
+		return x(z);
+	};
+}</code></pre></td>
+			</tr>
+		</table>
+	</div></section>
+		<section class="slide"><div>
+		<h2>Scope - Free variables</h2>
+		<div><strong>x</strong> is <em>free</em> if it is not bound by any enclosing abstraction on <strong>x</strong></div>
+		<table>
+			<tr>
+				<th>λ-expression</th>
+				<th>JS equivalent</th>
+			</tr>
+			<tr>
+				<td><pre class="inline"><code>x y</code></pre></td>
+				<td>
+					<pre class="inline"><code>x(y)</code></pre>
+				</td>
+			</tr>
+			<tr>
+				<td><pre class="inline"><code>λy.x y</code></pre></td>
+				<td><pre class="inline"><code>function(y) {
+	return x(y);
+}</code></pre></td>
+			</tr>
+		</table>
+	</div></section>
+	<section class="slide"><div>
 		<h2>Scope</h2>
-		<ul>
-			<li><strong>x</strong> is <em>bound</em> when it occurs in the body <strong>t</strong> of an abstraction <pre class="inline"><code>λx.t</code></pre></li>
-			<li><strong>x</strong> is <em>free</em> if it is not bound by any enclosing abstraction on <strong>x</strong></li>
-			<li>a term with no free variables is said to be <em>closed</em>; closed terms are also called <em>combinators</em></li>
-		</ul>
-		<ul>
-			<li><strong>x</strong> is free in <pre class="inline"><code>x y</code></pre> and <pre class="inline"><code>λy.x y</code></pre></li>
-			<li><strong>x</strong> is bound in <pre class="inline"><code>λx.x</code></pre> and <pre class="inline"><code>λz.λx.λy.x (y z)</code></pre></li>
-			<li>in <pre class="inline"><code>(λx.x) x</code></pre>, the first occurence of <strong>x</strong> is bound and the second is free</li>
-		</ul>
+		<p>A term with no free variables is said to be <em>closed</em>; closed terms are also called <em>combinators</em></p>
+		<table>
+			<tr>
+				<th>λ-expression</th>
+				<th>JS equivalent</th>
+			</tr>
+			<tr>
+				<td><pre class="inline"><code>(λx.x) x</code></pre></td>
+				<td>
+					<pre class="inline"><code>(function(x) { 
+	return x; 
+})(x)</code></pre>
+				</td>
+			</tr>
+		</table>
 	</div></section>
 	<section class="slide"><div>
 		<h2>β reduction</h2>
@@ -171,8 +222,8 @@
 		<h2>Applicative order β reduction</h2>
 		<p>only outermost redexes are reduced <em>and</em> a redex is reduced only  when its right-hand side has already been reduced to a <em>value</em></p>
 		<pre>
-			<code>id <span class="redex">(id (λz.id z))</span> =></code>
-			<code class="next"><span class="redex">id (λz.id z)</span> =></code>
+			<code>id <span class="redex">(id (λz.id z))</span> -></code>
+			<code class="next"><span class="redex">id (λz.id z)</span> -></code>
 			<code class="next">λz.id z</code>
 		</pre>
 	</div></section>
@@ -223,6 +274,7 @@
 		<h2>η reduction</h2>
 		<pre><code>λx.(expr x) arg => expr arg</code></pre>
 		<p>i.e. <pre class="inline"><code>λx.expr x</code></pre> is equivalent to <pre class="inline"><code>expr</code></pre></p>
+		<div>or <pre class="inline"><code>function(x) { return expr(x); }</code></pre> is equivalent to <pre class="inline"><code>expr</code></pre></div>
 	</div></section>
 	<section class="slide"><div>
 		<h2>Notation</h2>
