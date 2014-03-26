@@ -291,11 +291,24 @@
 		</pre>
 	</div></section>
 	<section class="slide"><div>
-		<h2>η reduction</h2>
-		<div><pre class="inline"><code>λx.expr x</code></pre> is equivalent to <pre class="inline"><code>expr</code></pre></div>
-		<div>or<br> <pre class="inline"><code>function(x) { 
+		<h2>η conversion</h2>
+		<p>Two functions are the same if and only if they give the same result for all arguments</p>
+		<table>
+			<tr>
+				<th>λ-expression</th>
+				<th>JS equivalent</th>
+			</tr>
+			<tr>
+				<td><pre class="inline"><code>λx.expr x</code></pre></td>
+				<td><pre class="inline"><code>function(x) { 
 	return expr(x); 
-}</code></pre><br> is equivalent to <pre class="inline"><code>expr</code></pre></div>
+}</code></pre></td>
+			</tr>
+			<tr>
+				<td><pre class="inline"><code>expr</code></pre></td>
+				<td><pre class="inline"><code>expr</code></pre></td>
+			</tr>
+		</table>
 	</div></section>
 	<section class="slide"><div>
 		<h2>Currying (schönfinkeling)</h2>
