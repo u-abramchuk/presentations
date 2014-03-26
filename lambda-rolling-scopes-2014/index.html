@@ -257,21 +257,23 @@
 	</div></section>
 	<section class="slide"><div>
 		<h2>Evaluation termination</h2>
-		<p>Not all expression evaluations terminate:</p>
-		<pre><code>(λs.s s) (λs.s s)</code></pre>
+		<!-- <p>Not all expression evaluations terminate:</p> -->
 		<p>There is no way of telling whether or not the evaluation of an expression will ever terminate!</p>
+		<pre><code>(λs.s s) (λs.s s) <mark class="important">//Won't terminate!</mark></code></pre>
+		<p>A term is in <em>normal form</em> if no beta reduction is possible</p>
 	</div></section>
 	<section class="slide"><div>
 		<h2>1st Church-Rosser theorem</h2>
-		<p>If there are two distinct reductions or sequences of reductions that can be applied to the same term, then there exists a term that is reachable from both results, by applying (possibly empty) sequences of additional reductions (see picture)</p>
+		<p>If there are two distinct reductions or sequences of reductions that can be applied to the same term, then there exists a term that is reachable from both results, by applying (possibly empty) sequences of additional reductions</p>
+		<p class="definition" style="float: left;">A term in the λ-calculus has at most one normal form</p>
 		<img src="pictures/church_rosser.png" id="Church_Rosser">
 		<style>
 			#Church_Rosser {
 				position: absolute;
-				right: 230px;
 				margin: -60px auto 0;
 				width: 230px;
 				height: 230px;
+				right: 100px;
 			}
 		</style>
 	</div></section>
