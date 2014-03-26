@@ -258,6 +258,8 @@ a {
       color: #FFF; }
     .slide pre mark.comment {
       color: #AAA; }
+    .slide pre mark.value {
+      color: #249095; }
 .slide table {
   margin: 0 0 50px;
   width: 100%;

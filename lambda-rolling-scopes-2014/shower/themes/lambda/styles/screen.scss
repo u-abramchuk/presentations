@@ -238,6 +238,9 @@ a {
 			&.comment {
 				color:#AAA;
 				}
+			&.value {
+				color:$anticolor;
+			}
 			}
 		}
 	// Table

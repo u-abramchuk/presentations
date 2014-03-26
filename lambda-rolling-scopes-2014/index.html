@@ -283,9 +283,9 @@
 	</div></section>
 	<section class="slide"><div>
 		<h2>α conversion</h2>
-		<div><pre class="inline"><code>λx.λy.(x y) y => λy.y y</code></pre> - wrong!</div>
+		<div><pre class="inline"><code>λx.λy.(x y) y => λy.y y <mark class="important">//Wrong!</mark></code></pre></div>
 		<pre>
-			<code>λx.λy.(x y) y ==</code>
+			<code>λx.λy.(x y) y == <mark class="comment">//α rename bound variable y into z</mark></code>
 			<code class="next">λx.λz.(x z) y =></code>
 			<code class="next">λz.y z</code>
 		</pre>
@@ -374,8 +374,8 @@ def apply = λfunc.λarg.func arg
 def snd = λf.λs.s</code></pre>
 		<pre>
 			<code>(fst arg1) arg2 == </code>
-			<code class="next"><span class="redex">((λf.λs.f) arg1)</span> arg2 => </code>
-			<code class="next"><span class="redex">(λs.arg1) arg2</span> => </code>
+			<code class="next"><span class="redex">((λ<mark class="value">f</mark>.λs.<mark class="value">f</mark>) <mark class="value">arg1</mark>)</span> arg2 => </code>
+			<code class="next"><span class="redex">(λ<mark class="value">s</mark>.arg1) <mark class="value">arg2</mark></span> => </code>
 			<code class="next">arg1</code>
 		</pre>
 	</div></section>
@@ -384,15 +384,15 @@ def snd = λf.λs.s</code></pre>
 		<pre><code>def pair = λf.λs.λfunc.(func f) s</code></pre>
 		<pre>
 			<code>(pair arg1) arg2 == </code>
-			<code class="next"><span class="redex">((λf.λs.λfunc.(func f) s) arg1)</span> arg2 => </code>
-			<code class="next"><span class="redex">(λs.λfunc.(func arg1) s) arg2</span> => </code>
+			<code class="next"><span class="redex">((λ<mark class="value">f</mark>.λs.λfunc.(func <mark class="value">f</mark>) s) <mark class="value">arg1</mark>)</span> arg2 => </code>
+			<code class="next"><span class="redex">(λ<mark class="value">s</mark>.λfunc.(func arg1) s) <mark class="value">arg2</mark></span> => </code>
 			<code class="next">λfunc.(func arg1) arg2</code>
 		</pre>
 	</div></section>
 	<section class="slide"><div>
 		<h2>Selecting second argument from pair</h2>
 		<pre>
-			<code><span class="redex">(λfunc.(func arg1) arg2) snd</span> =></code>
+			<code><span class="redex">(λ<mark class="value">func</mark>.(<mark class="value">func</mark> arg1) arg2) <mark class="value">snd</mark></span> =></code>
 			<code class="next">(snd arg1) arg2 => ... =></code>
 			<code class="next">arg2</code></pre>
 	</div></section>
@@ -421,9 +421,9 @@ def or = λx.λy.(x true) y</code>
 		<h2>Booleans</h2>
 		<pre>
 			<code>((cond y) false) x == </code>
-			<code class="next">(<span class="redex">((λe1.λe2.λc.(c e1) e2) y)</span> false) x => </code>
-			<code class="next"><span class="redex">((λe2.λc.(c y) e2) false)</span> x => </code>
-			<code class="next"><span class="redex">(λc.(c y) false) x</span> => </code>
+			<code class="next">(<span class="redex">((λ<mark class="value">e1</mark>.λe2.λc.(c <mark class="value">e1</mark>) e2) <mark class="value">y</mark>)</span> false) x => </code>
+			<code class="next"><span class="redex">((λ<mark class="value">e2</mark>.λc.(c y) <mark class="value">e2</mark>) <mark class="value">false</mark>)</span> x => </code>
+			<code class="next"><span class="redex">(λ<mark class="value">c</mark>.(<mark class="value">c</mark> y) false) <mark class="value">x</mark></span> => </code>
 			<code class="next">(x y) false</code>
 		</pre>
 	</div></section>
@@ -452,7 +452,7 @@ def pred = λn.((iszero n) zero) (n snd)</code>
 		<h2>Natural numbers</h2>
 		<pre>
 			<code>iszero zero => </code>
-			<code class="next"><span class="redex">(λn.n fst) zero</span> => </code>
+			<code class="next"><span class="redex">(λ<mark class="value">n</mark>.<mark class="value">n</mark> fst) <mark class="value">zero</mark></span> => </code>
 			<code class="next">zero fst == </code>
 			<code class="next"><span class="redex">id fst</span> => </code>
 			<code class="next">fst == </code>
@@ -463,8 +463,8 @@ def pred = λn.((iszero n) zero) (n snd)</code>
 		<h2>Natural numbers</h2>
 		<pre>
 			<code>iszero (λs.(s false) num) == </code>
-			<code class="next"><span class="redex">(λn.n fst) (λs.(s false) num)</span> => </code>
-			<code class="next"><span class="redex">(λs.(s false) num) fst</span> => </code>
+			<code class="next"><span class="redex">(λ<mark class="value">n</mark>.<mark class="value">n</mark> fst) <mark class="value">(λs.(s false) num)</mark></span> => </code>
+			<code class="next"><span class="redex">(λ<mark class="value">s</mark>.(<mark class="value">s</mark> false) num) <mark class="value">fst</mark></span> => </code>
 			<code class="next">(fst false) num => ... => </code>
 			<code class="next">false </code>
 		</pre>
@@ -508,7 +508,7 @@ def fst f = λs.f</code></pre>
 	</div></section>
 		<section class="slide"><div>
 		<h2>Recursion</h2>
-		<pre class="inline"><code>def rec f = (λs.f (s s)) (λs.f (s s))<mark class="important">//Y combinator</mark></code></pre><br>
+		<pre><code>def rec = λf.(λs.f (s s)) (λs.f (s s))<mark class="important">//Y combinator</mark></code></pre>
 		<pre><code>def add1 f x y = if iszero y
 					then x
 					else f (succ x) (pred y)
