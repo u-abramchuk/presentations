@@ -298,6 +298,48 @@
 }</code></pre><br> is equivalent to <pre class="inline"><code>expr</code></pre></div>
 	</div></section>
 	<section class="slide"><div>
+		<h2>Currying (schönfinkeling)</h2>
+		<pre><code>λx.λy.x y</code></col></pre>
+		<table>
+			<tr>
+				<th>Original</th>
+				<th>Curried</th>
+			</tr>
+			<tr>
+				<td><pre class="inline"><code>function(x, y) {
+	return x(y);
+}</code></pre></td>
+				<td><pre class="inline"><code>function(x) {
+	return function(y) {
+		return x(y);
+	};
+}</code></pre></td>
+			</tr>
+		</table>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Partial application</h2>
+		<p>Partial function application says "if you fix the first arguments of the function, you get a function of the remaining arguments"</p>
+		<table>
+			<tr>
+				<th>Original</th>
+				<th>Partially applied</th>
+			</tr>
+			<tr>
+				<td><pre class="inline"><code>λf.λx.f x</code></col></pre></td>
+				<td><pre class="inline"><code>λx.id x</code></col></pre></td>
+			</tr>
+			<tr>
+				<td><pre class="inline"><code>function(f, x) {
+	return f(x);
+}</code></col></pre></td>
+				<td><pre class="inline"><code>function(x) {
+	return id(x);
+}</code></col></pre></td>
+			</tr>
+		</table>
+	</div></section>
+	<section class="slide"><div>
 		<h2>Notation</h2>
 		<pre><code>def name = function</code></pre>
 		<pre><code>def id = λx.x
