@@ -204,8 +204,8 @@
 				<code>(λx.t) t2 -> [x := t2]t</code>
 			</pre>
 		</div>
-		<div><pre class="inline"><code>[x := t2]t</code></pre> means "the term obtained by replacing all free occurences of x in t by t2"</div>
-		<div>A term of form <pre class="inline"><code>(λx.t) t2</code></pre> is called a redex ("reducible expression")</div>
+		<div><pre class="inline"><code>[x := t2]t</code></pre> means "the term obtained by replacing all free occurences of <strong>x</strong> in <strong>t</strong> by <strong>t2</strong>"</div>
+		<div>A term of form <pre class="inline"><code>(λx.t) t2</code></pre> is called a <em>redex</em> ("reducible expression")</div>
 	</div></section>
 	<section class="slide"><div>
 		<h2>β reduction</h2>
@@ -227,7 +227,7 @@
 	<section class="slide"><div>
 		<h2>Normal order β reduction</h2>
 		<p>The leftmost, outermost redex is always reduced first<br>
-		Works similar to <em>if</em>-clause in JS</p>
+		Works similar to <em>if-clause</em> in JS</p>
 		<pre>
 			<code><span class="redex">id (id (λz.id z))</span> =></code>
 			<code class="next"><span class="redex">id (λz.id z)</span> =></code>
@@ -237,8 +237,8 @@
 	</div></section>
 	<section class="slide"><div>
 		<h2>Applicative order β reduction</h2>
-		<p>Only outermost redexes are reduced <em>and</em> a redex is reduced only  when its right-hand side has already been reduced to a <em>value</em><br>
-		Works similar to function call in JS</p>
+		<p>Only outermost redexes are reduced <em>and</em> a redex is reduced only when its right-hand side has already been reduced to a <em>value</em><br>
+		Works similar to <em>function call</em> in JS</p>
 		<pre>
 			<code>id <span class="redex">(id (λz.id z))</span> -></code>
 			<code class="next"><span class="redex">id (λz.id z)</span> -></code>
@@ -257,10 +257,9 @@
 	</div></section>
 	<section class="slide"><div>
 		<h2>Evaluation termination</h2>
-		<!-- <p>Not all expression evaluations terminate:</p> -->
 		<p>There is no way of telling whether or not the evaluation of an expression will ever terminate!</p>
 		<pre><code>(λs.s s) (λs.s s) <mark class="important">//Won't terminate!</mark></code></pre>
-		<p>A term is in <em>normal form</em> if no beta reduction is possible</p>
+		<p>A term is in <em>normal form</em> if no β reduction is possible</p>
 	</div></section>
 	<section class="slide"><div>
 		<h2>1st Church-Rosser theorem</h2>
@@ -285,8 +284,8 @@
 		<h2>α conversion</h2>
 		<div><pre class="inline"><code>λx.λy.(x y) y => λy.y y <mark class="important">//Wrong!</mark></code></pre></div>
 		<pre>
-			<code>λx.λy.(x y) y == <mark class="comment">//α rename bound variable y into z</mark></code>
-			<code class="next">λx.λz.(x z) y =></code>
+			<code>λx.λ<mark class="value">y</mark>.(x <mark class="value">y</mark>) y == <mark class="comment">//α-rename bound variable y into z</mark></code>
+			<code class="next">λ<mark class="value">x</mark>.λz.(<mark class="value">x</mark> z) <mark class="value">y</mark> =></code>
 			<code class="next">λz.y z</code>
 		</pre>
 	</div></section>
@@ -385,7 +384,7 @@ def snd = λf.λs.s</code></pre>
 		<pre>
 			<code>(pair arg1) arg2 == </code>
 			<code class="next"><span class="redex">((λ<mark class="value">f</mark>.λs.λfunc.(func <mark class="value">f</mark>) s) <mark class="value">arg1</mark>)</span> arg2 => </code>
-			<code class="next"><span class="redex">(λ<mark class="value">s</mark>.λfunc.(func arg1) s) <mark class="value">arg2</mark></span> => </code>
+			<code class="next"><span class="redex">(λ<mark class="value">s</mark>.λfunc.(func arg1) <mark class="value">s</mark>) <mark class="value">arg2</mark></span> => </code>
 			<code class="next">λfunc.(func arg1) arg2</code>
 		</pre>
 	</div></section>
