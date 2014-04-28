@@ -99,6 +99,54 @@
     		<p>— Kurt Vonnegut, modified by Darius Bacon</p>
 		</div>
 	</section>
+	<section class="slide"><div>
+		<h2>Factorial</h2>
+		<div>
+			<pre>
+				<code>function factorial(n) {</code>
+				<code>	return n === 0 ? 1 : n * factorial(n-1);</code>
+				<code>}</code>
+			</pre>
+		</div>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Non-recursive factorial</h2>
+		<div>
+			<pre>
+				<code>function almostFactorial(f) {</code>
+				<code>	return function(n) {</code>
+				<code>		return n === 0 ? 1 : n * f(n-1);</code>
+				<code>	}</code>
+				<code>}</code>
+			</pre>
+		</div>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Fixed point</h2>
+		<div><pre class="inline"><code>factorial</code></pre> is a fixed point of <pre class="inline"><code>almostFactorial</code></pre>!</div>
+		<br>
+		<div>
+			<pre>
+				<code>almostFactorial(factorial)(4) === factorial(4);</code> 
+				<code>almostFactorial(factorial)(10) === factorial(10);</code>
+				<code>almostFactorial(factorial)(17) === factorial(17);</code>
+				<code>...</code>
+				<code class="next"><mark class="important">But we are trying to calculate factorial without recursion!</mark></code>
+			</pre>
+		</div>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Y comes to help!</h2>
+		<div>What if there exists function <pre class="inline"><code>Y</code></pre> that we could pass <pre class="inline"><code>almostFactorial</code></pre> to that would return the fixed point of it, i.e. <pre class="inline"><code>factorial</code></pre> function?</div>
+		<br>
+		<pre>
+			<code>Y(almostFactorial)(42) =></code>
+			<code class="next"><span class="redex">factorial</span>(42) =></code>
+			<code class="next">almostFactorial(<span class="redex">factorial</span>)(42) =></code>
+			<code class="next">almostFactorial(Y(almostFactorial))(42)</code>
+			<code class="next"><mark class="important">So we do not need factorial function at <em>all</em>!</mark></code>
+		</pre>
+	</div></section>
 	
 	<div class="progress"><div></div></div>
 	<script src="shower/shower.min.js"></script>
