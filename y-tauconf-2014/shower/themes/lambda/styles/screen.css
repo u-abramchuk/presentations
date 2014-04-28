@@ -1,36 +1,29 @@
 @font-face {
   font-family: 'Open Sans';
   src: url(../fonts/OpenSans.woff) format("woff"); }
-
 @font-face {
   font-weight: bold;
   font-family: 'Open Sans';
   src: url(../fonts/OpenSans.Bold.woff) format("woff"); }
-
 @font-face {
   font-style: italic;
   font-family: 'Open Sans';
   src: url(../fonts/OpenSans.Italic.woff) format("woff"); }
-
 @font-face {
   font-style: italic;
   font-weight: bold;
   font-family: 'Open Sans';
   src: url(../fonts/OpenSans.Bold.Italic.woff) format("woff"); }
-
 @font-face {
   font-family: 'Open Sans Light';
   src: url(../fonts/OpenSans.Light.woff) format("woff"); }
-
 @font-face {
   font-family: 'Anka Coder';
   src: url(../fonts/Anka.Coder.woff) format("woff"); }
-
 @font-face {
   font-style: italic;
   font-family: 'Anka Coder';
   src: url(../fonts/Anka.Coder.Italic.woff) format("woff"); }
-
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -50,6 +43,12 @@ time, mark, audio, video {
   font-size: 100%;
   font: inherit;
   vertical-align: baseline; }
+
+sup {
+  vertical-align: super; }
+
+sub {
+  vertical-align: sub; }
 
 article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
@@ -398,7 +397,12 @@ a {
     clip: rect(0, auto, auto, 0);
     padding: 50px 0 50px 50px;
     background: #e2e2e2 url(../images/mesh.png) 50% 0;
-    text-align: center; }
+    text-align: center; } }
+  @media screen and (-webkit-min-device-pixel-ratio: 2), screen and (min-resolution: 192dpi) {
+    .list {
+      background-image: url(../images/mesh@2x.png);
+      background-size: 256px; } }
+@media screen {
     .list .caption,
     .list .badge {
       display: block; }
@@ -417,7 +421,17 @@ a {
       -moz-transform: scale(0.5);
       -ms-transform: scale(0.5);
       -o-transform: scale(0.5);
-      transform: scale(0.5); }
+      transform: scale(0.5); } }
+    @media screen and (max-width: 1180px) {
+      .list .slide {
+        top: 430px;
+        margin: -430px -718px 0 0;
+        -webkit-transform: scale(0.25);
+        -moz-transform: scale(0.25);
+        -ms-transform: scale(0.25);
+        -o-transform: scale(0.25);
+        transform: scale(0.25); } }
+@media screen {
       .list .slide:before {
         position: absolute;
         top: 0;
@@ -436,12 +450,36 @@ a {
         -moz-transform: scale(2);
         -ms-transform: scale(2);
         -o-transform: scale(2);
-        transform: scale(2); }
+        transform: scale(2); } }
+      @media screen and (max-width: 1180px) {
+        .list .slide:before {
+          width: 256px;
+          height: 160px;
+          -webkit-transform: scale(4);
+          -moz-transform: scale(4);
+          -ms-transform: scale(4);
+          -o-transform: scale(4);
+          transform: scale(4); } }
+@media screen {
       .list .slide:after {
         top: 100%;
         bottom: auto;
         padding-top: 50px;
-        background: none; }
+        background: none; } }
+      @media screen and (max-width: 1180px) {
+        .list .slide:after {
+          width: 512px;
+          -webkit-transform-origin: 0 0;
+          -moz-transform-origin: 0 0;
+          -ms-transform-origin: 0 0;
+          -o-transform-origin: 0 0;
+          transform-origin: 0 0;
+          -webkit-transform: scale(2);
+          -moz-transform: scale(2);
+          -ms-transform: scale(2);
+          -o-transform: scale(2);
+          transform: scale(2); } }
+@media screen {
       .list .slide:hover:before {
         box-shadow: 0 0 0 1px #eeeeee, 0 0 0 12px rgba(255, 255, 255, 0.5); }
       .list .slide:target:before {
@@ -523,41 +561,6 @@ a {
         -moz-transition: width 0.2s linear;
         -o-transition: width 0.2s linear;
         transition: width 0.2s linear; } }
-  @media screen and (-webkit-min-device-pixel-ratio: 2), screen and (min-resolution: 192dpi) {
-    .list {
-      background-image: url(../images/mesh@2x.png);
-      background-size: 256px; } }
-    @media screen and (max-width: 1180px) {
-      .list .slide {
-        top: 430px;
-        margin: -430px -718px 0 0;
-        -webkit-transform: scale(0.25);
-        -moz-transform: scale(0.25);
-        -ms-transform: scale(0.25);
-        -o-transform: scale(0.25);
-        transform: scale(0.25); } }
-      @media screen and (max-width: 1180px) {
-        .list .slide:before {
-          width: 256px;
-          height: 160px;
-          -webkit-transform: scale(4);
-          -moz-transform: scale(4);
-          -ms-transform: scale(4);
-          -o-transform: scale(4);
-          transform: scale(4); } }
-      @media screen and (max-width: 1180px) {
-        .list .slide:after {
-          width: 512px;
-          -webkit-transform-origin: 0 0;
-          -moz-transform-origin: 0 0;
-          -ms-transform-origin: 0 0;
-          -o-transform-origin: 0 0;
-          transform-origin: 0 0;
-          -webkit-transform: scale(2);
-          -moz-transform: scale(2);
-          -ms-transform: scale(2);
-          -o-transform: scale(2);
-          transform: scale(2); } }
 @page {
   margin: 0;
   size: 1024px 640px; }
