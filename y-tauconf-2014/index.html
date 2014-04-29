@@ -103,8 +103,8 @@
 		<h2>Factorial</h2>
 		<div>
 			<pre>
-				<code>function factorial(n) {</code>
-				<code>	return n === 0 ? 1 : n * factorial(n-1);</code>
+				<code>function commonFactorial(n) {</code>
+				<code>	return n === 0 ? 1 : n * commonFactorial(n-1);</code>
 				<code>}</code>
 			</pre>
 		</div>
@@ -123,28 +123,100 @@
 	</div></section>
 	<section class="slide"><div>
 		<h2>Fixed point</h2>
-		<div><pre class="inline"><code>factorial</code></pre> is a fixed point of <pre class="inline"><code>almostFactorial</code></pre>!</div>
+		<div><pre class="inline"><code>commonFactorial</code></pre> is a fixed point of <pre class="inline"><code>almostFactorial</code></pre>!</div>
 		<br>
 		<div>
 			<pre>
-				<code>almostFactorial(factorial)(4) === factorial(4);</code> 
-				<code>almostFactorial(factorial)(10) === factorial(10);</code>
-				<code>almostFactorial(factorial)(17) === factorial(17);</code>
+				<code>almostFactorial(commonFactorial)(4) === commonFactorial(4);</code> 
+				<code>almostFactorial(commonFactorial)(10) === commonFactorial(10);</code>
+				<code>almostFactorial(commonFactorial)(17) === commonFactorial(17);</code>
 				<code>...</code>
-				<code class="next"><mark class="important">But we are trying to calculate factorial without recursion!</mark></code>
+				<code class="next"><mark class="important">//But we are trying to calculate factorial without recursion!</mark></code>
 			</pre>
 		</div>
 	</div></section>
 	<section class="slide"><div>
 		<h2>Y comes to help!</h2>
-		<div>What if there exists function <pre class="inline"><code>Y</code></pre> that we could pass <pre class="inline"><code>almostFactorial</code></pre> to that would return the fixed point of it, i.e. <pre class="inline"><code>factorial</code></pre> function?</div>
+		<div>What if there exists function <pre class="inline"><code>Y</code></pre> that we could pass <pre class="inline"><code>almostFactorial</code></pre> to that would return the fixed point of it, i.e. <pre class="inline"><code>commonFactorial</code></pre> function?</div>
 		<br>
 		<pre>
 			<code>Y(almostFactorial)(42) =></code>
-			<code class="next"><span class="redex">factorial</span>(42) =></code>
-			<code class="next">almostFactorial(<span class="redex">factorial</span>)(42) =></code>
+			<code class="next"><span class="redex">commonFactorial</span>(42) =></code>
+			<code class="next">almostFactorial(<span class="redex">commonFactorial</span>)(42) =></code>
 			<code class="next">almostFactorial(Y(almostFactorial))(42)</code>
-			<code class="next"><mark class="important">So we do not need factorial function at <em>all</em>!</mark></code>
+			<code class="next"><mark class="important">//So we do not need commonFactorial function at <em>all</em>!</mark></code>
+		</pre>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Apply almostFactorial to itself</h2>
+		<pre>
+			<code>function almostFactorial(f) {</code>
+			<code>	return function(n) {</code>
+			<code>		return n === 0 ? 1 : n * <mark class="important redex">f(f)</mark>(n-1);</code>
+			<code>	};</code>
+			<code>}</code>
+			<code>almostFactorial(almostFactorial)(5); // => 120</code></pre>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Isolate fixed point function</h2>
+		<pre>
+			<code>function almostFactorial(f) {</code>
+			<code>	return function(x) {</code>
+			<code>		var fact = function(q) {</code>
+			<code>			return function(n) {</code>
+			<code>				return n === 0 ? 1 : n * q(n-1);</code>
+			<code>			};</code>
+			<code>		};</code>
+			<code>		return fact(f(f))(x);</code>
+			<code>	};</code>
+			<code>}</code>
+		</pre>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Extract factorial calculation</h2>
+		<pre>
+			<code>function fact(f) {</code>
+			<code>	return function(n) {</code>
+			<code>		return n === 0 ? 1 : n * f(n-1);</code>
+			<code>	};</code>
+			<code>}</code>
+		</pre>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Almost fixed point</h2>
+		<pre>
+			<code>function almostFix(f) {</code>
+			<code>  return function(x) {</code>
+			<code>    return fact(f(f))(x);</code>
+			<code>  };</code>
+			<code>}</code>
+			<code>almostFix(almostFix)(5); // => 120</code>
+		</pre>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Fixed point combinator</h2>
+		<pre>
+			<code>function Fix(f) {</code>
+			<code>	var p = function(h) {</code>
+			<code>		return function(x) {</code>
+			<code>			return f(h(h))(x);</code>
+			<code>		};</code>
+			<code>	};</code>
+			<code>	return p(p);</code>
+			<code>}</code>
+			<code>Fix(fact)(6); // => 720</code>
+		</pre>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Fixed point combinator</h2>
+		<pre>
+			<code>Z = λf.(λx.f (λv.((x x) v))) (λx.f (λv.((x x) v)))</code>
+			<code class="next">Y = λf.(λx.f (x x)) (λx.f (x x)) </code>
+			<code class="next">Y = λf.(λx.x x) (λx.f (x x)) </code>
+			<code class="next">Yk = (L L L L L L L L L L L L L L L L L L L L L L L L L L)
+where:
+L = λabcdefghijklmnopqstuvwxyzr. 
+	(r (t h i s i s a f i x e d p o i n t c o m b i n a t o r))</code>
 		</pre>
 	</div></section>
 	
