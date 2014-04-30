@@ -32,14 +32,14 @@ if (!window.shower) {
 		},
 		'isolate-fixed-point': {
 			handler: function() {
-				window.almostFactorial = function(f) {
-					return function(x) {
+				window.almostFactorial = function(self) {
+					return function(n) {
 						var fact = function(q) {
-							return function(n) {
-								return n === 0 ? 1 : n * q(n-1);
+							return function(x) {
+								return n === 0 ? 1 : x * q(x-1);
 							};
 						};
-						return fact(f(f))(x);
+						return fact(self(self))(n);
 					};
 				};
 			}
@@ -56,26 +56,90 @@ if (!window.shower) {
 		'extract-fact': {
 			dependencies: ['fact'],
 			handler: function() {
-				window.almostFactorial = function(f) {
-					return function(x) {
-						return window.fact(f(f))(x);
+				window.almostFactorial = function(self) {
+					return function(n) {
+						return window.fact(self(self))(n);
 					};
 				}
 				console.log(window.almostFactorial(window.almostFactorial)(5));
 			}
 		},
-		'fixed-point': {
-			dependencies: ['fact'],
+		'y': {
 			handler: function() {
 				window.fix = function(f) {
-					var p = function(h) {
-						return function(x) {
-							return f(h(h))(x);
+					var p = function(self) {
+						return function(n) {
+							return f(self(self))(n);
 						};
 					};
 					return p(p);
 				};
+			}
+		},
+		'fixed-point': {
+			dependencies: ['fact', 'y'],
+			handler: function() {			
 				console.log(window.fix(window.fact)(6));
+			}
+		},
+		'log-wrapper': {
+			handler: function() {
+				window.logWrapper = function(f) {
+					return function(self) {
+						return function(n) {
+							var result = f(self)(n);
+
+							console.log('f(' + n + ') = ' + result);
+							
+							return result;
+						};
+					};
+				};
+			}
+		},
+		'log-wrap': {
+			dependencies: ['fact', 'y', 'log-wrapper'],
+			handler: function() {
+				window.logWrappedFactorial = window.logWrapper(window.fact);
+				window.logFactorial = window.fix(window.logWrappedFactorial);
+
+				console.log(window.logFactorial(3));
+			}
+		},
+		'hetero-wrapper': {
+			handler: function() {
+				window.argListWrapper = function(f) {
+					return function(self) {
+						return function(acc) {
+							return function(n) {
+								acc.push(n);
+
+								console.log('Arguments passed: ' + acc);
+
+								return f(self(acc))(n);
+							};
+						};
+					};
+				};
+			}
+		},
+		'hetero-wrap': {
+			dependencies: ['fact', 'y', 'hetero-wrapper'],
+			handler: function() {
+				window.argListWrappedFactorial = window.argListWrapper(window.fact);
+				window.argListFactorial = window.fix(window.argListWrappedFactorial)([]);
+
+				console.log(window.argListFactorial(3));
+			}
+		},
+		'wrappers-together': {
+			dependencies: ['fact', 'y', 'log-wrapper', 'hetero-wrapper'],
+			handler: function() {
+				window.logWrappedFactorial = window.logWrapper(window.fact);
+				window.compositionWrappedFactorial = window.argListWrapper(window.logWrappedFactorial);
+				window.compositionFactorial = window.fix(window.compositionWrappedFactorial)([]);
+
+				console.log(window.compositionFactorial(7));
 			}
 		}
 	};

@@ -161,45 +161,41 @@
 			<code>function almostFactorial(f)(n) {</code>
 			<code>	return n === 0 ? 1 : n * <mark class="important">f(f)</mark>(n-1);</code>
 			<code>}</code>
-			<code><mark class="important">almostFactorial(almostFactorial)</mark>(5); // => 120</code></pre>
+			<code><mark class="important">almostFactorial(almostFactorial)</mark>(5); <mark class="comment">// => 120</mark></code></pre>
 	</div></section>
 	<section class="slide" id="isolate-fixed-point"><div>
 		<h2>Isolate fixed point function</h2>
 		<pre>
-			<code>function almostFactorial(f)(x) {</code>
-			<code>	var fact = function(q)(n) {</code>
-			<code>		return n === 0 ? 1 : n * q(n-1);</code>
+			<code>function almostFactorial(self)(n) {</code>
+			<code>	var fact = function(q)(x) {</code>
+			<code>		return n === 0 ? 1 : x * q(x-1);</code>
 			<code>	};</code>
-			<code>	return fact(f(f))(x);</code>
+			<code>	return fact(self(self))(n);</code>
 			<code>}</code>
 		</pre>
 	</div></section>
-<!-- 	<section class="slide" id="extract-fact"><div>
-		<h2>Extract factorial calculation</h2>
-		
-	</div></section> -->
 	<section class="slide" id="extract-fact"><div>
 		<h2>Extract factorial calculation</h2>
 		<pre>
-			<code>function fact(f)(n) {</code>
-			<code>	return n === 0 ? 1 : n * f(n-1);</code>
+			<code>function fact(self)(n) {</code>
+			<code>	return n === 0 ? 1 : n * self(n-1);</code>
 			<code>}</code>
-			<code>function almostFactorial(f)(x) {</code>
-			<code>	return fact(f(f))(x);</code>
+			<code>function almostFactorial(self)(n) {</code>
+			<code>	return fact(self(self))(n);</code>
 			<code>}</code>
-			<code>almostFactorial(almostFactorial)(5); // => 120</code>
+			<code>almostFactorial(almostFactorial)(5); <mark class="comment">// => 120</mark></code>
 		</pre>
 	</div></section>
 	<section class="slide" id="fixed-point"><div>
 		<h2>Fixed point combinator</h2>
 		<pre>
 			<code>function fix(f) {</code>
-			<code>	var p = function(h)(x) {</code>
-			<code>		return f(h(h))(x);</code>
+			<code>	var p = function(self)(n) {</code>
+			<code>		return f(self(self))(n);</code>
 			<code>	};</code>
 			<code>	return p(p);</code>
 			<code>}</code>
-			<code>fix(fact)(6); // => 720</code>
+			<code>fix(fact)(6); <mark class="comment">// => 720</mark></code>
 		</pre>
 	</div></section>
 	<section class="slide"><div>
@@ -217,33 +213,53 @@ L = λabcdefghijklmnopqstuvwxyzr.
 	<section class="slide shout"><div>
 		<h2>Wrappers</h2>
 	</div></section>
-	<section class="slide"><div>
-		<h2>Simple wrapper</h2>
+	<section class="slide" id="log-wrap"><div>
+		<h2>Simple logging wrapper</h2>
 		<pre>
-			<code>function wrap(f) {</code>
-			<code>	return function(h) {</code>
-			<code>		return function(n) {</code>
-			<code>			var result = f(h)(n);</code>
-			<code>			//do something here</code>
-			<code>			return result;</code>
-			<code>		};</code>
-			<code>	};</code>
+			<code>function logWrapper(f)(self)(n) {</code>
+			<code>	var result = f(self)(n);</code>
+			<code>	console.log('f(' + n + ') = ' + result);</code>
+			<code>	return result;</code>
 			<code>}</code>
+			<code>var logWrappedFactorial = logWrapper(fact);</code>
+			<code>var logFactorial = fix(logWrappedFactorial);</code>
+			<code>logFactorial(3); <mark class="comment">// => 6</mark></code>
 		</pre>
 	</div></section>
-	<section class="slide"><div>
-		<h2>Multiple wrappers</h2>
-		<pre>
-			<code>var logFact = logWrap(fact);</code>
-			<code>var memoizeFact = memoizedWrap(logFact);</code>
-			<code>var factorial = Y(memoizeFact);</code>
-		</pre>
-	</div></section>
-	<section class="slide"><div>
+	<section class="slide" id="hetero-wrap"><div>
 		<h2>Heterogenous wrappers</h2>
 		<pre>
-			<code></code>
+			<code>function argListWrapper(f)(self)(acc)(n) {</code>
+			<code>	acc.push(n);</code>
+			<code>	console.log('Arguments passed: ' + acc);</code>
+			<code>	return f(self(acc))(n);</code>
+			<code>};</code>
+			<code>var argListWrappedFactorial = argListWrapper(fact);</code>
+			<code>var argListFactorial = fix(argListWrappedFactorial)([]);</code>
+			<code>argListFactorial(3); <mark class="comment">// => 6</mark></code>
 		</pre>
+	</div></section>
+	<section class="slide" id="wrappers-together"><div>
+		<h2>Putting wrappers together</h2>
+		<pre>
+			<code>var logWrappedFactorial = logWrapper(fact);</code>
+			<code>var compositionWrappedFactorial 
+				= argListWrapper(logWrappedFactorial);</code>
+			<code>var compositionFactorial 
+				= fix(compositionWrappedFactorial)([]);</code>
+			<code>compositionFactorial(7); <mark class="comment">// => 5040</mark></code>
+		</pre>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Usages</h2>
+		<ul>
+			<li>Logging</li>
+			<li>Memoization</li>
+			<li>Exceptions</li>
+			<li>Continuations</li>
+			<li>Type-checking</li>
+			<li>...</li>
+		</ul>
 	</div></section>
 	<section class="slide shout"><div>
 		<h2>Trampoline</h2>
