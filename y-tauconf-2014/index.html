@@ -185,18 +185,18 @@
 	<section class="slide"><div>
 		<h2>Almost fixed point</h2>
 		<pre>
-			<code>function almostFix(f) {</code>
+			<code>function almostY(f) {</code>
 			<code>  return function(x) {</code>
 			<code>    return fact(f(f))(x);</code>
 			<code>  };</code>
 			<code>}</code>
-			<code>almostFix(almostFix)(5); // => 120</code>
+			<code>almostY(almostY)(5); // => 120</code>
 		</pre>
 	</div></section>
 	<section class="slide"><div>
 		<h2>Fixed point combinator</h2>
 		<pre>
-			<code>function Fix(f) {</code>
+			<code>function Y(f) {</code>
 			<code>	var p = function(h) {</code>
 			<code>		return function(x) {</code>
 			<code>			return f(h(h))(x);</code>
@@ -204,13 +204,13 @@
 			<code>	};</code>
 			<code>	return p(p);</code>
 			<code>}</code>
-			<code>Fix(fact)(6); // => 720</code>
+			<code>Y(fact)(6); // => 720</code>
 		</pre>
 	</div></section>
 	<section class="slide"><div>
-		<h2>Fixed point combinator</h2>
+		<h2>More fixed point combinators</h2>
 		<pre>
-			<code>Z = λf.(λx.f (λv.((x x) v))) (λx.f (λv.((x x) v)))</code>
+			<code>Z = λf.(λx.f (λv.x x v)) (λx.f (λv.x x v))</code>
 			<code class="next">Y = λf.(λx.f (x x)) (λx.f (x x)) </code>
 			<code class="next">Y = λf.(λx.x x) (λx.f (x x)) </code>
 			<code class="next">Yk = (L L L L L L L L L L L L L L L L L L L L L L L L L L)
@@ -218,6 +218,72 @@ where:
 L = λabcdefghijklmnopqstuvwxyzr. 
 	(r (t h i s i s a f i x e d p o i n t c o m b i n a t o r))</code>
 		</pre>
+	</div></section>
+	<section class="slide shout"><div>
+		<h2>Wrappers</h2>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Simple wrapper</h2>
+		<pre>
+			<code>function wrap(f) {</code>
+			<code>	return function(h) {</code>
+			<code>		return function(n) {</code>
+			<code>			var result = f(h)(n);</code>
+			<code>			//do something here</code>
+			<code>			return result;</code>
+			<code>		};</code>
+			<code>	};</code>
+			<code>}</code>
+		</pre>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Multiple wrappers</h2>
+		<pre>
+			<code>var logFact = logWrap(fact);</code>
+			<code>var memoizeFact = memoizedWrap(logFact);</code>
+			<code>var factorial = Y(memoizeFact);</code>
+		</pre>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Heterogenous wrappers</h2>
+	</div></section>
+	<section class="slide shout"><div>
+		<h2>Trampoline</h2>
+	</div></section>
+	<section class="slide cover"><div>
+		<img src="pictures/trampoline.gif" id="trampoline" />
+		<style type="text/css">
+			#trampoline {
+				position: relative;
+				height: 100%;
+				margin-top: -50px;
+			}
+		</style>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Trampoline</h2>
+		<pre>
+			<code>function fix(f) {</code>
+			<code>	return function(t) {</code>
+			<code>		var a = null;</code>
+			<code>		for (a = function(t_) { t = t_; return a; }; </code>
+			<code>			a != null; a = f(a)(t)))</code>
+			<code>			;</code>
+			<code>	};</code>
+			<code>}</code>
+		</pre>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Usages</h2>
+		<ul>
+			<li>Logging</li>
+			<li>Memoization</li>
+			<li>Trampolining</li>
+			<li>Exceptions</li>
+			<li>Continuations</li>
+			<li>Type-checking</li>
+			<li>...</li>
+		</ul>
 	</div></section>
 	
 	<div class="progress"><div></div></div>
