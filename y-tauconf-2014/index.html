@@ -99,7 +99,7 @@
     		<p>— Kurt Vonnegut, modified by Darius Bacon</p>
 		</div>
 	</section>
-	<section class="slide"><div>
+	<section class="slide" id="common-fact"><div>
 		<h2>Factorial</h2>
 		<div>
 			<pre>
@@ -109,17 +109,25 @@
 			</pre>
 		</div>
 	</div></section>
-	<section class="slide"><div>
+	<section class="slide" id="non-rect-fact"><div>
 		<h2>Non-recursive factorial</h2>
 		<div>
 			<pre>
 				<code>function almostFactorial(f) {</code>
 				<code>	return function(n) {</code>
 				<code>		return n === 0 ? 1 : n * f(n-1);</code>
-				<code>	}</code>
+				<code>	};</code>
 				<code>}</code>
 			</pre>
 		</div>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Notation</h2>
+		<pre>
+			<code>function almostFactorial(f)(n) {</code>
+			<code>	return n === 0 ? 1 : n * f(n-1);</code>
+			<code>}</code>
+		</pre>
 	</div></section>
 	<section class="slide"><div>
 		<h2>Fixed point</h2>
@@ -147,72 +155,59 @@
 			<code class="next"><mark class="important">//So we do not need commonFactorial function at <em>all</em>!</mark></code>
 		</pre>
 	</div></section>
-	<section class="slide"><div>
+	<section class="slide" id="apply-fact-to-itself"><div>
 		<h2>Apply almostFactorial to itself</h2>
 		<pre>
-			<code>function almostFactorial(f) {</code>
-			<code>	return function(n) {</code>
-			<code>		return n === 0 ? 1 : n * <mark class="important redex">f(f)</mark>(n-1);</code>
-			<code>	};</code>
+			<code>function almostFactorial(f)(n) {</code>
+			<code>	return n === 0 ? 1 : n * <mark class="important">f(f)</mark>(n-1);</code>
 			<code>}</code>
-			<code>almostFactorial(almostFactorial)(5); // => 120</code></pre>
+			<code><mark class="important">almostFactorial(almostFactorial)</mark>(5); // => 120</code></pre>
 	</div></section>
-	<section class="slide"><div>
+	<section class="slide" id="isolate-fixed-point"><div>
 		<h2>Isolate fixed point function</h2>
 		<pre>
-			<code>function almostFactorial(f) {</code>
-			<code>	return function(x) {</code>
-			<code>		var fact = function(q) {</code>
-			<code>			return function(n) {</code>
-			<code>				return n === 0 ? 1 : n * q(n-1);</code>
-			<code>			};</code>
-			<code>		};</code>
-			<code>		return fact(f(f))(x);</code>
+			<code>function almostFactorial(f)(x) {</code>
+			<code>	var fact = function(q)(n) {</code>
+			<code>		return n === 0 ? 1 : n * q(n-1);</code>
 			<code>	};</code>
+			<code>	return fact(f(f))(x);</code>
 			<code>}</code>
 		</pre>
 	</div></section>
-	<section class="slide"><div>
+<!-- 	<section class="slide" id="extract-fact"><div>
+		<h2>Extract factorial calculation</h2>
+		
+	</div></section> -->
+	<section class="slide" id="extract-fact"><div>
 		<h2>Extract factorial calculation</h2>
 		<pre>
-			<code>function fact(f) {</code>
-			<code>	return function(n) {</code>
-			<code>		return n === 0 ? 1 : n * f(n-1);</code>
-			<code>	};</code>
+			<code>function fact(f)(n) {</code>
+			<code>	return n === 0 ? 1 : n * f(n-1);</code>
 			<code>}</code>
+			<code>function almostFactorial(f)(x) {</code>
+			<code>	return fact(f(f))(x);</code>
+			<code>}</code>
+			<code>almostFactorial(almostFactorial)(5); // => 120</code>
 		</pre>
 	</div></section>
-	<section class="slide"><div>
-		<h2>Almost fixed point</h2>
-		<pre>
-			<code>function almostY(f) {</code>
-			<code>  return function(x) {</code>
-			<code>    return fact(f(f))(x);</code>
-			<code>  };</code>
-			<code>}</code>
-			<code>almostY(almostY)(5); // => 120</code>
-		</pre>
-	</div></section>
-	<section class="slide"><div>
+	<section class="slide" id="fixed-point"><div>
 		<h2>Fixed point combinator</h2>
 		<pre>
-			<code>function Y(f) {</code>
-			<code>	var p = function(h) {</code>
-			<code>		return function(x) {</code>
-			<code>			return f(h(h))(x);</code>
-			<code>		};</code>
+			<code>function fix(f) {</code>
+			<code>	var p = function(h)(x) {</code>
+			<code>		return f(h(h))(x);</code>
 			<code>	};</code>
 			<code>	return p(p);</code>
 			<code>}</code>
-			<code>Y(fact)(6); // => 720</code>
+			<code>fix(fact)(6); // => 720</code>
 		</pre>
 	</div></section>
 	<section class="slide"><div>
 		<h2>More fixed point combinators</h2>
 		<pre>
-			<code>Z = λf.(λx.f (λv.x x v)) (λx.f (λv.x x v))</code>
+			<code>Y = λf.(λx.x x) (λx.f (x x)) </code>
 			<code class="next">Y = λf.(λx.f (x x)) (λx.f (x x)) </code>
-			<code class="next">Y = λf.(λx.x x) (λx.f (x x)) </code>
+			<code class="next">Z = λf.(λx.f (λv.x x v)) (λx.f (λv.x x v))</code>		
 			<code class="next">Yk = (L L L L L L L L L L L L L L L L L L L L L L L L L L)
 where:
 L = λabcdefghijklmnopqstuvwxyzr. 
@@ -246,6 +241,9 @@ L = λabcdefghijklmnopqstuvwxyzr.
 	</div></section>
 	<section class="slide"><div>
 		<h2>Heterogenous wrappers</h2>
+		<pre>
+			<code></code>
+		</pre>
 	</div></section>
 	<section class="slide shout"><div>
 		<h2>Trampoline</h2>
@@ -288,6 +286,7 @@ L = λabcdefghijklmnopqstuvwxyzr.
 	
 	<div class="progress"><div></div></div>
 	<script src="shower/shower.min.js"></script>
+	<script src="scripts/functions.js"></script>
 	<!-- Copyright © 2013 Yours Truly, Famous Inc. -->
 	<!-- Photos by John Carey, fiftyfootshadows.net -->
 </body>
