@@ -113,9 +113,9 @@
 		<h2>Non-recursive factorial</h2>
 		<div>
 			<pre>
-				<code>function almostFactorial(f) {</code>
+				<code>function almostFactorial(self) {</code>
 				<code>	return function(n) {</code>
-				<code>		return n === 0 ? 1 : n * f(n-1);</code>
+				<code>		return n === 0 ? 1 : n * self(n-1);</code>
 				<code>	};</code>
 				<code>}</code>
 			</pre>
@@ -124,8 +124,8 @@
 	<section class="slide"><div>
 		<h2>Notation</h2>
 		<pre>
-			<code>function almostFactorial(f)(n) {</code>
-			<code>	return n === 0 ? 1 : n * f(n-1);</code>
+			<code>function almostFactorial(self)(n) {</code>
+			<code>	return n === 0 ? 1 : n * self(n-1);</code>
 			<code>}</code>
 		</pre>
 	</div></section>
@@ -158,8 +158,8 @@
 	<section class="slide" id="apply-fact-to-itself"><div>
 		<h2>Apply almostFactorial to itself</h2>
 		<pre>
-			<code>function almostFactorial(f)(n) {</code>
-			<code>	return n === 0 ? 1 : n * <mark class="important">f(f)</mark>(n-1);</code>
+			<code>function almostFactorial(self)(n) {</code>
+			<code>	return n === 0 ? 1 : n * <mark class="important">self(self)</mark>(n-1);</code>
 			<code>}</code>
 			<code><mark class="important">almostFactorial(almostFactorial)</mark>(5); <mark class="comment">// => 120</mark></code></pre>
 	</div></section>
@@ -222,8 +222,7 @@ L = λabcdefghijklmnopqstuvwxyzr.
 			<code>	console.log('f(' + n + ') = ' + result);</code>
 			<code>	return result;</code>
 			<code>}</code>
-			<code>var logWrappedFactorial = logWrapper(fact);</code>
-			<code>var logFactorial = fix(logWrappedFactorial);</code>
+			<code>var logFactorial = fix(logWrapper(fact));</code>
 			<code>logFactorial(3); <mark class="comment">// => 6</mark></code>
 		</pre>
 	</div></section>
@@ -235,19 +234,18 @@ L = λabcdefghijklmnopqstuvwxyzr.
 			<code>	console.log('Arguments passed: ' + acc);</code>
 			<code>	return f(self(acc))(n);</code>
 			<code>};</code>
-			<code>var argListWrappedFactorial = argListWrapper(fact);</code>
-			<code>var argListFactorial = fix(argListWrappedFactorial)([]);</code>
+			<code>var argListFactorial = fix(argListWrapper(fact))([]);</code>
 			<code>argListFactorial(3); <mark class="comment">// => 6</mark></code>
 		</pre>
 	</div></section>
 	<section class="slide" id="wrappers-together"><div>
 		<h2>Putting wrappers together</h2>
 		<pre>
-			<code>var logWrappedFactorial = logWrapper(fact);</code>
-			<code>var compositionWrappedFactorial 
-				= argListWrapper(logWrappedFactorial);</code>
-			<code>var compositionFactorial 
-				= fix(compositionWrappedFactorial)([]);</code>
+			<code>var compositionFactorial = fix(
+								argListWrapper(
+								logWrapper(
+								fact))
+							)([]);</code>
 			<code>compositionFactorial(7); <mark class="comment">// => 5040</mark></code>
 		</pre>
 	</div></section>

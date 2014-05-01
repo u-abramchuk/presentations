@@ -13,18 +13,18 @@ if (!window.shower) {
 		},
 		'non-rect-fact': {
 			handler: function() {
-				window.almostFactorial = function(f) {
+				window.almostFactorial = function(self) {
 					return function(n) {
-						return n === 0 ? 1 : n * f(n-1);
+						return n === 0 ? 1 : n * self(n-1);
 					};
 				};
 			}
 		},
 		'apply-fact-to-itself': {
 			handler: function() {
-				window.almostFactorial = function(f) {
+				window.almostFactorial = function(self) {
 					return function(n) {
-						return n === 0 ? 1 : n * f(f)(n-1);
+						return n === 0 ? 1 : n * self(self)(n-1);
 					};
 				};
 				console.log(window.almostFactorial(window.almostFactorial)(5));
@@ -46,9 +46,9 @@ if (!window.shower) {
 		},
 		'fact': {
 			handler: function() {
-				window.fact = function(f) {
+				window.fact = function(self) {
 					return function(n) {
-						return n === 0 ? 1 : n * f(n-1);
+						return n === 0 ? 1 : n * self(n-1);
 					};
 				};
 			}
@@ -102,8 +102,7 @@ if (!window.shower) {
 		'log-wrap': {
 			dependencies: ['fact', 'y', 'log-wrapper'],
 			handler: function() {
-				window.logWrappedFactorial = window.logWrapper(window.fact);
-				window.logFactorial = window.fix(window.logWrappedFactorial);
+				window.logFactorial = window.fix(window.logWrapper(window.fact));
 
 				console.log(window.logFactorial(3));
 			}
@@ -128,8 +127,7 @@ if (!window.shower) {
 		'hetero-wrap': {
 			dependencies: ['fact', 'y', 'hetero-wrapper'],
 			handler: function() {
-				window.argListWrappedFactorial = window.argListWrapper(window.fact);
-				window.argListFactorial = window.fix(window.argListWrappedFactorial)([]);
+				window.argListFactorial = window.fix(window.argListWrapper(window.fact))([]);
 
 				console.log(window.argListFactorial(3));
 			}
@@ -137,9 +135,11 @@ if (!window.shower) {
 		'wrappers-together': {
 			dependencies: ['fact', 'y', 'log-wrapper', 'hetero-wrapper'],
 			handler: function() {
-				window.logWrappedFactorial = window.logWrapper(window.fact);
-				window.compositionWrappedFactorial = window.argListWrapper(window.logWrappedFactorial);
-				window.compositionFactorial = window.fix(window.compositionWrappedFactorial)([]);
+				window.compositionFactorial = window.fix(
+					window.argListWrapper(
+					window.logWrapper(
+					window.fact))
+				)([]);
 
 				console.log(window.compositionFactorial(7));
 			}
