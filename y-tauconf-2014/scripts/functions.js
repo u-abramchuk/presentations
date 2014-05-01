@@ -79,7 +79,9 @@ if (!window.shower) {
 		'fixed-point': {
 			dependencies: ['fact', 'y'],
 			handler: function() {			
-				console.log(window.fix(window.fact)(6));
+				window.factorial = window.fix(window.fact);
+
+				console.log(window.factorial(6));
 			}
 		},
 		'log-wrapper': {
@@ -140,6 +142,47 @@ if (!window.shower) {
 				window.compositionFactorial = window.fix(window.compositionWrappedFactorial)([]);
 
 				console.log(window.compositionFactorial(7));
+			}
+		},
+		'optimized-fact': {
+			handler: function() {
+				window.fact = function(self) {
+					return function(n, r) {
+						return n === 0 ? r : self(n - 1, n*r);
+					}
+				};
+			}
+		},
+		'tail-call': {
+			dependencies: ['optimized-fact'],
+			handler: function() {
+				window.commonFactorial = function(n, r) {
+					return n === 0 ? r : window.commonFactorial(n - 1, n*r);
+				};
+			}
+		},
+		'trampoline': {
+			dependencies: ['optimized-fact'],
+			handler: function() {
+				window.fix = function(f) {
+					return function(n, r) {
+						var a = null;
+
+						for (
+							a = function(n_, r_) { 
+								n = n_; 
+								r = r_;
+
+								return a; 
+							}; 
+							a != null && a instanceof Function; 
+							a = f(a)(n, r));
+
+						return a;
+					};
+				};
+				window.factorial = window.fix(window.fact);
+				console.log(window.factorial(6, 1));
 			}
 		}
 	};

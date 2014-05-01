@@ -195,7 +195,8 @@
 			<code>	};</code>
 			<code>	return p(p);</code>
 			<code>}</code>
-			<code>fix(fact)(6); <mark class="comment">// => 720</mark></code>
+			<code><mark class="important">var factorial = fix(fact);</mark></code>
+			<code>factorial(6); <mark class="comment">// => 720</mark></code>
 		</pre>
 	</div></section>
 	<section class="slide"><div>
@@ -265,38 +266,48 @@ L = λabcdefghijklmnopqstuvwxyzr.
 		<h2>Trampoline</h2>
 	</div></section>
 	<section class="slide cover"><div>
-		<img src="pictures/trampoline.gif" id="trampoline" />
+		<img src="pictures/trampoline.gif" id="elephant" />
 		<style type="text/css">
-			#trampoline {
+			#elephant {
 				position: relative;
 				height: 100%;
 				margin-top: -50px;
 			}
 		</style>
 	</div></section>
-	<section class="slide"><div>
+	<section class="slide" id="tail-call"><div>
+		<h2>Tail call optimization</h2>
+		<pre>
+			<code>function commonFactorial(n, r) {</code>
+			<code>	return n === 0 ? r : commonFactorial(n - 1, n*r);</code>
+			<code>};</code>
+		</pre>
+		<pre>
+			<code>function fact(self)(n, r) {</code>
+			<code>	return n === 0 ? r : self(n - 1, n*r);</code>
+			<code>}</code>
+			<code class="next"><mark class="important">//But tail recursion isn't supported everywhere!</mark></code>
+		</pre>
+	</div></section>
+	<section class="slide" id="trampoline"><div>
 		<h2>Trampoline</h2>
 		<pre>
-			<code>function fix(f) {</code>
-			<code>	return function(t) {</code>
-			<code>		var a = null;</code>
-			<code>		for (a = function(t_) { t = t_; return a; }; </code>
-			<code>			a != null; a = f(a)(t)))</code>
-			<code>			;</code>
-			<code>	};</code>
-			<code>}</code>
+			<code>function fix(f)(n, r) {</code>
+			<code>	var a = null;</code>
+			<code>	for (a = function(n_, r_) { n = n_; r = r_; return a; }; </code>
+			<code>		a != null &amp;&amp; a instanceof Function; </code>
+			<code>		a = f(a)(n, r));<mark class="important">//Magic is here!</mark></code>
+			<code>	return a;</code>
+			<code>};</code>
+			<code>var factorial = fix(fact);</code>
+			<code>factorial(6, 1); <mark class="comment">// => 720</mark></code>
 		</pre>
 	</div></section>
 	<section class="slide"><div>
 		<h2>Usages</h2>
 		<ul>
-			<li>Logging</li>
-			<li>Memoization</li>
-			<li>Trampolining</li>
-			<li>Exceptions</li>
-			<li>Continuations</li>
-			<li>Type-checking</li>
-			<li>...</li>
+			<li>Tail call optimization</li>
+			<li>Rx schedulers</li>
 		</ul>
 	</div></section>
 	
