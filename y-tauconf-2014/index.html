@@ -243,8 +243,10 @@ L = λabcdefghijklmnopqstuvwxyzr.
 		<pre>
 			<code>var compositionFactorial = fix(
 								argListWrapper(
-								logWrapper(
-								fact))
+									logWrapper(
+										fact
+									)
+								)
 							)([]);</code>
 			<code>compositionFactorial(7); <mark class="comment">// => 5040</mark></code>
 		</pre>
@@ -308,10 +310,35 @@ L = λabcdefghijklmnopqstuvwxyzr.
 			<li>Rx schedulers</li>
 		</ul>
 	</div></section>
+
+	<section class="slide shout"><div>
+		<h2>Quines</h2>
+	</div></section>
+	<section class="slide" id="reflect-quine"><div>
+		<h2>Quine</h2>
+		<div>
+			<p>A <em>quine</em> is a program which prints its own listing.</p>
+			<pre>
+				<code>(function $(){console.log('('+$+'());')}());</code>
+				<code class="next"><mark class="important">But what if we don't have reflection?</mark></code>
+			</pre>
+		</div>
+	</div></section>
+	<section class="slide" id="quine"><div>
+		<h2>More complex example</h2>
+		<div>
+			<pre>
+				<code>var newLine = String.fromCharCode(10);</code>
+				<code>var data = 'var newLine = String.fromCharCode(10);%3var data = %1%0%1;%3console.log(data.replace(/%21/g, "%1").replace(/%23/g, newLine).replace(/%22/g, "%").replace("%20", data));';</code>
+				<code>console.log(data.replace(/%1/g, "'").replace(/%3/g, newLine).replace(/%2/g, "%").replace("%0", data));</code>
+			</pre>
+		</div>
+	</div></section>
 	
 	<div class="progress"><div></div></div>
 	<script src="shower/shower.min.js"></script>
 	<script src="scripts/functions.js"></script>
+	<script src="scripts/registry.js"></script>
 	<!-- Copyright © 2013 Yours Truly, Famous Inc. -->
 	<!-- Photos by John Carey, fiftyfootshadows.net -->
 </body>
