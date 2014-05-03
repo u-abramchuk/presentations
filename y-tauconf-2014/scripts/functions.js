@@ -3,6 +3,8 @@ if (!window.shower) {
 }
 
 (function(window) {
+	window.shower.registry = {};
+
 	var runScript = function(slideHash) {
 		var script = window.shower.registry[slideHash];
 

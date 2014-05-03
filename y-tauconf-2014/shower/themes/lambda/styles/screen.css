@@ -247,6 +247,10 @@ a {
       content: ''; }
     .slide pre code .redex {
       text-decoration: underline; }
+  .slide pre.wrap {
+    white-space: normal; }
+    .slide pre.wrap code {
+      white-space: normal; }
   .slide pre mark {
     background: none;
     color: #f7923a;

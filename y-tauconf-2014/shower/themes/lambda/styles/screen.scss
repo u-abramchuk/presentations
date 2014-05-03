@@ -225,6 +225,12 @@ a {
 				text-decoration: underline;
 				}
 			}
+		&.wrap {
+			white-space: normal;
+			code {
+				white-space: normal;
+			}
+		}
 		// Mark
 		mark {
 			background:none;
