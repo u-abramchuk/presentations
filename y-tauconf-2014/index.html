@@ -320,17 +320,23 @@ L = λabcdefghijklmnopqstuvwxyzr.
 			<p>A <em>quine</em> is a program which prints its own listing.</p>
 			<pre>
 				<code>(function $(){console.log('('+$+'());')}());</code>
-				<code class="next"><mark class="important">But what if we don't have reflection?</mark></code>
 			</pre>
 		</div>
 	</div></section>
+	<section class="slide"><div>
+		<h2>Quine</h2>
+		<div>		
+			<p>It is impossible (in most programming languages) for a program to manipulate itself (i.e. its textual representation — or a representation from which its textual representation can be easily derived) directly.</p>
+			<p>So to make this possible anyway, we write the build the program from two parts, one which call the <strong><em>code</em></strong> and one which we call the <strong><em>data</em></strong>.</p>	
+		</div>
+	</div></section>
 	<section class="slide" id="quine"><div>
-		<h2>More complex example</h2>
+		<h2>Quine</h2>
 		<div>
-			<pre>
+			<pre class="wrap">
 				<code>var newLine = String.fromCharCode(10);</code>
-				<code>var data = 'var newLine = String.fromCharCode(10);%3var data = %1%0%1;%3console.log(data.replace(/%21/g, "%1").replace(/%23/g, newLine).replace(/%22/g, "%").replace("%20", data));';</code>
-				<code>console.log(data.replace(/%1/g, "'").replace(/%3/g, newLine).replace(/%2/g, "%").replace("%0", data));</code>
+				<code>var data = 'var newLine = String.fromCharCode(10);%3var data = %1%0%1;%3console.log(data.replace(/%21/g, "%1").replace(/%23/g, newLine).replace(/%22/g, "%").replace("%20", data));';<mark class="important next">//data</mark></code>
+				<code>console.log(data.replace(/%1/g, "'").replace(/%3/g, newLine).replace(/%2/g, "%").replace("%0", data));<mark class="important next">//code</mark></code>
 			</pre>
 		</div>
 	</div></section>
