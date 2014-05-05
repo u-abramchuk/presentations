@@ -3,6 +3,20 @@ if (!window.shower) {
 }
 
 window.shower.registry = {
+		'fixed-point-cosine': {
+			handler: function() {
+				var container = document.getElementById("fixed-point-cosine-svg");
+				if (!container.innerHTML.length) {
+					var xhr = new XMLHttpRequest();
+
+					xhr.open('GET', 'https://upload.wikimedia.org/wikipedia/commons/e/ea/Cosine_fixed_point.svg', false);
+					xhr.overrideMimeType('image/svg+xml');
+					xhr.send('');
+					
+					container.appendChild(xhr.responseXML.documentElement);	
+				}
+			}
+		},
 		'common-fact': {
 			handler: function() {
 				window.commonFactorial = function(n) {
@@ -17,6 +31,14 @@ window.shower.registry = {
 						return n === 0 ? 1 : n * self(n-1);
 					};
 				};
+			}
+		},
+		'almost-fact-fixed-point': {
+			dependencies: ['common-fact', 'non-rect-fact'],
+			handler: function() {
+				console.log(window.almostFactorial(window.commonFactorial)(4) === window.commonFactorial(4));
+				console.log(window.almostFactorial(window.commonFactorial)(10) === window.commonFactorial(10));
+				console.log(window.almostFactorial(window.commonFactorial)(17) === window.commonFactorial(17));
 			}
 		},
 		'apply-fact-to-itself': {
