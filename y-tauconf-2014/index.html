@@ -271,9 +271,9 @@ L = λabcdefghijklmnopqstuvwxyzr.
 		<ul>
 			<li>Logging</li>
 			<li>Memoization</li>
-			<li>Exceptions</li>
-			<li>Continuations</li>
-			<li>Type-checking</li>
+			<li><a href="http://www.lfcs.inf.ed.ac.uk/reports/97/ECS-LFCS-97-375/">Exceptions</a></li>
+			<li><a href="http://www.lfcs.inf.ed.ac.uk/reports/97/ECS-LFCS-97-375/">Continuations</a></li>
+			<li><a href="http://www.lfcs.inf.ed.ac.uk/reports/97/ECS-LFCS-97-375/">Type-checking</a></li>
 			<li>...</li>
 		</ul>
 	</div></section>
@@ -321,7 +321,9 @@ L = λabcdefghijklmnopqstuvwxyzr.
 		<h2>Usages</h2>
 		<ul>
 			<li>Tail call optimization</li>
-			<li>Rx schedulers</li>
+			<li><a href="http://rohiton.net/2011/08/15/trampoline-and-reactive-extensions/">Rx schedulers</a></li>
+			<li><a href="http://www.cs.indiana.edu/~dfried/ts.ps">Varying the granularity of parallelism</a></li>
+			<li><a href="http://www.mpi-sws.org/~mrainey/oracle_scheduling.pdf">Oracle scheduling</a></li>
 		</ul>
 	</div></section>
 
@@ -333,16 +335,32 @@ L = λabcdefghijklmnopqstuvwxyzr.
 		<div>
 			<p>A <em>quine</em> is a program which prints its own listing.</p>
 			<pre>
-				<code>(function $(){console.log('('+$+'());')}());</code>
+				<code>(function $(){console.log('('+ $ +'());')}());</code>
 			</pre>
 		</div>
 	</div></section>
+	<section class="slide shout"><div>
+		<h2>SAY "SAY"</h2>
+	</div></section>
 	<section class="slide"><div>
-		<h2>Quine</h2>
-		<div>		
-			<p>It is impossible (in most programming languages) for a program to manipulate itself (i.e. its textual representation — or a representation from which its textual representation can be easily derived) directly.</p>
-			<p>So to make this possible anyway, we write the build the program from two parts, one which call the <strong><em>code</em></strong> and one which we call the <strong><em>data</em></strong>.</p>	
+		<h2>Principle</h2>
+		<div>	
+			<p>Program consists of two parts, one which call the <strong><em>code</em></strong> and one which we call the <strong><em>data</em></strong>.</p>		
 		</div>
+		<table>
+			<tr>
+				<td>SAY</td>
+				<td>"SAY"</td>
+			</tr>
+			<tr>
+				<td>verb</td>
+				<td>noun</td>
+			</tr>
+			<tr>
+				<td>code</td>
+				<td>data</td>
+			</tr>
+		</table>
 	</div></section>
 	<section class="slide" id="quine"><div>
 		<h2>Quine</h2>
@@ -357,10 +375,10 @@ L = λabcdefghijklmnopqstuvwxyzr.
 	<section class="slide"><div>
 		<h2>Usages</h2>
 		<ul>
-			<li>Self-repairing code</li>
-			<li>Digital organism simulation</li>
-			<li>Some proofs of Gödel's incompleteness theorems</li>
-			<li>Trojan in Unix login program</li>
+			<li><a href="http://link.springer.com/chapter/10.1007%2F978-3-540-92273-5_2">Self-repairing code</a></li>
+			<li><a href="https://en.wikipedia.org/wiki/Tierra_(computer_simulation)">Digital organism simulation</a></li>
+			<li><a href="http://mathoverflow.net/questions/72062/what-are-some-proofs-of-godels-theorem-which-are-essentially-different-from-t/72151#72151">Some proofs of Gödel's incompleteness theorems</a></li>
+			<li><a href="http://cm.bell-labs.com/who/ken/trust.html">Trojan in Unix login program</a></li>
 			<li>DNA</li>
 		</ul>
 	</div></section>
