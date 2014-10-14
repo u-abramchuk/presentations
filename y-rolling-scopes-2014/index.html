@@ -188,7 +188,7 @@
 	<section class="slide shout"><div>
 		<h2>Y(f) = f(Y(f))</h2>
 	</div></section>
-	<section class="slide" id="apply-fact-to-itself"><div>
+<!-- 	<section class="slide" id="apply-fact-to-itself"><div>
 		<h2>Apply almostFactorial to itself</h2>
 		<pre>
 			<code>function almostFactorial(self)(n) {</code>
@@ -219,7 +219,8 @@
 			<code>almostFactorial(almostFactorial)(5); <mark class="comment">// => 120</mark></code>
 		</pre>
 	</div></section>
-	<section class="slide" id="fixed-point"><div>
+ -->	
+ 	<section class="slide" id="fixed-point"><div>
 		<h2>Fixed point combinator</h2>
 		<pre>
 			<code>function fix(f) {</code>
@@ -232,7 +233,7 @@
 			<code>factorial(6); <mark class="comment">// => 720</mark></code>
 		</pre>
 	</div></section>
-	<section class="slide cover"><div>
+<!--	<section class="slide cover"><div>
 		<img src="pictures/slug-recursion.gif" alt="Slug recusion" id="slug-recursion">
 		<style type="text/css">
 			#slug-recursion {
@@ -242,7 +243,7 @@
 			}
 		</style>
 	</div></section>
-	<section class="slide"><div>
+ 	<section class="slide"><div>
 		<h2>More fixed point combinators</h2>
 		<pre>
 			<code>Y = λf.(λx.x x) (λx.f (x x)) </code>
@@ -253,6 +254,9 @@ where:
 L = λabcdefghijklmnopqstuvwxyzr. 
 	(r (t h i s i s a f i x e d p o i n t c o m b i n a t o r))</code>
 		</pre>
+	</div></section> -->
+	<section class="slide shout"><div>
+		<h2>We've separated recursion mechanism from actual computation!</h2>
 	</div></section>
 
 	<section class="slide shout"><div>
@@ -280,7 +284,7 @@ L = λabcdefghijklmnopqstuvwxyzr.
 			<code>logFactorial(3); <mark class="comment">// => 6</mark></code>
 		</pre>
 	</div></section>
-	<section class="slide" id="hetero-wrap"><div>
+	<!-- <section class="slide" id="hetero-wrap"><div>
 		<h2>Heterogenous wrappers</h2>
 		<pre>
 			<code>function argListWrapper(f)(self)(acc)(n) {</code>
@@ -302,7 +306,7 @@ L = λabcdefghijklmnopqstuvwxyzr.
 						   )([]);</code>
 			<code>compositionFactorial(7); <mark class="comment">// => 5040</mark></code>
 		</pre>
-	</div></section>
+	</div></section> -->
 	<section class="slide"><div>
 		<h2>Usages</h2>
 		<ul>
@@ -345,14 +349,14 @@ L = λabcdefghijklmnopqstuvwxyzr.
 		<h2>Trampoline</h2>
 		<pre>
 			<code>function fix(f)(n, r) {</code>
-			<code>	var a = null;</code>
-			<code>	for (a = function(n_, r_) { n = n_; r = r_; return a; }; </code>
-			<code>		a != null &amp;&amp; a instanceof Function; </code>
-			<code>		a = f(a)(n, r));</code>
+			<code>	var a = function(n_, r_) {</code>
+			<code>		n = n_; r = r_;</code>
+			<code>		return a;</code>
+			<code>	};</code>
+			<code>	while (a &amp;&amp; instanceof Function) { a = f(a)(n, r); }</code>
 			<code>	return a;</code>
-			<code>};</code>
+			<code>}</code>
 			<code>var factorial = fix(fact);</code>
-			<code>factorial(6, 1); <mark class="comment">// => 720</mark></code>
 		</pre>
 	</div></section>
 	<section class="slide"><div>
@@ -433,13 +437,18 @@ L = λabcdefghijklmnopqstuvwxyzr.
 	<section class="slide" id="quine"><div>
 		<h2>Quine</h2>
 		<div>
-			<pre class="wrap">
+			<pre>
 				<code>var newLine = String.fromCharCode(10);</code>
 				<code><mark class="comment">//intron</mark></code>
-				<code>var data = 'var newLine = String.fromCharCode(10);%3//intron%3var data = %1%0%1;%3console.log(data.replace(/%21/g, "%1").replace(/%23/g, newLine).replace(/%22/g, "%").replace("%20", data));';<mark class="important next">//data</mark></code>
-				<code>console.log(data.replace(/%1/g, "'").replace(/%3/g, newLine).replace(/%2/g, "%").replace("%0", data));<mark class="important next">//code</mark></code>
+				<code><mark class="comment">//data</mark></code>
+				<code>var data = 'var newLine = String.fromCharCode(10);%3//intron%3var data = %1%0%1;%3console.log(data.replace(/%21/g, "%1").replace(/%23/g, newLine).replace(/%22/g, "%").replace("%20", data));';</code>
+				<code><mark class="comment">//code</mark></code>
+				<code style="white-space: normal;">console.log(data.replace(/%1/g, "'").replace(/%3/g, newLine).replace(/%2/g, "%").replace("%0", data));</code>
 			</pre>
 		</div>
+	</div></section>
+	<section class="slide shout"><div>
+		<h2>A quine is a fixed point of an execution environment!</h2>
 	</div></section>
 	<section class="slide"><div>
 		<h2>Usages</h2>

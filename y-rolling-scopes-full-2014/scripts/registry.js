@@ -199,7 +199,7 @@ if (window.shower) {
 						};
 					};
 					window.factorial = window.fix(window.fact);
-					console.log(window.factorial(7, 1));
+					console.log('factorial(6, 1) -> ' + window.factorial(6, 1));
 				}
 			},
 			'reflect-quine': {

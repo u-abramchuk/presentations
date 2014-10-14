@@ -254,6 +254,9 @@ L = λabcdefghijklmnopqstuvwxyzr.
 	(r (t h i s i s a f i x e d p o i n t c o m b i n a t o r))</code>
 		</pre>
 	</div></section>
+	<section class="slide shout"><div>
+		<h2>We've separated recursion mechanism from actual computation!</h2>
+	</div></section>
 
 	<section class="slide shout"><div>
 		<h2>Wrappers</h2>
@@ -352,7 +355,7 @@ L = λabcdefghijklmnopqstuvwxyzr.
 			<code>	while (a &amp;&amp; instanceof Function) { a = f(a)(n, r); }</code>
 			<code>	return a;</code>
 			<code>}</code>
-			<code>var factorial = fix(fact)(6, 1); <mark class="comment">// => 720</mark></code>
+			<code>var factorial = fix(fact);</code>
 		</pre>
 	</div></section>
 	<section class="slide"><div>
@@ -440,6 +443,9 @@ L = λabcdefghijklmnopqstuvwxyzr.
 				<code>console.log(data.replace(/%1/g, "'").replace(/%3/g, newLine).replace(/%2/g, "%").replace("%0", data));<mark class="important next">//code</mark></code>
 			</pre>
 		</div>
+	</div></section>
+	<section class="slide shout"><div>
+		<h2>A quine is a fixed point of an execution environment!</h2>
 	</div></section>
 	<section class="slide"><div>
 		<h2>Usages</h2>

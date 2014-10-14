@@ -184,30 +184,28 @@ if (window.shower) {
 				handler: function() {
 					window.fix = function(f) {
 						return function(n, r) {
-							var a = null;
+							var a = function(n_, r_) {
+								n = n_;
+								r = r_;
 
-							for (
-								a = function(n_, r_) { 
-									n = n_; 
-									r = r_;
+								return a;
+							};
 
-									return a; 
-								}; 
-								a != null && a instanceof Function; 
-								a = f(a)(n, r));
+							while (a && a instanceof Function) {
+								a = f(a)(n, r);
+							}
 
 							return a;
 						};
 					};
 					window.factorial = window.fix(window.fact);
-					console.log(window.factorial(6, 1));
+					console.log('factorial(6, 1) -> ' + window.factorial(6, 1));
 				}
 			},
 			'reflect-quine': {
 				handler: function() {
 					window.quine = function() {
 						(function $(){console.log('('+$+'());')}());
-
 					};
 				}
 			},
