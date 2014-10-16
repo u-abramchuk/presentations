@@ -23,7 +23,7 @@ if (window.shower) {
 			},
 			'non-rect-fact': {
 				handler: function() {
-					window.almostFactorial = function(self) {
+					window.fact = function(self) {
 						return function(n) {
 							return n === 0 ? 1 : n * self(n-1);
 						};
@@ -33,24 +33,24 @@ if (window.shower) {
 			'almost-fact-fixed-point': {
 				dependencies: ['common-fact', 'non-rect-fact'],
 				handler: function() {
-					console.log(window.almostFactorial(window.commonFactorial)(4) === window.commonFactorial(4));
-					console.log(window.almostFactorial(window.commonFactorial)(10) === window.commonFactorial(10));
-					console.log(window.almostFactorial(window.commonFactorial)(17) === window.commonFactorial(17));
+					console.log(window.fact(window.commonFactorial)(4) === window.commonFactorial(4));
+					console.log(window.fact(window.commonFactorial)(10) === window.commonFactorial(10));
+					console.log(window.fact(window.commonFactorial)(17) === window.commonFactorial(17));
 				}
 			},
 			'apply-fact-to-itself': {
 				handler: function() {
-					window.almostFactorial = function(self) {
+					window.fact = function(self) {
 						return function(n) {
 							return n === 0 ? 1 : n * self(self)(n-1);
 						};
 					};
-					console.log(window.almostFactorial(window.almostFactorial)(5));
+					console.log(window.fact(window.fact)(5));
 				}
 			},
 			'isolate-fixed-point': {
 				handler: function() {
-					window.almostFactorial = function(self) {
+					window.fact = function(self) {
 						return function(n) {
 							var fact = function(q) {
 								return function(x) {
@@ -74,12 +74,12 @@ if (window.shower) {
 			'extract-fact': {
 				dependencies: ['fact'],
 				handler: function() {
-					window.almostFactorial = function(self) {
+					window.fact = function(self) {
 						return function(n) {
 							return window.fact(self(self))(n);
 						};
 					}
-					console.log(window.almostFactorial(window.almostFactorial)(5));
+					console.log(window.fact(window.fact)(5));
 				}
 			},
 			'y': {
