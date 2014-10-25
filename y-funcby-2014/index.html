@@ -143,7 +143,7 @@
 		<h2>Non-recursive factorial</h2>
 		<div>
 			<pre>
-				<code>function almostFactorial(self) {</code>
+				<code>function fact(self) {</code>
 				<code>	return function(n) {</code>
 				<code>		return n === 0 ? 1 : n * self(n-1);</code>
 				<code>	};</code>
@@ -154,20 +154,20 @@
 	<section class="slide"><div>
 		<h2>Notation</h2>
 		<pre>
-			<code>function almostFactorial(self)(n) {</code>
+			<code>function fact(self)(n) {</code>
 			<code>	return n === 0 ? 1 : n * self(n-1);</code>
 			<code>}</code>
 		</pre>
 	</div></section>
 	<section class="slide" id="almost-fact-fixed-point"><div>
 		<h2>Fixed point</h2>
-		<div><pre class="inline"><code>commonFactorial</code></pre> is a fixed point of <pre class="inline"><code>almostFactorial</code></pre>!</div>
+		<div><pre class="inline"><code>commonFactorial</code></pre> is a fixed point of <pre class="inline"><code>fact</code></pre>!</div>
 		<br>
 		<div>
 			<pre>
-				<code>almostFactorial(commonFactorial)(4) === commonFactorial(4);</code> 
-				<code>almostFactorial(commonFactorial)(10) === commonFactorial(10);</code>
-				<code>almostFactorial(commonFactorial)(17) === commonFactorial(17);</code>
+				<code>fact(commonFactorial)(4) === commonFactorial(4);</code> 
+				<code>fact(commonFactorial)(10) === commonFactorial(10);</code>
+				<code>fact(commonFactorial)(17) === commonFactorial(17);</code>
 				<code>...</code>
 				<code class="next"><mark class="important">//But we are trying to calculate factorial without recursion!</mark></code>
 			</pre>
@@ -175,13 +175,13 @@
 	</div></section>
 	<section class="slide"><div>
 		<h2>Y comes to help!</h2>
-		<div>What if there exists function <pre class="inline"><code>Y</code></pre> that we could pass <pre class="inline"><code>almostFactorial</code></pre> to that would return the fixed point of it, i.e. <pre class="inline"><code>commonFactorial</code></pre> function?</div>
+		<div>What if there exists function <pre class="inline"><code>Y</code></pre> that we could pass <pre class="inline"><code>fact</code></pre> to that would return the fixed point of it, i.e. <pre class="inline"><code>commonFactorial</code></pre> function?</div>
 		<br>
 		<pre>
-			<code>Y(almostFactorial)(42)</code>
+			<code>Y(fact)(42)</code>
 			<code class="next"> === <span class="redex">commonFactorial</span>(42)</code>
-			<code class="next"> === almostFactorial(<span class="redex">commonFactorial</span>)(42)</code>
-			<code class="next"> === almostFactorial(Y(almostFactorial))(42)</code>
+			<code class="next"> === fact(<span class="redex">commonFactorial</span>)(42)</code>
+			<code class="next"> === fact(Y(fact))(42)</code>
 			<code class="next"><mark class="important">//So we do not need commonFactorial function at <em>all</em>!</mark></code>
 		</pre>
 	</div></section>
@@ -189,17 +189,17 @@
 		<h2>Y(f) = f(Y(f))</h2>
 	</div></section>
 <!-- 	<section class="slide" id="apply-fact-to-itself"><div>
-		<h2>Apply almostFactorial to itself</h2>
+		<h2>Apply fact to itself</h2>
 		<pre>
-			<code>function almostFactorial(self)(n) {</code>
+			<code>function fact(self)(n) {</code>
 			<code>	return n === 0 ? 1 : n * <mark class="important">self(self)</mark>(n-1);</code>
 			<code>}</code>
-			<code><mark class="important">almostFactorial(almostFactorial)</mark>(5); <mark class="comment">// => 120</mark></code></pre>
+			<code><mark class="important">fact(fact)</mark>(5); <mark class="comment">// => 120</mark></code></pre>
 	</div></section>
 	<section class="slide" id="isolate-fixed-point"><div>
 		<h2>Isolate fixed point function</h2>
 		<pre>
-			<code>function almostFactorial(self)(n) {</code>
+			<code>function fact(self)(n) {</code>
 			<code>	var fact = function(q)(x) {</code>
 			<code>		return n === 0 ? 1 : x * q(x-1);</code>
 			<code>	};</code>
@@ -213,10 +213,10 @@
 			<code>function fact(self)(n) {</code>
 			<code>	return n === 0 ? 1 : n * self(n-1);</code>
 			<code>}</code>
-			<code>function almostFactorial(self)(n) {</code>
+			<code>function fact(self)(n) {</code>
 			<code>	return fact(self(self))(n);</code>
 			<code>}</code>
-			<code>almostFactorial(almostFactorial)(5); <mark class="comment">// => 120</mark></code>
+			<code>fact(fact)(5); <mark class="comment">// => 120</mark></code>
 		</pre>
 	</div></section>
  -->	
@@ -370,36 +370,6 @@ L = λabcdefghijklmnopqstuvwxyzr.
 	</div></section>
 
 	<section class="slide shout"><div>
-		<h2>Tupper's formula</h2>
-	</div></section>
-	<section class="slide"><div>
-		<h2>Tupper's formula</h2>
-		<div>
-			<img src="https://upload.wikimedia.org/math/6/8/7/68769909fd8afef73b8ff801e222c2b6.png" alt="Tupper's formula" id="tupper">
-			<p>when graphed in two dimensions, can visually reproduce itself</p>
-			<img src="pictures/tupper_plot.png" alt="Tupper's formula plot" id="tupper_plot">
-			<style type="text/css">
-				#tupper {
-					width: 75%;
-					margin-bottom: 30px;
-				}
-				#tupper_plot {
-					width: 100%;
-				}
-			</style>
-		</div>
-		
-	</div></section>
-	<section class="slide"><div>
-		<h2>Tupper's formula</h2>
-		<ul>
-			<li><a href="http://web.aanet.com.au/superseed/ajmcrae/TupperPlot/TupperPlot.html" target="_blank">Try it out!</a></li>
-			<li><a href="http://arvindn.livejournal.com/132943.html">How it works</a></li>
-			<li><a href="http://jtra.cz/stuff/essays/math-self-reference/index.html">Really self-referential self-drawing formula</a></li>
-		</ul>
-	</div></section>
-
-	<section class="slide shout"><div>
 		<h2>Quines</h2>
 	</div></section>
 	<section class="slide" id="reflect-quine"><div>
@@ -440,9 +410,7 @@ L = λabcdefghijklmnopqstuvwxyzr.
 			<pre>
 				<code>var newLine = String.fromCharCode(10);</code>
 				<code><mark class="comment">//intron</mark></code>
-				<code><mark class="comment">//data</mark></code>
 				<code>var data = 'var newLine = String.fromCharCode(10);%3//intron%3var data = %1%0%1;%3console.log(data.replace(/%21/g, "%1").replace(/%23/g, newLine).replace(/%22/g, "%").replace("%20", data));';</code>
-				<code><mark class="comment">//code</mark></code>
 				<code style="white-space: normal;">console.log(data.replace(/%1/g, "'").replace(/%3/g, newLine).replace(/%2/g, "%").replace("%0", data));</code>
 			</pre>
 		</div>
@@ -458,6 +426,36 @@ L = λabcdefghijklmnopqstuvwxyzr.
 			<li><a href="http://mathoverflow.net/questions/72062/what-are-some-proofs-of-godels-theorem-which-are-essentially-different-from-t/72151#72151">Some proofs of Gödel's incompleteness theorems</a></li>
 			<li><a href="http://cm.bell-labs.com/who/ken/trust.html">Trojan in Unix login program</a></li>
 			<li>DNA</li>
+		</ul>
+	</div></section>
+
+	<section class="slide shout"><div>
+		<h2>Tupper's formula</h2>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Tupper's formula</h2>
+		<div>
+			<img src="https://upload.wikimedia.org/math/6/8/7/68769909fd8afef73b8ff801e222c2b6.png" alt="Tupper's formula" id="tupper">
+			<p>when graphed in two dimensions, can visually reproduce itself</p>
+			<img src="pictures/tupper_plot.png" alt="Tupper's formula plot" id="tupper_plot">
+			<style type="text/css">
+				#tupper {
+					width: 75%;
+					margin-bottom: 30px;
+				}
+				#tupper_plot {
+					width: 100%;
+				}
+			</style>
+		</div>
+		
+	</div></section>
+	<section class="slide"><div>
+		<h2>Tupper's formula</h2>
+		<ul>
+			<li><a href="http://web.aanet.com.au/superseed/ajmcrae/TupperPlot/TupperPlot.html" target="_blank">Try it out!</a></li>
+			<li><a href="http://arvindn.livejournal.com/132943.html">How it works</a></li>
+			<li><a href="http://jtra.cz/stuff/essays/math-self-reference/index.html">Really self-referential self-drawing formula</a></li>
 		</ul>
 	</div></section>
 
