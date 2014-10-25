@@ -1,0 +1,494 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+	<title>Why Y?</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=792, user-scalable=no">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+	<link rel="stylesheet" href="shower/themes/lambda/styles/screen.css">
+</head>
+<body class="list">
+	<header class="caption">
+		<h1>Why Y?</h1>
+		<p>Uladzimir Abramchuk</p>
+	</header>
+	<section class="slide cover" id="Cover"><div>
+		<h2>Why Y?</h2>
+		<p>Uladzimir Abramchuk</p>
+		<img src="pictures/caleidoscope.jpg" alt="Why Y?">
+		<!--
+			To apply styles to the certain slides
+			set slide ID to get needed elements
+			-->
+		<style>
+			#Cover img {
+				width: 100%;
+				height: 100%;
+			}
+			#Cover h2 {
+				margin:320px 0 0;
+				color:#fff;
+				text-align:left;
+				font-size:70px;
+			}
+			#Cover p {
+				margin:10px 0 0 0;
+				text-align:left;
+				color:#fff;
+				font-style:italic;
+				font-size:26px;
+			}
+			#Cover p a {
+				color:#000;
+			}
+		</style>
+	</div></section>
+	<section class="slide cover"><div>
+		<img src="pictures/asc_and_desc.jpg" alt="Ascending and descending" id="asc_desc">
+		<style type="text/css">
+			#asc_desc {
+				height: 100%;
+				right: 0;
+				margin: 0 auto;
+			}
+		</style>
+	</div></section>
+	<section class="slide cover"><div>
+		<img src="pictures/hofstadter.jpg" alt="Hofstadter" id="hofstadter">
+		<img src="pictures/geb.jpg" alt="Godel Escher Bach" id="geb">
+		<style type="text/css">
+			#geb {
+				height: 90%;
+				top: 10%;
+				box-shadow: 20px -10px 15px #000;
+			}
+		</style>
+	</div></section>
+
+	<section class="slide shout">
+		<h2>Fixed point</h2>
+	</section>
+	<section class="slide cover"><div>
+		<img src="pictures/calculator.jpg" alt="Calculator" id="calc" />
+		<style type="text/css">
+			#calc {
+			 	height: 100%;
+			 	right: 0;
+			 	margin: 0 auto;
+			}
+		</style>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Cosine</h2>
+		<pre>
+			<code>-1</code>
+			<code class="next">cos(-1) -> 0.540302...</code>
+			<code class="next">cos(cos(-1)) -> 0.857553...</code>
+			<code class="next">...</code>
+			<code class="next">cos(cos(...cos(-1)...)) -> 0.739085...</code>
+		</pre>
+	</div></section>
+	<section class="slide" id="fixed-point-cosine"><div>
+		<h2>Cosine</h2>
+		<div id="fixed-point-cosine-svg"></div>
+		<style type="text/css">
+			#fixed-point-cosine-svg {
+				margin-top: -60px;	
+			}
+			#fixed-point-cosine-svg svg {
+				width: 100%;
+			}
+		</style>
+	</div></section>
+	<section class="slide shout"><div>
+		<h2>x = f(x)</h2>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Fixed point</h2>
+		<pre><code>x = f(x) = f(f(x)) = f(f(f(x))) = ...</code></pre>
+		<pre>
+			<code>f(x) = cos(x) -> fixpoint = 0.739085...</code>
+			<code>f(x) = x<sup>2</sup> - 3x + 4 -> fixpoint = 2</code>
+			<code>f(x) = x<sup>2</sup> -> fixpoint = 0, fixpoint = 1</code>
+			<code>f(x) = x + 1 -> no fixpoint</code>
+		</pre>
+	</div></section>	
+	<section class="slide shout">
+		<h2>Y combinator</h2>
+	</section>
+	<section class="slide">
+		<div>
+			<blockquote>Tiger got to hunt,<br>
+				Bird got to fly;<br>
+				Lisper got to sit and wonder, (Y (Y Y))?<br>
+				<br>
+				Tiger got to sleep,<br>
+				Bird got to land;<br>
+				Lisper got to tell himself he understand.<br>
+			</blockquote>
+    		<p>— Kurt Vonnegut, modified by Darius Bacon</p>
+		</div>
+	</section>
+	<section class="slide" id="common-fact"><div>
+		<h2>Factorial</h2>
+		<div>
+			<pre>
+				<code>function commonFactorial(n) {</code>
+				<code>	return n === 0 ? 1 : n * commonFactorial(n-1);</code>
+				<code>}</code>
+			</pre>
+		</div>
+	</div></section>
+	<section class="slide" id="non-rect-fact"><div>
+		<h2>Non-recursive factorial</h2>
+		<div>
+			<pre>
+				<code>function almostFactorial(self) {</code>
+				<code>	return function(n) {</code>
+				<code>		return n === 0 ? 1 : n * self(n-1);</code>
+				<code>	};</code>
+				<code>}</code>
+			</pre>
+		</div>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Notation</h2>
+		<pre>
+			<code>function almostFactorial(self)(n) {</code>
+			<code>	return n === 0 ? 1 : n * self(n-1);</code>
+			<code>}</code>
+		</pre>
+	</div></section>
+	<section class="slide" id="almost-fact-fixed-point"><div>
+		<h2>Fixed point</h2>
+		<div><pre class="inline"><code>commonFactorial</code></pre> is a fixed point of <pre class="inline"><code>almostFactorial</code></pre>!</div>
+		<br>
+		<div>
+			<pre>
+				<code>almostFactorial(commonFactorial)(4) === commonFactorial(4);</code> 
+				<code>almostFactorial(commonFactorial)(10) === commonFactorial(10);</code>
+				<code>almostFactorial(commonFactorial)(17) === commonFactorial(17);</code>
+				<code>...</code>
+				<code class="next"><mark class="important">//But we are trying to calculate factorial without recursion!</mark></code>
+			</pre>
+		</div>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Y comes to help!</h2>
+		<div>What if there exists function <pre class="inline"><code>Y</code></pre> that we could pass <pre class="inline"><code>almostFactorial</code></pre> to that would return the fixed point of it, i.e. <pre class="inline"><code>commonFactorial</code></pre> function?</div>
+		<br>
+		<pre>
+			<code>Y(almostFactorial)(42)</code>
+			<code class="next"> === <span class="redex">commonFactorial</span>(42)</code>
+			<code class="next"> === almostFactorial(<span class="redex">commonFactorial</span>)(42)</code>
+			<code class="next"> === almostFactorial(Y(almostFactorial))(42)</code>
+			<code class="next"><mark class="important">//So we do not need commonFactorial function at <em>all</em>!</mark></code>
+		</pre>
+	</div></section>
+	<section class="slide shout"><div>
+		<h2>Y(f) = f(Y(f))</h2>
+	</div></section>
+	<section class="slide" id="apply-fact-to-itself"><div>
+		<h2>Apply almostFactorial to itself</h2>
+		<pre>
+			<code>function almostFactorial(self)(n) {</code>
+			<code>	return n === 0 ? 1 : n * <mark class="important">self(self)</mark>(n-1);</code>
+			<code>}</code>
+			<code><mark class="important">almostFactorial(almostFactorial)</mark>(5); <mark class="comment">// => 120</mark></code></pre>
+	</div></section>
+	<section class="slide" id="isolate-fixed-point"><div>
+		<h2>Isolate fixed point function</h2>
+		<pre>
+			<code>function almostFactorial(self)(n) {</code>
+			<code>	var fact = function(q)(x) {</code>
+			<code>		return n === 0 ? 1 : x * q(x-1);</code>
+			<code>	};</code>
+			<code>	return fact(self(self))(n);</code>
+			<code>}</code>
+		</pre>
+	</div></section>
+	<section class="slide" id="extract-fact"><div>
+		<h2>Extract factorial calculation</h2>
+		<pre>
+			<code>function fact(self)(n) {</code>
+			<code>	return n === 0 ? 1 : n * self(n-1);</code>
+			<code>}</code>
+			<code>function almostFactorial(self)(n) {</code>
+			<code>	return fact(self(self))(n);</code>
+			<code>}</code>
+			<code>almostFactorial(almostFactorial)(5); <mark class="comment">// => 120</mark></code>
+		</pre>
+	</div></section>
+	<section class="slide" id="fixed-point"><div>
+		<h2>Fixed point combinator</h2>
+		<pre>
+			<code>function fix(f) {</code>
+			<code>	var p = function(self)(n) {</code>
+			<code>		return f(self(self))(n);</code>
+			<code>	};</code>
+			<code>	return p(p);</code>
+			<code>}</code>
+			<code><mark class="important">var factorial = fix(fact);</mark></code>
+			<code>factorial(6); <mark class="comment">// => 720</mark></code>
+		</pre>
+	</div></section>
+	<section class="slide cover"><div>
+		<img src="pictures/slug-recursion.gif" alt="Slug recusion" id="slug-recursion">
+		<style type="text/css">
+			#slug-recursion {
+				height: 100%;
+				margin: 0 auto;
+				right: 0;
+			}
+		</style>
+	</div></section>
+	<section class="slide"><div>
+		<h2>More fixed point combinators</h2>
+		<pre>
+			<code>Y = λf.(λx.x x) (λx.f (x x)) </code>
+			<code>Y = λf.(λx.f (x x)) (λx.f (x x)) </code>
+			<code>Z = λf.(λx.f (λv.x x v)) (λx.f (λv.x x v))</code>		
+			<code>Yk = (L L L L L L L L L L L L L L L L L L L L L L L L L L)
+where:
+L = λabcdefghijklmnopqstuvwxyzr. 
+	(r (t h i s i s a f i x e d p o i n t c o m b i n a t o r))</code>
+		</pre>
+	</div></section>
+	<section class="slide shout"><div>
+		<h2>We've separated recursion mechanism from actual computation!</h2>
+	</div></section>
+
+	<section class="slide shout"><div>
+		<h2>Wrappers</h2>
+	</div></section>
+	<section class="slide cover"><div>
+		<img src="pictures/wrapper.jpg" alt="Wrapper" id="wrapper">
+		<style type="text/css">
+			#wrapper {
+				height: 100%;
+				margin: 0 auto;
+				right: 0;
+			}
+		</style>
+	</div></section>
+	<section class="slide" id="log-wrap"><div>
+		<h2>Simple logging wrapper</h2>
+		<pre>
+			<code>function logWrapper(f)(self)(n) {</code>
+			<code>	var result = f(self)(n);</code>
+			<code>	console.log('f(' + n + ') = ' + result);</code>
+			<code>	return result;</code>
+			<code>}</code>
+			<code>var logFactorial = fix(logWrapper(fact));</code>
+			<code>logFactorial(3); <mark class="comment">// => 6</mark></code>
+		</pre>
+	</div></section>
+	<section class="slide" id="hetero-wrap"><div>
+		<h2>Heterogenous wrappers</h2>
+		<pre>
+			<code>function argListWrapper(f)(self)(acc)(n) {</code>
+			<code>	acc.push(n);</code>
+			<code>	console.log('Arguments passed: ' + acc);</code>
+			<code>	return f(self(acc))(n);</code>
+			<code>};</code>
+			<code>var argListFactorial = fix(argListWrapper(fact))([]);</code>
+			<code>argListFactorial(3); <mark class="comment">// => 6</mark></code>
+		</pre>
+	</div></section>
+	<section class="slide" id="wrappers-together"><div>
+		<h2>Putting wrappers together</h2>
+		<pre>
+			<code>var compositionFactorial = fix(
+								argListWrapper(
+									logWrapper(fact)
+								)
+						   )([]);</code>
+			<code>compositionFactorial(7); <mark class="comment">// => 5040</mark></code>
+		</pre>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Usages</h2>
+		<ul>
+			<li>Logging</li>
+			<li>Memoization</li>
+			<li><a href="http://www.lfcs.inf.ed.ac.uk/reports/97/ECS-LFCS-97-375/">Exceptions</a></li>
+			<li><a href="http://www.lfcs.inf.ed.ac.uk/reports/97/ECS-LFCS-97-375/">Continuations</a></li>
+			<li><a href="http://www.lfcs.inf.ed.ac.uk/reports/97/ECS-LFCS-97-375/">Type-checking</a></li>
+			<li>...</li>
+		</ul>
+	</div></section>
+	
+	<section class="slide shout"><div>
+		<h2>Trampoline</h2>
+	</div></section>
+	<section class="slide cover"><div>
+		<img src="pictures/trampoline.gif" id="elephant" />
+		<style type="text/css">
+			#elephant {
+				height: 100%;
+				right: 0;
+				margin: 0 auto;
+			}
+		</style>
+	</div></section>
+	<section class="slide" id="tail-call"><div>
+		<h2>Tail call optimization</h2>
+		<pre>
+			<code>function commonFactorial(n, r) {</code>
+			<code>	return n === 0 ? r : commonFactorial(n - 1, n*r);</code>
+			<code>};</code>
+		</pre>
+		<pre>
+			<code>function fact(self)(n, r) {</code>
+			<code>	return n === 0 ? r : self(n - 1, n*r);</code>
+			<code>}</code>
+		</pre>
+	</div></section>
+	<section class="slide" id="trampoline"><div>
+		<h2>Trampoline</h2>
+		<pre>
+			<code>function fix(f)(n, r) {</code>
+			<code>	var a = function(n_, r_) {</code>
+			<code>		n = n_; r = r_;</code>
+			<code>		return a;</code>
+			<code>	};</code>
+			<code>	while (a &amp;&amp; instanceof Function) { a = f(a)(n, r); }</code>
+			<code>	return a;</code>
+			<code>}</code>
+			<code>var factorial = fix(fact);</code>
+		</pre>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Usages</h2>
+		<ul>
+			<li>Tail call optimization</li>
+			<li><a href="http://rohiton.net/2011/08/15/trampoline-and-reactive-extensions/">Rx schedulers</a></li>
+			<li><a href="http://www.cs.indiana.edu/~dfried/ts.ps">Varying the granularity of parallelism</a></li>
+			<li><a href="http://www.mpi-sws.org/~mrainey/oracle_scheduling.pdf">Oracle scheduling</a></li>
+		</ul>
+	</div></section>
+
+	<section class="slide shout"><div>
+		<h2>Tupper's formula</h2>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Tupper's formula</h2>
+		<div>
+			<img src="https://upload.wikimedia.org/math/6/8/7/68769909fd8afef73b8ff801e222c2b6.png" alt="Tupper's formula" id="tupper">
+			<p>when graphed in two dimensions, can visually reproduce itself</p>
+			<img src="pictures/tupper_plot.png" alt="Tupper's formula plot" id="tupper_plot">
+			<style type="text/css">
+				#tupper {
+					width: 75%;
+					margin-bottom: 30px;
+				}
+				#tupper_plot {
+					width: 100%;
+				}
+			</style>
+		</div>
+		
+	</div></section>
+	<section class="slide"><div>
+		<h2>Tupper's formula</h2>
+		<ul>
+			<li><a href="http://web.aanet.com.au/superseed/ajmcrae/TupperPlot/TupperPlot.html" target="_blank">Try it out!</a></li>
+			<li><a href="http://arvindn.livejournal.com/132943.html">How it works</a></li>
+			<li><a href="http://jtra.cz/stuff/essays/math-self-reference/index.html">Really self-referential self-drawing formula</a></li>
+		</ul>
+	</div></section>
+
+	<section class="slide shout"><div>
+		<h2>Quines</h2>
+	</div></section>
+	<section class="slide" id="reflect-quine"><div>
+		<h2>Quine</h2>
+		<div>
+			<p>A <em>quine</em> is a program which prints its own listing.</p>
+			<pre>
+				<code>(function $(){console.log('('+ $ +'());')}());</code>
+			</pre>
+		</div>
+	</div></section>
+	<section class="slide shout"><div>
+		<h2>SAY "SAY"</h2>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Principle</h2>
+		<div>	
+			<p>Program consists of two parts, one which call the <strong><em>code</em></strong> and one which we call the <strong><em>data</em></strong>.</p>		
+		</div>
+		<table>
+			<tr>
+				<td>SAY</td>
+				<td>"SAY"</td>
+			</tr>
+			<tr>
+				<td>verb</td>
+				<td>noun</td>
+			</tr>
+			<tr>
+				<td>code</td>
+				<td>data</td>
+			</tr>
+		</table>
+	</div></section>
+	<section class="slide" id="quine"><div>
+		<h2>Quine</h2>
+		<div>
+			<pre class="wrap">
+				<code>var newLine = String.fromCharCode(10);</code>
+				<code><mark class="comment">//intron</mark></code>
+				<code>var data = 'var newLine = String.fromCharCode(10);%3//intron%3var data = %1%0%1;%3console.log(data.replace(/%21/g, "%1").replace(/%23/g, newLine).replace(/%22/g, "%").replace("%20", data));';<mark class="important next">//data</mark></code>
+				<code>console.log(data.replace(/%1/g, "'").replace(/%3/g, newLine).replace(/%2/g, "%").replace("%0", data));<mark class="important next">//code</mark></code>
+			</pre>
+		</div>
+	</div></section>
+	<section class="slide shout"><div>
+		<h2>A quine is a fixed point of an execution environment!</h2>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Usages</h2>
+		<ul>
+			<li><a href="http://link.springer.com/chapter/10.1007%2F978-3-540-92273-5_2">Self-repairing code</a></li>
+			<li><a href="https://en.wikipedia.org/wiki/Tierra_(computer_simulation)">Digital organism simulation</a></li>
+			<li><a href="http://mathoverflow.net/questions/72062/what-are-some-proofs-of-godels-theorem-which-are-essentially-different-from-t/72151#72151">Some proofs of Gödel's incompleteness theorems</a></li>
+			<li><a href="http://cm.bell-labs.com/who/ken/trust.html">Trojan in Unix login program</a></li>
+			<li>DNA</li>
+		</ul>
+	</div></section>
+
+	<section class="slide cover"><div>
+		<img src="pictures/hands.jpg" alt="Drawing hands" id="hands" />
+		<style type="text/css">
+			#hands {
+			 	height: 100%;
+			 	right: 0;
+			 	margin: 0 auto;
+			}
+		</style>
+		</div>
+	</section>
+
+	<section class="slide shout"><div>
+		<h2>Y?</h2>
+	</div></section>
+	<section class="slide"><div>
+		<h2>Contact and more</h2>
+		<div>Email: <a href="mailto:u.abramchuk@gmail.com">u.abramchuk@gmail.com</a></div>
+		<div>Skype: u.abramchuk</div>
+		<p></p>
+		<div>All code from slides is available in console!</div>
+	</div></section>
+	<section class="slide shout"><div>
+		<h2>Thank you!</h2>
+	</div></section>
+	
+	<div class="progress"><div></div></div>
+	<script src="shower/shower.min.js"></script>
+	<script src="scripts/functions.js"></script>
+	<script src="scripts/registry.js"></script>
+	<!-- Copyright © 2013 Yours Truly, Famous Inc. -->
+	<!-- Photos by John Carey, fiftyfootshadows.net -->
+</body>
+</html>
