@@ -254,10 +254,10 @@
 	</div></section>
 	<section class="slide"><div>
 		<h2>Notation</h2>
-		<pre><code>def name = function</code></pre>
-		<pre><code>def id = λx.x
-def self_apply = λs.s s
-def apply = λfunc.λarg.func arg
+		<pre><code>def name args = function</code></pre>
+		<pre><code>def id x = λx.x
+def self_apply s = λs.s s
+def apply func arg = λfunc.λarg.func arg
 <mark class="important">//This works only as textual replacement!</mark></code></pre>
 	</div></section>
 	<section class="slide"><div>
@@ -269,9 +269,9 @@ def apply = λfunc.λarg.func arg
 -> ... -> multiple applicative order β reduction</p>
 	</div></section>
 	<section class="slide"><div>
-		<h2>Selecting one of two arguments</h2>
-		<pre><code>def fst = λf.λs.f
-def snd = λf.λs.s</code></pre>
+		<h2>Selecting first from two arguments</h2>
+		<pre><code>def fst f s = λf.λs.f
+def snd f s = λf.λs.s</code></pre>
 		<pre>
 			<code>(fst arg1) arg2 == </code>
 			<code class="next"><span class="redex">((λ<mark class="value">f</mark>.λs.<mark class="value">f</mark>) <mark class="value">arg1</mark>)</span> arg2 => </code>
@@ -281,20 +281,13 @@ def snd = λf.λs.s</code></pre>
 	</div></section>
 	<section class="slide"><div>
 		<h2>Making pairs from two arguments</h2>
-		<pre><code>def pair = λf.λs.λfunc.(func f) s</code></pre>
+		<pre><code>def pair f s func = λf.λs.λfunc.(func f) s</code></pre>
 		<pre>
 			<code>(pair arg1) arg2 == </code>
 			<code class="next"><span class="redex">((λ<mark class="value">f</mark>.λs.λfunc.(func <mark class="value">f</mark>) s) <mark class="value">arg1</mark>)</span> arg2 => </code>
 			<code class="next"><span class="redex">(λ<mark class="value">s</mark>.λfunc.(func arg1) <mark class="value">s</mark>) <mark class="value">arg2</mark></span> => </code>
 			<code class="next">λfunc.(func arg1) arg2</code>
 		</pre>
-	</div></section>
-	<section class="slide"><div>
-		<h2>Selecting second argument from pair</h2>
-		<pre>
-			<code><span class="redex">(λ<mark class="value">func</mark>.(<mark class="value">func</mark> arg1) arg2) <mark class="value">snd</mark></span> =></code>
-			<code class="next">(snd arg1) arg2 => ... =></code>
-			<code class="next">arg2</code></pre>
 	</div></section>
 
 	<section class="slide shout"><div>
@@ -304,28 +297,12 @@ def snd = λf.λs.s</code></pre>
 		<h2>Booleans</h2>
 		<p>condition ? expression : expression</p>
 		<pre>
-			<code>def cond = λe1.λe2.λc.(c e1) e2
+			<code>def cond e1 e2 c = λe1.λe2.λc.(c e1) e2
 def true = fst
-def false = snd</code>
+def false = snd
+def and x y = λx.λy.(x y) false</code>
 		</pre>
-	</div></section>
-	<section class="slide"><div>
-		<h2>Booleans</h2>
-		<pre>
-			<code>def not = λx.((cond false) true) x
-def and = λx.λy.(x y) false
-def or = λx.λy.(x true) y</code>
-		</pre>
-	</div></section>
-	<section class="slide"><div>
-		<h2>Booleans</h2>
-		<pre>
-			<code>((cond y) false) x == </code>
-			<code class="next">(<span class="redex">((λ<mark class="value">e1</mark>.λe2.λc.(c <mark class="value">e1</mark>) e2) <mark class="value">y</mark>)</span> false) x => </code>
-			<code class="next"><span class="redex">((λ<mark class="value">e2</mark>.λc.(c y) <mark class="value">e2</mark>) <mark class="value">false</mark>)</span> x => </code>
-			<code class="next"><span class="redex">(λ<mark class="value">c</mark>.(<mark class="value">c</mark> y) false) <mark class="value">x</mark></span> => </code>
-			<code class="next">(x y) false</code>
-		</pre>
+		<pre class="inline"><code><mark class="important">Notation:</mark> if ... then ... else ...</code></pre>
 	</div></section>
 
 	<section class="slide shout"><div>
@@ -335,66 +312,13 @@ def or = λx.λy.(x true) y</code>
 		<h2>Natural numbers</h2>
 		<pre>
 			<code>def zero = id
+def iszero = λn.n fst
 def succ = λn.λs.(s false) n
+def pred = λn.((iszero n) zero) (n snd)
 def one = succ zero
 def two = succ one == succ (succ zero)
 ...</code>
 		</pre>
-	</div></section>
-	<section class="slide"><div>
-		<h2>Natural numbers</h2>
-		<pre>
-			<code>def iszero = λn.n fst
-def pred = λn.((iszero n) zero) (n snd)</code>
-		</pre>
-	</div></section>
-	<section class="slide"><div>
-		<h2>Natural numbers</h2>
-		<pre>
-			<code>iszero zero => </code>
-			<code class="next"><span class="redex">(λ<mark class="value">n</mark>.<mark class="value">n</mark> fst) <mark class="value">zero</mark></span> => </code>
-			<code class="next">zero fst == </code>
-			<code class="next"><span class="redex">id fst</span> => </code>
-			<code class="next">fst == </code>
-			<code class="next">true</code>
-		</pre>
-	</div></section>
-	<section class="slide"><div>
-		<h2>Natural numbers</h2>
-		<pre>
-			<code>iszero (λs.(s false) num) == </code>
-			<code class="next"><span class="redex">(λ<mark class="value">n</mark>.<mark class="value">n</mark> fst) <mark class="value">(λs.(s false) num)</mark></span> => </code>
-			<code class="next"><span class="redex">(λ<mark class="value">s</mark>.(<mark class="value">s</mark> false) num) <mark class="value">fst</mark></span> => </code>
-			<code class="next">(fst false) num => ... => </code>
-			<code class="next">false </code>
-		</pre>
-	</div></section>
-	<section class="slide"><div>
-		<h2>Notation</h2>
-		<pre class="inline"><code>function arg1 arg2 ... argN</code></pre><br>
-		instead of
-		<pre><code>(...((function arg1) arg2) ... argN)</code></pre>
-		<pre class="inline"><code>def pred = λn.(iszero n) zero (n snd)</code></pre><br>
-		instead of
-		<pre><code>def pred = λn.((iszero n) zero) (n snd)</code></pre>
-	</div></section>
-	<section class="slide"><div>
-		<h2>Notation</h2>
-		<pre class="inline"><code>def names name = expression</code></pre><br>
-		instead of
-		<pre><code>def names = λname.expression</code></pre>
-		<pre><code>def id x = x
-def self_apply s = s s
-def fst f = λs.f</code></pre>
-	</div></section>	
-	<section class="slide"><div>
-		<h2>Notation</h2>
-		<pre class="inline"><code>if ... then ... else ...</code></pre><br>
-		instead of
-		<pre><code>cond true_choice false_choice condition</code></pre>
-		<pre><code>def pred n = if iszero n
-				then zero
-				else n snd</code></pre>
 	</div></section>
 	<section class="slide"><div>
 		<h2>Addition</h2>
@@ -408,29 +332,21 @@ def fst f = λs.f</code></pre>
 	</div></section>
 		<section class="slide"><div>
 		<h2>Recursion</h2>
-		<pre><code>def rec = λf.(λs.f (s s)) (λs.f (s s))<mark class="important">//Y combinator</mark></code></pre>
-		<pre><code>def add1 f x y = if iszero y
+		<pre><code>def y f s = λf.(λs.f (s s)) (λs.f (s s))<mark class="important">//Y combinator</mark>
+def add1 f x y = if iszero y
 					then x
 					else f (succ x) (pred y)
-def add = rec add1</code></pre>
+def add = y add1</code></pre>
+		<pre><code>rec name = expression</code></pre>
 	</div></section>
 	<section class="slide"><div>
-		<h2>Notation</h2>
-		<pre><code>rec name = expression</code></pre>
+		<h2>Addition and multiplication</h2>
 		<pre><code>rec add x y = if iszero y
 				 then x
 				 else add (succ x) (pred y)
 rec mult x y = if iszero y
 				  then zero
 				  else add x (mult x (pred y))</code></pre>
-	</div></section>
-	<section class="slide"><div>
-		<h2>Arithmetic operations</h2>
-		<pre><code>rec sub x y = if iszero y
-				 then zero
-				 else sub (pred x) (pred y)
-def abs_diff = add (sub x y) (sub y x)
-def equal x y = iszero (abs_diff x y)</code></pre>
 	</div></section>
 
 	<section class="slide shout"><div>
@@ -466,87 +382,9 @@ def BOOL_ERROR = MAKE_ERROR bool_type</code></pre>
 					  		  then E1
 							  else E2
 					  else BOOL_ERROR</code></pre>	
+		<pre class="inline"><code><mark class="important">Notation:</mark> IF condition THEN expr1 else expr2</code></pre>
 	</div></section>
-	<section class="slide"><div>
-		<h2>Notation</h2>
-		<pre class="inline"><code>IF condition THEN expr1 else expr2</code></pre><br>
-		instead of
-		<pre><code>COND expr1 expr2 condition</code></pre>
-<!-- 	</div></section>
-	<section class="slide"><div>
-		<h2>Booleans</h2> -->
-		<pre><code>def NOT X = IF X
-			THEN FALSE
-			ELSE TRUE</code></pre>
-	</div></section>
-<!-- 	<section class="slide"><div>
-		<h2>Notation</h2>
-		<p>def name TRUE = expr1<br>
-or name FALSE = expr2<br>
-instead of<br>
-def name bound_variable = <br>
-IF bound_variable<br>
-THEN expr1<br>
-ELSE expr2</p>
-	</div></section>
-	<section class="slide"><div>
-		<h2>Notation</h2>
-		<p>def NOT TRUE = FALSE<br>
-or NOT FALSE = TRUE</p>
-	</div></section> -->
-	<section class="slide"><div>
-		<h2>Natural numbers</h2>
-		<pre><code>def numb_type = two
-def MAKE_NUMB = make_obj numb_type
-def NUMB_ERROR = MAKE_ERROR numb_type
-def ISNUMB N = MAKE_BOOL (isnumb N)</code></pre>
-	</div></section>
-	<section class="slide"><div>
-		<h2>Natural numbers</h2>
-		<pre><code>def SUCC N = if isnumb N
-				then MAKE_NUMB (succ (value N))
-			 	else NUMB_ERROR
-def PRED N = if isnumb N
-			 	then if iszero (value N)
-				  		then NUMB_ERROR
-				  		else MAKE_NUMB ((value N) select_second)
-			 	else NUMB_ERROR</code></pre>
-	</div></section>
-	<!-- <section class="slide"><div>
-		<h2>Natural numbers</h2>
-		<p>def ISZERO N = <br>
-if isnumb N<br>
-then MAKE_BOOL (iszero (value N))<br>
-else NUMB_ERROR</p>
-	</div></section>
-	<section class="slide"><div>
-		<h2>Arithmetic operations</h2>
-		<p>def + X Y = <br>
-IF AND (ISNUMB X) (ISNUMB Y)<br>
-THEN ADD X Y<br>
-ELSE NUMB_ERROR<br>
-rec ADD X Y = <br>
-IF ISZERO Y<br>
-THEN X<br>
-ELSE ADD (SUCC X) (PRED Y)</p>
-	</div></section>
-	<section class="slide"><div>
-		<h2>Notation</h2>
-		<p>rec name 0 = expr1<br>
-or name (SUCC bound_variable) = <br>
-expr2 using bound_variable<br>
-instead of<br>
-rec name bound_variable = <br>
-IF ISZERO bound_variable<br>
-THEN expr1<br>
-ELSE expr2 using (PRED bound_variable)</p>
-	</div></section> -->
-<!-- 	<section class="slide"><div>
-		<h2>Notation</h2>
-		<p>rec POWER X 0 = 1<br>
-or POWER X (SUCC Y) = * X (POWER X Y)</p>
-	</div></section> -->
-
+	
 	<section class="slide shout"><div>
 		<h2>Lists</h2>
 	</div></section>
@@ -562,7 +400,10 @@ def MAKE_LIST = make_obj list_type</code></pre>
 		<pre><code>def CONS H T = if islist T
 				  then MAKE_LIST λs.(s H T)
 				  else LIST_ERROR
-def NIL = MAKE_LIST λs.(s LIST_ERROR LIST_ERROR)</code></pre>
+def NIL = MAKE_LIST λs.(s LIST_ERROR LIST_ERROR)
+def ISNIL = if islist L
+			   then MAKE_BOOL (iserror (HEAD L))
+			   else LIST_ERROR</code></pre>
 	</div></section>
 	<section class="slide"><div>
 		<h2>Lists</h2>
@@ -573,35 +414,6 @@ def TAIL L = if islist L
 				then (value L) snd
 				else LIST_ERROR</code></pre>
 	</div></section>
-	<section class="slide"><div>
-		<h2>Lists</h2>
-		<pre><code>def ISNIL = if islist L
-			   then MAKE_BOOL (iserror (HEAD L))
-			   else LIST_ERROR</code></pre>
-	</div></section>
-	<!-- <section class="slide"><div>
-		<h2>Notation</h2>
-		<p>rec name [] = expr1<br>
-or name (head::tail) = expr2 using head and tail<br>
-instead of<br>
-rec name bound_variable = <br>
-IF ISNIL bound_variable<br>
-THEN expr1<br>
-ELSE expr2 using (HEAD bound_variable) and (TAIL bound_variable)</p>
-	</div></section>
-	<section class="slide"><div>
-		<h2>Notation</h2>
-		<p>rec LENGTH [] = 0<br>
-or LENGTH (H::T) = SUCC (LENGTH T)</p>
-	</div></section> -->
-<!-- 	<section class="slide"><div>
-		<h2>Infinite lists</h2>
-		<pre><code>def cons h t s = s h t
-def head l = l λx.λy.x
-def tail l = l λx.λy.y
-rec numblist n = cons n (numblist (succ n))
-def numbers = numblist zero</code></pre>
-	</div></section> -->
 
 	<section class="slide shout"><div>
 		<h2>Q&amp;A</h2>
