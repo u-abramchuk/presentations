@@ -70,10 +70,6 @@
 			<li>λx.t <span class="label">abstraction</span></li>
 			<li>t t <span class="label">application</span></li>
 		</ul>
-		<div class="definition">v ::= <span class="label">variables:</span></div>
-		<ul class="definition">
-			<li>λx.t <span class="label">abstraction value</span></li>
-		</ul>
 	</div></section>
 	<section class="slide"><div>
 		<h2>Simple λ functions</h2>
@@ -263,7 +259,7 @@
 	</div></section>
 	<section class="slide"><div>
 		<h2>Notation</h2>
-		<pre><code>def name args = function</code></pre>
+		<pre><code>def name args = expression</code></pre>
 		<pre><code>def id x = λx.x
 def self_apply s = λs.s s
 def apply func arg = λfunc.λarg.func arg
@@ -343,11 +339,11 @@ def two = succ one == succ (succ zero)
 		<section class="slide"><div>
 		<h2>Recursion</h2>
 		<pre><code>def y f s = λf.(λs.f (s s)) (λs.f (s s))<mark class="important">//Y combinator</mark>
-def add1 f x y = if iszero y
+def add1 f x z = if iszero z
 					then x
-					else f (succ x) (pred y)
+					else f (succ x) (pred z)
 def add = y add1</code></pre>
-		<pre><code>rec name = expression</code></pre>
+		<pre><code><mark class="important">Notation:</mark> rec name args = expression</code></pre>
 	</div></section>
 	<section class="slide"><div>
 		<h2>Addition and multiplication</h2>
