@@ -25,13 +25,13 @@
 				width: 100%;
 			}
 			#Cover h2 {
-				margin:100px 0 0;
+				margin:340px -80px 0;
 				color:#fff;
 				text-align:left;
 				font-size:70px;
 			}
 			#Cover p {
-				margin:10px 0 0 150px;
+				margin:10px 250px;
 				text-align:left;
 				color:#fff;
 				font-style:italic;
@@ -54,7 +54,14 @@
 	</div></section>
 	<section class="slide"><div>
 		<h2>Rogue couples</h2>
-		Insert image here
+		<img src="pictures/rogue-couple.png" alt="Rogue couple" id="rogue-couple" />
+		<style type="text/css">
+		#rogue-couple {
+			height: 420px;
+			display: block;
+			margin: 0 auto;
+		}
+		</style>
 	</div></section>
 	<section class="slide"><div>
 		<h2>Stable matching</h2>
@@ -69,24 +76,37 @@
 		<p>Every man has a complete list of women ranked according to his preferences</p>
 		<p>Every woman has a complete list of men ranked according to her preferences</p>
 	</div></section>
-	<section class="slide"><div>
-		<h2>Morning</h2>
-		<p>Insert picture here: woman on balcony, man serenading</p>
+	<section class="slide cover" id="serenade-morning"><div>
+		<img src="pictures/serenade-morning.png" alt="The mating ritual - morning" />
+		<style type="text/css">
+			#serenade-morning img {
+				max-width: 100%;
+				max-height: 100%;
+			}
+		</style>
+	</div></section>
+	<section class="slide cover" id="serenade-afternoon"><div>
+		<img src="pictures/serenade-afternoon.png" alt="The mating ritual - afternoon" />
+		<style type="text/css">
+			#serenade-afternoon img {
+				max-width: 100%;
+				max-height: 100%;
+			}
+		</style>
 	</div></section>
 	<section class="slide"><div>
-		<h2>Afternoon</h2>
-		<p>Insert picture here: woman tells one to stay, another men are ordered to leave</p>
+		<img src="pictures/serenade-evening.png" alt="The mating ritual - evening" id="serenade-evening" />
+		<style type="text/css">
+			#serenade-evening {
+				height: 420px;
+				display: block;
+				margin: 0 auto;
+			}
+		</style>
 	</div></section>
-	<section class="slide"><div>
-		<h2>Evening</h2>
-		<p>Insert image here: if man is rejected he crosses out that woman from his list</p>
-	</div></section>
-	<section class="slide"><div>
-		<h2>In the end</h2>
-		<p>Insert image here: everyone marriages</p>
-	</div></section>
-	<section class="slide"><div>
-		<h2>They all live happily ever after...</h2>
+	<section class="slide cover"><div>
+		<h2>They all lived happily ever after...</h2>
+		<img src="pictures/wedding.png" alt="The mating ritual - wedding" />
 		<p>There is a marriage day</p>
 		<p class="next">Everybody ends up married</p>
 		<p class="next">All the marriages are stable</p>
@@ -95,6 +115,13 @@
 		<h2>...especially the men</h2>
 		<p>The mating ritual marries every man to his optimal spouse</p>
 		<p class="next">The mating ritual marries every woman to her pessimal spouse</p>
+		<img class="next" src="pictures/trollface.png" alt="Trollface" id="trollface" />
+		<style type="text/css">
+			#trollface {
+				height: 200px;
+				float: right;
+			}
+		</style>
 	</div></section>
 	<section class="slide shout"><div>
 		<h2>Let's go back to real life!</h2>
@@ -123,31 +150,31 @@
 		<p>Unmatched students and programs go through the process called SOAP</p>
 	</div></section>
 	<section class="slide"><div>
-		<h2>Akamai CDN</h2>
+		<h2>Akamai</h2>
 		<p>170.000 edge servers</p>
 		<p>~1300 networks</p>
 		<p>102 countries</p>
 		<p>~15-30% of all web traffic</p>
 	</div></section>
 	<section class="slide"><div>
-		<h2>Akamai CDN - The stable marriage problem</h2>
+		<h2>Akamai - The stable marriage problem</h2>
 		<p>Map units (IP address prefix, traffic class) and clusters instead of men and women</p>
 		<p>Map units rank clusters by performance: latency, packet loss, throughput, etc.</p>
 		<p>Clusters rank map units by cluster contract terms, IP addresses' locality to the autonomous system in which the cluster is deployed, etc.</p>
 	</div></section>
 	<section class="slide"><div>
-		<h2>Akamai CDN - Demand and capacity</h2>
+		<h2>Akamai - Demand and capacity</h2>
 		<p>Each map unit is associated with demand - the amount of content accesses that clients from that map unit are likely to generate; can vary rapidly in real-time as clients access more or less content</p>
 		<p>Each cluster has a notion of capacity that represents the maximum demand that the cluster may serve; capacity is dictated by processing power, memory and disk capacity, etc.</p>
 	</div></section>
 	<section class="slide"><div>
-		<h2>Akamai CDN - algorithm extensions</h2>
+		<h2>Akamai - algorithm extensions</h2>
 		<p>Unequal number of clusters and map units - tens of millions of map units versus thousands of clusters</p>
 		<p>Partial preference lists - map unit in Boston may never need to rank a cluster in Tokyo</p>
 		<p>Modeling integral demands and capacities - express demand and capacity as arbitrary integers</p>
 	</div></section>
 	<section class="slide"><div>
-		<h2>Akamai CDN - Challenges</h2>
+		<h2>Akamai - Challenges</h2>
 		<ul>
 			<li>Complexity and scale</li>
 			<li>Time to solve - re-compute every 10-30 seconds</li>
